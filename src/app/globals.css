@@ -1,26 +1,182 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ═══════════════════════════════════════════════════════
+   FIGMA DESIGN TOKENS — design portfolio 2025
+   bg main fill: rgba(255,247,231) = rgb(255,247,231)
+   Dark bg: rgb(10,15,36)
+   Gradient: #FEC163 → #DE4313
+═══════════════════════════════════════════════════════ */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #FFF7E7;
+    --ink: #0A0F24;
+    --ink-32: rgba(10,15,36,0.32);
+    --ink-85: rgba(10,15,36,0.85);
+    --body-text: #323232;
+    --body-muted: rgba(50,50,50,0.80);
+    --accent: #DE4313;
+    --accent-gold: #FEC163;
+    --grad: linear-gradient(135deg, #FEC163 0%, #DE4313 96%);
+    --card-border: #0A0F24;
+    --card-bg: #FFF7E7;
+    --sidebar-w: 160px;
+    --hero-bg: #FFF7E7;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0A0F24;
+    --ink: #FFF7E7;
+    --ink-32: rgba(255,247,231,0.32);
+    --ink-85: rgba(255,247,231,0.85);
+    --body-text: #C4C4C4;
+    --body-muted: rgba(196,196,196,0.80);
+    --accent: #DE4313;
+    --accent-gold: #FEC163;
+    --grad: linear-gradient(135deg, #FEC163 0%, #DE4313 96%);
+    --card-border: rgba(255,247,231,0.5);
+    --card-bg: #101633;
+    --hero-bg: #0A0F24;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-dm-sans), sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Typography utilities exactly matching Figma ─────── */
+.font-almarai { font-family: var(--font-almarai), sans-serif; }
+.font-concert { font-family: var(--font-concert-one), cursive; }
+.font-dm      { font-family: var(--font-dm-sans), sans-serif; }
+.font-merri   { font-family: var(--font-merriweather), serif; }
+
+/* Gold→Coral gradient text (exact Figma gradient) */
+.text-gradient {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Section number ghost style ──────────────────────── */
+/* In Figma: Concert One 200px, fill = #FFF7E7 (bg color, near-invisible) */
+.section-num {
+  font-family: var(--font-concert-one), cursive;
+  font-size: clamp(100px, 14vw, 200px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ink-32);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Vertical rotated side tab (KNOW MORE, VIEW ALL WORK etc) */
+.side-tab {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: var(--font-dm-sans), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Figma border cards — 1.5px #0A0F24 */
+.figma-card {
+  border: 1.5px solid var(--card-border);
+  background: var(--card-bg);
+  transition: border-color 0.2s;
+}
+
+.figma-card:hover {
+  border-color: var(--accent);
+}
+
+/* Horizontal rule lines */
+.fig-line {
+  border: none;
+  border-top: 1.5px solid var(--ink-32);
+}
+
+/* Tag pills */
+.tag-pill {
+  border: 1.5px solid var(--card-border);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  background: transparent;
+  color: var(--ink);
+  transition: background 0.15s, color 0.15s;
+}
+.tag-pill:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* CTA buttons */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--ink);
+  padding: 8px 20px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  cursor: pointer;
+}
+.btn-outline:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--accent);
+  transition: opacity 0.15s;
+  cursor: pointer;
+}
+.btn-solid:hover { opacity: 0.88; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* Hero headline: HTML text uses var(--ink) which switches automatically */
+.hero-headline {
+  /* color is inherited from text-[var(--ink)] — no filter needed */
 }
