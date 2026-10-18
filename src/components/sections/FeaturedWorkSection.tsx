@@ -1,257 +1,416 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import SectionLayout from '@/components/layout/SectionLayout';
-import { projects } from '@/data/projects';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import SectionBadge from "@/components/ui/SectionBadge";
+import { projects, Project } from "@/data/projects";
 
-/**
- * FeaturedWorkSection — Figma "02 WORK" section (Node 2667:1129) — pixel-perfect
- *
- * Key Figma observations:
- *  - Dark navy bg (#0A0F24) with two large orange radial glow ellipses
- *  - Left col: ghost "02" (Concert One 200px, stroke = bg color) + outlined-gradient "WORK" (Almarai Bold 48px)
- *  - Content col (x:623):
- *      "Blending aesthetics & functionality" — Almarai Regular 32px #FFF7E9
- *      body paragraph — Almarai Regular 18px, 80% opacity
- *      "Featured Projects" — DM Sans Bold 48px gradient (#FEC163→#DE4313)
- *  - Large showcase card: Subtract shape (gradient border 1.5px, w:1085 h:523)
- *      - Logo badge centered at top (Aamar Pharma logo, image 2667:1319, y:293-381)
- *        sitting on a bg-color rectangle that cuts the border
- *      - Full-width mockup image inside card (no left text pane in default state)
- *      - On hover: left pane appears with title, description, pill tags, VIEW CASE STUDY button
- *  - Pagination row: gradient arrow ← | gradient "01" (active) | muted "02" "03" | gradient arrow →
- *    with two gradient lines extending from the arrows outward
- *  - Right side tab: diamonds + "VIEW ALL WORK" vertical rotated gradient text
- */
-export default function FeaturedWorkSection() {
-  const [idx, setIdx] = useState(0);
-  const [hovered, setHovered] = useState(false);
-  const featured = projects.filter(p => p.featured);
-  const proj = featured[idx] ?? featured[0];
+// Vertical work tab
+function VerticalWorkTab() {
+  return (
+    <div className="hidden lg:flex flex-shrink-0 pt-2">
+      <Link
+        href="/work"
+        className="group flex items-center gap-3.5 select-none hover:opacity-85 transition-opacity"
+        title="View All Work"
+      >
+        {/* Left vertical line */}
+        <div
+          className="w-[1.5px] h-[210px]"
+          style={{
+            background:
+              "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+          }}
+        />
 
-  const prev = () => setIdx(i => (i - 1 + featured.length) % featured.length);
-  const next = () => setIdx(i => (i + 1) % featured.length);
+        {/* Diamonds and text */}
+        <div className="flex flex-col items-center justify-between h-[210px] py-1">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L15 8L8 16L1 8L8 0Z" fill="url(#workDiamondGrad)" />
+          </svg>
 
-  const gradId = `work-grad-${idx}`;
+          <span
+            className="text-xs font-dm font-bold tracking-[0.2em] text-transparent bg-clip-text [writing-mode:vertical-rl] whitespace-nowrap"
+            style={{
+              backgroundImage:
+                "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+            }}
+          >
+            VIEW ALL WORK
+          </span>
+
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L15 8L8 16L1 8L8 0Z" fill="url(#workDiamondGrad)" />
+          </svg>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+// Case study button
+function CaseStudyButton({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="group/btn inline-flex items-center gap-3 select-none cursor-pointer"
+      title={label}
+    >
+      {/* Ring with opening */}
+      <div className="relative w-[54px] h-[54px] flex items-center justify-center flex-shrink-0">
+        <svg
+          width="54"
+          height="54"
+          viewBox="0 0 58 58"
+          fill="none"
+          className="absolute inset-0 w-full h-full"
+        >
+          <path
+            d="M 51.1 13.5 A 27 27 0 1 0 51.1 44.5"
+            stroke="url(#workBtnRingGrad)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+            className="transition-all duration-300 group-hover/btn:stroke-[2]"
+          />
+        </svg>
+
+        {/* Inner glowing circle */}
+        <div
+          className="w-[36px] h-[36px] rounded-full flex items-center justify-center shadow-[0_0_14px_rgba(222,67,19,0.55)] transition-transform duration-300 group-hover/btn:scale-105"
+          style={{
+            background: "linear-gradient(135deg, #FEC163 0%, #DE4313 100%)",
+          }}
+        >
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="white">
+            <path d="M8 0C8 4.41828 4.41828 8 0 8C4.41828 8 8 11.5817 8 16C8 11.5817 11.5817 8 16 8C11.5817 8 8 4.41828 8 0Z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Button gradient text */}
+      <span
+        className="font-dm font-bold text-xs sm:text-sm tracking-wider uppercase text-transparent bg-clip-text transition-opacity duration-200 group-hover/btn:opacity-85"
+        style={{
+          backgroundImage:
+            "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+        }}
+      >
+        VIEW CASE STUDY
+      </span>
+    </Link>
+  );
+}
+
+// Project showcase card
+function ProjectCard({ project }: { project: Project }) {
+  const cardBorderStyle = {
+    border: "1.5px solid",
+    borderImageSource:
+      "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+    borderImageSlice: 1,
+  };
 
   return (
-    <SectionLayout
-      id="work"
-      num="02"
-      sectionLabel="WORK"
-      tabLabel="VIEW ALL WORK"
-      tabHref="/work"
+    <div
+      style={cardBorderStyle}
+      className="relative p-6 sm:p-10 pt-12 sm:pt-14 min-h-[460px] flex flex-col justify-between"
     >
-      {/* ── Sub-headline — Almarai Regular 32px ── */}
-      <h2 className="font-almarai font-normal text-[26px] sm:text-[30px] lg:text-[32px] text-[var(--ink)] leading-[1.3] mb-4">
-        Blending aesthetics &amp; functionality
-      </h2>
+      {/* Ambient background glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute rounded-full z-0"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(222, 67, 19, 0.22) 0%, rgba(222, 67, 19, 0) 70%)",
+          width: "420px",
+          height: "420px",
+          top: "20%",
+          right: "10%",
+          filter: "blur(80px)",
+          transform: "translateZ(0)",
+        }}
+      />
 
-      {/* ── Description paragraph — Almarai Regular 18px 80% opacity ── */}
-      <p
-        className="font-almarai text-[16px] sm:text-[18px] leading-[1.65] mb-10"
-        style={{ color: 'rgba(255,247,231,0.8)', maxWidth: '649px' }}
-      >
-        From websites and apps to full-fledged digital systems, projects range from business
-        tools to consumer products — spanning industries like healthcare, education, non-profits,
-        e-commerce, travel, finance, and more — designed for companies of all sizes within agency,
-        in-house, and freelance settings.
-      </p>
+      {/* Top notch mask */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-3 card-badge-bg z-[1]"
+      />
 
-      {/* ── "Featured Projects" — DM Sans Bold 48px gradient ── */}
-      <h3 className="font-dm font-bold text-gradient text-[36px] sm:text-[44px] lg:text-[48px] mb-10 leading-none">
-        Featured Projects
-      </h3>
+      {/* Client logo badge */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center px-4">
+        <Image
+          src="/assets/icons/work-logo.png"
+          alt={project.client}
+          width={150}
+          height={46}
+          className="h-8 sm:h-9 w-auto object-contain"
+          priority
+        />
+      </div>
 
-      {/* ── Main showcase card — gradient border, notched logo badge at top ── */}
-      <div className="relative">
-        {/* Logo badge notch — sits ON TOP of the top border line, with bg-color fill behind it */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 -top-[44px] z-10 px-4 py-2 flex items-center justify-center"
-          style={{ background: 'var(--bg)' }}
-        >
-          <div className="relative h-[88px] w-[191px]">
+      {/* Card content layout */}
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        {/* Left project details */}
+        <div className="lg:col-span-5 flex flex-col gap-5">
+          <h4 className="font-dm font-bold text-base sm:text-lg uppercase tracking-wide text-[var(--ink)] leading-snug">
+            {project.title}
+          </h4>
+
+          <p className="font-almarai text-sm sm:text-base leading-relaxed text-[var(--body-muted)]">
+            {project.summary}
+          </p>
+
+          {/* Project tag pills */}
+          <div className="flex flex-wrap gap-2.5 pt-1">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-4 py-1.5 text-xs font-dm font-medium text-[var(--ink)] border border-[#DE4313]/50 rounded-full select-none"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Case study link */}
+          <div className="pt-3">
+            <CaseStudyButton
+              href={project.caseStudyUrl ?? `/work/${project.slug}`}
+              label={`View ${project.client} case study`}
+            />
+          </div>
+        </div>
+
+        {/* Right mockup preview */}
+        <div className="lg:col-span-7 flex justify-center items-center relative">
+          <div className="relative w-full h-[280px] sm:h-[360px] lg:h-[420px]">
             <Image
-              src="/assets/icons/work-logo.png"
-              alt={proj.client}
+              src={
+                project.coverImage ?? "/assets/projects/aamar-pharma-mockup.png"
+              }
+              alt={project.client}
               fill
               className="object-contain"
               priority
             />
           </div>
         </div>
-
-        {/* The card itself */}
-        <div
-          className="relative w-full overflow-hidden cursor-pointer group"
-          style={{
-            background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 96%) border-box',
-            border: '1.5px solid transparent',
-            minHeight: '523px',
-            paddingTop: '44px', // compensate for logo badge height
-          }}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          {/* Default state: full-width mockup centered */}
-          <div
-            className="transition-opacity duration-500"
-            style={{ opacity: hovered ? 0 : 1 }}
-          >
-            <div className="relative w-full h-[460px] flex items-center justify-center px-4 sm:px-8">
-              <div className="relative w-full h-full">
-                <Image
-                  src={proj.mockupImage ?? proj.coverImage}
-                  alt={proj.client}
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Hover state: side-by-side layout (text + mockup) */}
-          <div
-            className="absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-0 transition-opacity duration-500"
-            style={{ opacity: hovered ? 1 : 0, paddingTop: '44px' }}
-          >
-            {/* LEFT: project info */}
-            <div className="flex flex-col justify-center p-8 sm:p-10 border-r border-[#FEC163]/30">
-              <h4 className="font-dm font-black text-[var(--ink)] uppercase text-[14px] sm:text-[16px] leading-snug mb-4 tracking-wide">
-                {proj.title}
-              </h4>
-              <p className="font-almarai text-[15px] sm:text-[16px] leading-[1.65] mb-8" style={{ color: 'rgba(255,247,231,0.8)' }}>
-                {proj.summary}
-              </p>
-
-              {/* Tag pills — pill outline style matching Figma */}
-              <div className="flex flex-wrap gap-2 mb-10">
-                {proj.tags.map(tag => (
-                  <span
-                    key={tag}
-                    className="px-4 py-1.5 text-[12px] sm:text-[13px] font-dm font-semibold tracking-wide text-[var(--ink)] border border-[var(--ink)]/60 rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* VIEW CASE STUDY button — circle with diamond icon + gradient text */}
-              <Link
-                href={proj.caseStudyUrl ?? `/work/${proj.slug}`}
-                className="inline-flex items-center gap-4 w-fit group/btn"
-              >
-                <span
-                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-                    border: '1.5px solid transparent',
-                  }}
-                >
-                  <svg width="14" height="16" viewBox="0 0 16 18" fill="none">
-                    <defs>
-                      <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#FEC163" />
-                        <stop offset="100%" stopColor="#DE4313" />
-                      </linearGradient>
-                    </defs>
-                    <polygon points="8 0, 16 9, 8 18, 0 9" fill={`url(#${gradId})`} />
-                  </svg>
-                </span>
-                <span className="font-dm font-bold text-gradient text-[14px] sm:text-[15px] tracking-[0.16em] uppercase">
-                  VIEW CASE STUDY
-                </span>
-              </Link>
-            </div>
-
-            {/* RIGHT: mockup */}
-            <div className="hidden lg:flex items-center justify-center p-6">
-              <div className="relative w-full h-[380px]">
-                <Image
-                  src={proj.mockupImage ?? proj.coverImage}
-                  alt={proj.client}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
+    </div>
+  );
+}
 
-      {/* ── Pagination row — gradient arrows + gradient lines + page numbers ── */}
-      <div className="relative flex items-center justify-center gap-0 mt-6 select-none">
-        {/* Left gradient line extending from arrow */}
-        <div
-          className="hidden sm:block flex-1 h-[1.5px] mr-6"
-          style={{ background: 'linear-gradient(90deg, transparent, #FEC163 60%, #DE4313 100%)' }}
-        />
-
-        {/* Left arrow button */}
-        <button
-          onClick={prev}
-          aria-label="Previous project"
-          className="flex items-center justify-center w-8 h-8 hover:opacity-70 transition-opacity"
+// Project slider navigation
+function ProjectSliderBar({
+  currentIndex,
+  totalCount,
+  onSelect,
+  onPrev,
+  onNext,
+}: {
+  currentIndex: number;
+  totalCount: number;
+  onSelect: (index: number) => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  return (
+    <div className="w-full flex items-center select-none pt-2">
+      {/* Prev arrow and line */}
+      <button
+        onClick={onPrev}
+        className="flex-1 flex items-center text-[#DE4313] hover:opacity-80 transition-opacity cursor-pointer group"
+        aria-label="Previous project"
+      >
+        {/* Seamless arrow tip */}
+        <svg
+          width="10"
+          height="12"
+          viewBox="0 0 10 12"
+          fill="none"
+          className="flex-shrink-0"
         >
-          <svg width="28" height="12" viewBox="0 0 28 12" fill="none">
-            <defs>
-              <linearGradient id="arrow-left-grad" x1="1" y1="0" x2="0" y2="0">
-                <stop offset="0%" stopColor="#FEC163" />
-                <stop offset="100%" stopColor="#DE4313" />
-              </linearGradient>
-            </defs>
-            <line x1="28" y1="6" x2="2" y2="6" stroke="url(#arrow-left-grad)" strokeWidth="1.5" />
-            <polyline points="9,1 2,6 9,11" fill="none" stroke="url(#arrow-left-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+          <path
+            d="M8 1L2 6L8 11M2 6H10"
+            stroke="#DE4313"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
 
-        {/* Page numbers */}
-        <div className="flex items-center gap-10 sm:gap-14 mx-8">
-          {featured.map((_, i) => (
+        {/* Left line: from DE4313 to FEC163 */}
+        <div
+          className="flex-1 h-[1.5px]"
+          style={{
+            background: "linear-gradient(to right, #DE4313, #FEC163)",
+          }}
+        />
+      </button>
+
+      {/* Slide number buttons */}
+      <div className="flex items-center gap-6 sm:gap-8 px-5 sm:px-7 flex-shrink-0">
+        {Array.from({ length: totalCount }).map((_, i) => {
+          const isActive = i === currentIndex;
+          return (
             <button
               key={i}
-              onClick={() => setIdx(i)}
-              className="font-almarai font-normal text-[18px] leading-none transition-all duration-200"
-              style={{
-                background: i === idx ? 'linear-gradient(135deg, #FEC163 0%, #DE4313 100%)' : 'none',
-                WebkitBackgroundClip: i === idx ? 'text' : 'unset',
-                WebkitTextFillColor: i === idx ? 'transparent' : 'rgba(255,247,231,0.8)',
-                backgroundClip: i === idx ? 'text' : 'unset',
-                color: i === idx ? 'transparent' : 'rgba(255,247,231,0.8)',
-              }}
+              onClick={() => onSelect(i)}
+              className={`font-dm text-sm sm:text-base cursor-pointer transition-all ${
+                isActive
+                  ? "font-bold text-transparent bg-clip-text"
+                  : "font-normal text-[var(--ink)] opacity-50 hover:opacity-100"
+              }`}
+              style={
+                isActive
+                  ? {
+                      backgroundImage:
+                        "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+                    }
+                  : undefined
+              }
             >
-              {String(i + 1).padStart(2, '0')}
+              {String(i + 1).padStart(2, "0")}
             </button>
-          ))}
+          );
+        })}
+      </div>
+
+      {/* Next arrow and line */}
+      <button
+        onClick={onNext}
+        className="flex-1 flex items-center text-[#DE4313] hover:opacity-80 transition-opacity cursor-pointer group"
+        aria-label="Next project"
+      >
+        {/* Right line: from FEC163 to DE4313 */}
+        <div
+          className="flex-1 h-[1.5px]"
+          style={{
+            background: "linear-gradient(to right, #FEC163, #DE4313)",
+          }}
+        />
+
+        {/* Seamless arrow tip */}
+        <svg
+          width="10"
+          height="12"
+          viewBox="0 0 10 12"
+          fill="none"
+          className="flex-shrink-0"
+        >
+          <path
+            d="M2 1L8 6L2 11M0 6H8"
+            stroke="#DE4313"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+// Work section parent
+export default function FeaturedWorkSection() {
+  const [idx, setIdx] = useState(0);
+  const featured = projects.filter((p) => p.featured);
+  const currentProject = featured[idx] ?? featured[0];
+
+  const prev = () =>
+    setIdx((i) => (i - 1 + featured.length) % featured.length);
+  const next = () => setIdx((i) => (i + 1) % featured.length);
+
+  return (
+    <section id="work" className="relative w-full py-16 sm:py-24">
+      {/* Ambient background glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute rounded-full z-0"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(222, 67, 19, 0.4) 0%, rgba(222, 67, 19, 0) 70%)",
+          width: "480px",
+          height: "480px",
+          top: "-60px",
+          right: "-180px",
+          filter: "blur(50px)",
+          transform: "translateZ(0)",
+        }}
+      />
+
+      {/* Main container */}
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col gap-12 sm:gap-14">
+        {/* Header section layout */}
+        <div className="w-full flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-12 relative">
+          {/* Section 02 badge */}
+          <SectionBadge num="02" label="WORK" />
+
+          {/* Center info */}
+          <div className="flex-1 max-w-2xl flex flex-col justify-center gap-5 lg:pt-2">
+            <h2 className="font-almarai text-2xl sm:text-3xl lg:text-[32px] font-bold text-[var(--ink)] leading-snug">
+              Blending aesthetics &amp; functionality
+            </h2>
+
+            <p className="font-almarai text-sm sm:text-base text-[var(--body-muted)] leading-relaxed">
+              From websites and apps to full-fledged digital systems, projects
+              range from business tools to consumer products — spanning
+              industries like healthcare, education, non-profits, e-commerce,
+              travel, finance, and more — designed for companies of all sizes
+              within agency, in-house, and freelance settings.
+            </p>
+
+            <h3 className="font-dm font-bold text-3xl sm:text-4xl text-gradient block leading-none pt-2">
+              Featured Projects
+            </h3>
+          </div>
+
+          {/* Right vertical tab */}
+          <VerticalWorkTab />
         </div>
 
-        {/* Right arrow button */}
-        <button
-          onClick={next}
-          aria-label="Next project"
-          className="flex items-center justify-center w-8 h-8 hover:opacity-70 transition-opacity"
-        >
-          <svg width="28" height="12" viewBox="0 0 28 12" fill="none">
-            <defs>
-              <linearGradient id="arrow-right-grad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#FEC163" />
-                <stop offset="100%" stopColor="#DE4313" />
-              </linearGradient>
-            </defs>
-            <line x1="0" y1="6" x2="26" y2="6" stroke="url(#arrow-right-grad)" strokeWidth="1.5" />
-            <polyline points="19,1 26,6 19,11" fill="none" stroke="url(#arrow-right-grad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+        {/* Featured project card */}
+        <ProjectCard project={currentProject} />
 
-        {/* Right gradient line extending from arrow */}
-        <div
-          className="hidden sm:block flex-1 h-[1.5px] ml-6"
-          style={{ background: 'linear-gradient(90deg, #DE4313 0%, #FEC163 40%, transparent)' }}
+        {/* Bottom slider controls */}
+        <ProjectSliderBar
+          currentIndex={idx}
+          totalCount={featured.length}
+          onSelect={setIdx}
+          onPrev={prev}
+          onNext={next}
         />
       </div>
-    </SectionLayout>
+
+      {/* Global gradient definitions */}
+      <svg
+        width="0"
+        height="0"
+        className="absolute pointer-events-none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient
+            id="workDiamondGrad"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+            gradientTransform="rotate(129.89 0.5 0.5)"
+          >
+            <stop offset="-29.32%" stopColor="#FEC163" />
+            <stop offset="100%" stopColor="#DE4313" />
+          </linearGradient>
+
+          <linearGradient id="workBtnRingGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FEC163" />
+            <stop offset="100%" stopColor="#DE4313" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </section>
   );
 }

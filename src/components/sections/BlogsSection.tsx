@@ -1,255 +1,277 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import SectionLayout from '@/components/layout/SectionLayout';
-import { blogPosts, BlogCategory } from '@/data/blogs';
+import Image from "next/image";
+import Link from "next/link";
+import SectionBadge from "@/components/ui/SectionBadge";
+import { blogPosts, BlogPost } from "@/data/blogs";
 
-/**
- * BlogsSection — Figma "03 BLOGS" section (Node 2667:1501) — pixel-perfect
- *
- * Key Figma observations:
- *  - Dark navy bg (#0A0F24) with top-right orange radial glow ellipse
- *  - Left col: ghost "03" (Concert One 200px, fill = bg color) + outlined-gradient "BLOGS" (Almarai Bold 48px)
- *  - Content col (x:623):
- *      "Passion & Play"        — Almarai Regular 32px  #FFF7E9 100% opacity
- *      description paragraph   — Almarai Regular 18px  #FFF7E9 80% opacity
- *      "Design  Photography  Writing" — DM Sans Bold 48px  gradient fill (#FEC163→#DE4313)
- *        These also act as active-state highlight tabs on click
- *  - Three card columns (344×390px each, spaced at x:278/647/1016):
- *      Each = gradient border 1.5px Subtract rectangle
- *      Icon sits at the TOP CENTER with a bg-color notch rectangle behind it (cuts the border)
- *        – Design:      pencil/edit icon (stroke gradient)
- *        – Photography: camera icon (fill + heart overlay)
- *        – Writing:     lines icon (stroke gradient)
- *      Image fills the card interior
- *      Title below the card  (DM Sans Bold 18px, #FFF7E9, uppercase, centered)
- *  - Right side tab: diamonds + "VIEW ALL BLOGS" vertical gradient text (same as other sections)
- */
-
-// ── Icon SVGs extracted to match Figma exactly ──────────────────────────────
-
-/** Design icon: pencil/paint brush stroke  (Group 123 / 2667:1622) */
-const DesignIcon = () => (
-  <svg viewBox="0 0 42 42" fill="none" width="38" height="38">
-    <defs>
-      <linearGradient id="dig" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FEC163" />
-        <stop offset="96%" stopColor="#DE4313" />
-      </linearGradient>
-    </defs>
-    {/* Pencil body */}
-    <path
-      d="M6 32.5L2.5 39.5l7-3.5 24-24-3.5-3.5L6 32.5z"
-      stroke="url(#dig)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
-    />
-    {/* Pencil tip */}
-    <path
-      d="M30 4l8 8-2 2-8-8 2-2z"
-      stroke="url(#dig)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
-    />
-    {/* Eraser circle */}
-    <circle cx="35" cy="35" r="2.5" stroke="url(#dig)" strokeWidth="1.5" />
-  </svg>
-);
-
-/** Photography icon: camera with heart overlay (Group 2667:1605–1607) */
-const CameraIcon = () => (
-  <svg viewBox="0 0 51 40" fill="none" width="44" height="34">
-    <defs>
-      <linearGradient id="cig" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FEC163" />
-        <stop offset="96%" stopColor="#DE4313" />
-      </linearGradient>
-    </defs>
-    {/* Camera body outline */}
-    <rect x="1" y="10" width="49" height="29" rx="3" stroke="url(#cig)" strokeWidth="1.8" />
-    {/* Lens bump top */}
-    <path
-      d="M17 10V5a2 2 0 012-2h13a2 2 0 012 2v5"
-      stroke="url(#cig)" strokeWidth="1.8" strokeLinecap="round"
-    />
-    {/* Lens circle */}
-    <circle cx="25.5" cy="24" r="8" stroke="url(#cig)" strokeWidth="1.8" />
-    {/* Heart inside lens */}
-    <path
-      d="M22 22c0-1.5 1.2-2.5 2.5-1.5C25.8 21.5 27 20.5 27 22c0 2-2.5 4-2.5 4S22 24 22 22z"
-      fill="url(#cig)"
-    />
-  </svg>
-);
-
-/** Writing icon: lines with pen (Group 2667:1612–1617) */
-const WriteIcon = () => (
-  <svg viewBox="0 0 52 42" fill="none" width="44" height="36">
-    <defs>
-      <linearGradient id="wig" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FEC163" />
-        <stop offset="96%" stopColor="#DE4313" />
-      </linearGradient>
-    </defs>
-    {/* Ruled lines, decreasing width left-aligned (as in Figma) */}
-    <line x1="0" y1="34" x2="12" y2="34" stroke="url(#wig)" strokeWidth="2" strokeLinecap="round" />
-    <line x1="0" y1="26" x2="18" y2="26" stroke="url(#wig)" strokeWidth="2" strokeLinecap="round" />
-    <line x1="0" y1="18" x2="23" y2="18" stroke="url(#wig)" strokeWidth="2" strokeLinecap="round" />
-    <line x1="0" y1="10" x2="29" y2="10" stroke="url(#wig)" strokeWidth="2" strokeLinecap="round" />
-    {/* Pen / edit nib — diagonal, top-right */}
-    <path
-      d="M31 8l9 9-16 16-2-1-7 2 2-7-1-2 15-17z"
-      stroke="url(#wig)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const ICONS = {
-  Design: <DesignIcon />,
-  Photography: <CameraIcon />,
-  Writing: <WriteIcon />,
-} as const;
-
-// Map blog categories to figma image assets
-const CARD_IMAGES: Record<BlogCategory, string> = {
-  Design: '/assets/images/blog-design.png',
-  Photography: '/assets/images/blog-photography.png',
-  Writing: '/assets/images/blog-writing.png',
-};
-
-// ── Component ────────────────────────────────────────────────────────────────
-
-export default function BlogsSection() {
-  const [activeTab, setActiveTab] = useState<BlogCategory | null>(null);
-
-  // In Figma, ALL three cards are shown simultaneously — the gradient text is
-  // a display header, not a filter. But we still support clicking to highlight.
-  const displayed = activeTab
-    ? blogPosts.filter(b => b.category === activeTab)
-    : blogPosts;
-
+// Vertical blogs tab
+function VerticalBlogsTab() {
   return (
-    <SectionLayout
-      id="blogs"
-      num="03"
-      sectionLabel="BLOGS"
-      tabLabel="VIEW ALL BLOGS"
-      tabHref="/blogs"
-    >
-      {/* ── Sub-headline — Almarai Regular 32px ── */}
-      <h2 className="font-almarai font-normal text-[26px] sm:text-[30px] lg:text-[32px] text-[var(--ink)] leading-[1.3] mb-4">
-        Passion &amp; Play
-      </h2>
-
-      {/* ── Description — Almarai Regular 18px 80% ── */}
-      <p
-        className="font-almarai text-[16px] sm:text-[18px] leading-[1.65] mb-8"
-        style={{ color: 'rgba(255,247,231,0.8)', maxWidth: '647px' }}
+    <div className="hidden lg:flex flex-shrink-0 pt-2">
+      <Link
+        href="/blogs"
+        className="group flex items-center gap-3.5 select-none hover:opacity-85 transition-opacity"
+        title="View All Blogs"
       >
-        A space to wander through ideas, reflections, and creative expression —
-        exploring the beauty, wonder, and subtle magic in everyday life, and
-        seeing the world through a thoughtful, artistic lens — offering
-        inspiration, meaningful insights, and moments of quiet contemplation.
-      </p>
+        {/* Left vertical line */}
+        <div
+          className="w-[1.5px] h-[210px]"
+          style={{
+            background:
+              "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+          }}
+        />
 
-      {/* ── "Design  Photography  Writing" — DM Sans Bold 48px gradient + clickable filter ── */}
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-2 mb-12">
-        {(['Design', 'Photography', 'Writing'] as BlogCategory[]).map(cat => (
-          <button
-            key={cat}
-            onClick={() => setActiveTab(prev => prev === cat ? null : cat)}
-            className="font-dm font-bold text-[32px] sm:text-[40px] lg:text-[48px] leading-none transition-all duration-200"
+        {/* Diamonds and text */}
+        <div className="flex flex-col items-center justify-between h-[210px] py-1">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L15 8L8 16L1 8L8 0Z" fill="url(#blogsDiamondGrad)" />
+          </svg>
+
+          <span
+            className="text-xs font-dm font-bold tracking-[0.2em] text-transparent bg-clip-text [writing-mode:vertical-rl] whitespace-nowrap"
             style={{
-              background: (!activeTab || activeTab === cat)
-                ? 'linear-gradient(135deg, #FEC163 0%, #DE4313 100%)'
-                : 'none',
-              WebkitBackgroundClip: (!activeTab || activeTab === cat) ? 'text' : 'unset',
-              WebkitTextFillColor: (!activeTab || activeTab === cat) ? 'transparent' : 'rgba(255,247,231,0.35)',
-              backgroundClip: (!activeTab || activeTab === cat) ? 'text' : 'unset',
-              color: (!activeTab || activeTab === cat) ? 'transparent' : 'rgba(255,247,231,0.35)',
+              backgroundImage:
+                "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
             }}
           >
-            {cat}
-          </button>
-        ))}
+            VIEW ALL BLOGS
+          </span>
+
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L15 8L8 16L1 8L8 0Z" fill="url(#blogsDiamondGrad)" />
+          </svg>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+// Blog category icon
+function BlogIcon({ type }: { type: "design" | "photo" | "write" }) {
+  if (type === "design") {
+    return (
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        {/* Ruler */}
+        <path
+          d="M7 5L27 25L24 28L4 8L7 5Z"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9 11L12 14M13 15L16 18M17 19L20 22"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+        />
+        {/* Pencil */}
+        <path
+          d="M5 27L8 24L25 7L28 4L28 8L11 25L8 28L5 27Z"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M24 10L22 8"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+
+  if (type === "photo") {
+    return (
+      <svg width="32" height="28" viewBox="0 0 32 28" fill="none">
+        {/* Viewfinder bump */}
+        <path
+          d="M12 5V2.5C12 2.2 12.2 2 12.5 2H19.5C19.8 2 20 2.2 20 2.5V5"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        {/* Camera body */}
+        <rect
+          x="2.5"
+          y="5"
+          width="27"
+          height="20"
+          rx="3"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.5"
+        />
+        {/* Center heart */}
+        <path
+          d="M16 18.5C16 18.5 11 15.2 11 12.2C11 10.3 12.5 9 14.2 9C15.2 9 16 9.6 16 9.6C16 9.6 16.8 9 17.8 9C19.5 9 21 10.3 21 12.2C21 15.2 16 18.5 16 18.5Z"
+          stroke="url(#blogIconGrad)"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg width="32" height="28" viewBox="0 0 32 28" fill="none">
+      {/* Speed lines */}
+      <path
+        d="M3 7H9M2 13H11M4 19H8"
+        stroke="url(#blogIconGrad)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      {/* Pen body */}
+      <path
+        d="M26 3L29 6L14 21L9 23L11 18L26 3Z"
+        stroke="url(#blogIconGrad)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      {/* Pen nib */}
+      <path
+        d="M11 18L14 21M9 23L12 20"
+        stroke="url(#blogIconGrad)"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+// Blog card component
+function BlogCard({ post }: { post: BlogPost }) {
+  const cardBorderStyle = {
+    border: "1.5px solid",
+    borderImageSource:
+      "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+    borderImageSlice: 1,
+  };
+
+  return (
+    <Link
+      href={`/blogs/${post.slug}`}
+      className="group relative flex flex-col justify-between p-4 sm:p-5 pt-8 sm:pt-9 transition-transform duration-300 hover:-translate-y-1.5 cursor-pointer select-none"
+      style={cardBorderStyle}
+    >
+      {/* Top notch mask */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-3 card-badge-bg z-[1]"
+      />
+
+      {/* Top icon badge */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center px-2">
+        <BlogIcon type={post.iconType} />
       </div>
 
-      {/* ── Three blog cards — full 4-sided gradient border, image + title inside, icon notch at top ──
-          Figma layout per card (absolute y coords within 870px section):
-            Border outline:  y:342 → y:732  (h:390)
-            Image:           y:360 → y:650  (18px from top border, 290px tall)
-            Title text:      y:666 → y:710  (inside border, 16px below image)
-            Icon group:      y:303 → y:344  (straddles top border line at y:342)
-          Proportions inside card:
-            top gap   = 18 / 390 ≈ 4.6%
-            image     = 290 / 390 ≈ 74.4%
-            mid gap   = 16 / 390 ≈ 4.1%
-            title     = 44 / 390 ≈ 11.3%
-            bottom    = 22 / 390 ≈ 5.6%
-      ── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        {displayed.map(post => (
-          <Link key={post.id} href={`/blogs/${post.slug}`} className="group block">
-
-            {/* Outer wrapper — extra top margin so the icon (which overflows the card upward) has room */}
-            <div className="relative mt-[20px]">
-
-              {/* ── Bordered card: wraps BOTH the image and the title ── */}
-              <div
-                className="relative w-full overflow-hidden group-hover:scale-[1.01] transition-transform duration-300"
-                style={{
-                  background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 96%) border-box',
-                  border: '1.5px solid transparent',
-                }}
-              >
-                {/* Top notch gap — 18/390 of total card height.
-                    Keeps the image 18px below the top border (where the icon masking is). */}
-                <div style={{ height: `${(18 / 390) * 100}%`, minHeight: '14px' }} />
-
-                {/* Image — flush, no horizontal padding, aspect 302:290 */}
-                <div className="relative w-full" style={{ aspectRatio: '302/290' }}>
-                  <Image
-                    src={CARD_IMAGES[post.category]}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
-
-                {/* Gap between image and title — 16/390 */}
-                <div style={{ height: `${(16 / 390) * 100}%`, minHeight: '12px' }} />
-
-                {/* Title inside card — DM Sans Bold 18px, uppercase, centered, #FFF7E9 */}
-                <p
-                  className="font-dm font-bold text-center uppercase leading-snug px-3
-                             text-[13px] sm:text-[15px] lg:text-[18px]
-                             group-hover:text-gradient transition-all duration-200"
-                  style={{ color: 'rgba(255,246,233,1)' }}
-                >
-                  {post.title}
-                </p>
-
-                {/* Bottom padding — 22/390 */}
-                <div style={{ height: `${(22 / 390) * 100}%`, minHeight: '16px' }} />
-              </div>
-
-              {/* ── Icon badge — absolutely positioned to overlap the top border ──
-                  Icon group in Figma: y:303 → y:344 (h≈41px)
-                  Top border at y:342. Icon center at y≈324 (19px above border).
-                  Here: icon bottom ≈ touches the border top.
-                  We use -top-[20px] so the icon's lower portion overlaps the card's top border,
-                  and the bg-color fill behind it masks that exact stretch. ── */}
-              <div
-                className="absolute -top-[20px] left-1/2 -translate-x-1/2 z-10
-                           flex items-center justify-center px-4"
-                style={{ background: 'var(--bg)' }}
-              >
-                {ICONS[post.category]}
-              </div>
-
-            </div>
-          </Link>
-        ))}
+      {/* Card image container */}
+      <div className="relative w-full aspect-square overflow-hidden bg-black/10">
+        <Image
+          src={post.coverImage}
+          alt={post.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
       </div>
-    </SectionLayout>
+
+      {/* Blog post title */}
+      <div className="pt-5 pb-2 text-center flex items-center justify-center min-h-[58px]">
+        <h4 className="font-dm font-bold text-xs sm:text-sm uppercase tracking-wider text-[var(--ink)] group-hover:text-[#DE4313] transition-colors leading-snug">
+          {post.title}
+        </h4>
+      </div>
+    </Link>
+  );
+}
+
+// Blogs section parent
+export default function BlogsSection() {
+  return (
+    <section id="blogs" className="relative w-full py-16 sm:py-24">
+      {/* Ambient background glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute rounded-full z-0"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(222, 67, 19, 0.4) 0%, rgba(222, 67, 19, 0) 70%)",
+          width: "480px",
+          height: "480px",
+          top: "-60px",
+          right: "-180px",
+          filter: "blur(50px)",
+          transform: "translateZ(0)",
+        }}
+      />
+
+      {/* Main container */}
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col gap-12 sm:gap-14">
+        {/* Header section layout */}
+        <div className="w-full flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-12 relative">
+          {/* Section 03 badge */}
+          <SectionBadge num="03" label="BLOGS" />
+
+          {/* Center info */}
+          <div className="flex-1 max-w-2xl flex flex-col justify-center gap-5 lg:pt-2">
+            <h2 className="font-almarai text-2xl sm:text-3xl lg:text-[32px] font-bold text-[var(--ink)] leading-snug">
+              Passion &amp; Play
+            </h2>
+
+            <p className="font-almarai text-sm sm:text-base text-[var(--body-muted)] leading-relaxed">
+              A space to wander through ideas, reflections, and creative expression —
+              exploring the beauty, wonder, and subtle magic in everyday life, and seeing
+              the world through a thoughtful, artistic lens — offering inspiration,
+              meaningful insights, and moments of quiet contemplation.
+            </p>
+
+            <h3 className="font-dm font-bold text-3xl sm:text-4xl text-gradient block leading-none pt-2">
+              Design Photography Writing
+            </h3>
+          </div>
+
+          {/* Right vertical tab */}
+          <VerticalBlogsTab />
+        </div>
+
+        {/* Blog cards grid */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 pt-4">
+          {blogPosts.map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
+        </div>
+      </div>
+
+      {/* Global gradient definitions */}
+      <svg
+        width="0"
+        height="0"
+        className="absolute pointer-events-none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient
+            id="blogsDiamondGrad"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+            gradientTransform="rotate(129.89 0.5 0.5)"
+          >
+            <stop offset="-29.32%" stopColor="#FEC163" />
+            <stop offset="100%" stopColor="#DE4313" />
+          </linearGradient>
+
+          <linearGradient id="blogIconGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FEC163" />
+            <stop offset="100%" stopColor="#DE4313" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </section>
   );
 }

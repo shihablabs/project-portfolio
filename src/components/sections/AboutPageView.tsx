@@ -13,106 +13,76 @@ export default function AboutPageView() {
   };
 
   return (
-    <div className="relative w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-8 lg:py-12">
-      {/* ── TOP HERO PROFILE BOX ── */}
-      <section className="relative w-full mb-12">
-        {/* Top Header Bar */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-[var(--ink-32)]">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+      {/* ── TOP BAR & HERO PROFILE ── */}
+      <section className="space-y-6">
+        {/* Navigation Bar */}
+        <div className="flex items-center justify-between pb-4 border-b border-[var(--ink-32)]">
           <Link
             href="/"
             className="flex items-center gap-2 font-dm font-bold text-sm tracking-wider uppercase text-[var(--ink)] hover:text-[var(--accent)] transition-colors"
           >
             ← Back to Home
           </Link>
-          <span className="font-almarai font-bold text-2xl lg:text-3xl text-[var(--ink)]">
+          <span className="font-almarai font-bold text-2xl text-[var(--ink)]">
             About
           </span>
         </div>
 
-        {/* Hero Card Container */}
-        <div
-          className="relative w-full p-6 sm:p-10 lg:p-12 overflow-hidden"
-          style={{
-            background:
-              'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-            border: '1.5px solid transparent',
-          }}
-        >
-          {/* Subtle warm glow behind photo */}
-          <div
-            className="absolute top-10 right-10 w-96 h-96 rounded-full bg-[#DE4313] opacity-20 blur-[100px] pointer-events-none"
-            aria-hidden="true"
-          />
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7 flex flex-col justify-center">
-              <h1 className="font-almarai font-extrabold text-[44px] sm:text-[56px] lg:text-[68px] leading-tight text-[var(--ink)] tracking-tight mb-2">
+        {/* Profile Card */}
+        <div className="figma-card rounded-2xl p-6 sm:p-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Info */}
+            <div className="lg:col-span-7 space-y-4">
+              <h1 className="font-almarai font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[var(--ink)] tracking-tight">
                 SEJUTI
               </h1>
 
-              {/* Bengali name + pronunciation */}
-              <div className="flex items-center gap-3 mb-4 flex-wrap">
-                <span className="font-almarai font-bold text-[28px] sm:text-[34px] text-gradient">
+              {/* Pronunciation & Bengali */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="font-almarai font-bold text-2xl text-gradient">
                   সেঁজুতি
                 </span>
-                <span className="font-merri italic text-[18px] sm:text-[20px] text-[var(--body-muted)]">
+                <span className="font-merri italic text-base text-[var(--body-muted)]">
                   /shay.joo.tee/
                 </span>
-                <button
-                  type="button"
-                  className="p-1 rounded-full text-[var(--accent)] hover:opacity-80 transition-opacity"
-                  title="Pronunciation audio"
-                  aria-label="Listen to pronunciation"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-                  </svg>
-                </button>
               </div>
 
-              {/* Name Etymology */}
-              <p className="font-merri italic text-[15px] sm:text-[16px] text-[var(--body-muted)] leading-relaxed mb-2 max-w-[580px]">
+              {/* Meaning & Bio */}
+              <p className="font-merri italic text-sm text-[var(--body-muted)]">
                 ([Sē̃juti] — evening light or lamp, light of the sunset, twilight)
               </p>
-              <p className="font-almarai text-[16px] sm:text-[17px] text-[var(--body-text)] leading-relaxed mb-6 max-w-[580px]">
+              <p className="font-almarai text-base leading-relaxed text-[var(--body-text)]">
                 A name that means light in the dark — reflecting the values carried into work and beyond.
               </p>
-
-              <p className="font-almarai font-semibold text-[14px] uppercase tracking-wider text-[var(--accent)] mb-8">
+              <p className="font-almarai font-semibold text-xs uppercase tracking-wider text-[var(--accent)]">
                 Also known as ERA.
               </p>
 
-              {/* View Resume Button */}
-              <div>
+              {/* Resume Button */}
+              <div className="pt-2">
                 <a
                   href="/assets/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-solid inline-flex items-center gap-3 shadow-lg hover:shadow-[0_0_20px_rgba(222,67,19,0.4)] transition-all"
+                  className="btn-solid inline-flex items-center gap-2"
                 >
-                  <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
-                    ↓
-                  </span>
-                  VIEW RESUME
+                  <span>↓</span>
+                  <span>VIEW RESUME</span>
                 </a>
               </div>
             </div>
 
-            {/* Right Photo */}
+            {/* Portrait Image */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <div className="relative w-64 sm:w-80 lg:w-96 aspect-square flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full border border-[var(--accent)]/30 scale-95" />
-                <div className="relative w-full h-full">
-                  <Image
-                    src="/assets/images/about-portrait.png"
-                    alt="Sejuti Mehjabin portrait"
-                    fill
-                    className="object-contain"
-                    priority
-                  />
-                </div>
+              <div className="relative w-64 sm:w-72 aspect-square">
+                <Image
+                  src="/assets/images/about-portrait.png"
+                  alt="Sejuti Mehjabin portrait"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -122,72 +92,66 @@ export default function AboutPageView() {
       {/* ── STICKY SUB-NAV TABS ── */}
       <nav
         aria-label="About sub navigation"
-        className="sticky top-0 z-30 w-full py-4 mb-16 bg-[var(--bg)]/95 backdrop-blur-md border-y border-[var(--ink-32)]"
+        className="sticky top-0 z-30 w-full py-3 bg-[var(--bg)]/90 backdrop-blur border-y border-[var(--ink-32)]"
       >
-        <div className="flex items-center justify-center sm:justify-around flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm font-dm font-bold uppercase tracking-widest text-[var(--ink)]">
+        <div className="flex items-center justify-around flex-wrap gap-4 text-xs font-dm font-bold uppercase tracking-wider text-[var(--ink)]">
           <button
             type="button"
             onClick={() => scrollTo('profile')}
-            className="flex items-center gap-2 hover:text-[var(--accent)] transition-colors"
+            className="hover:text-[var(--accent)] transition-colors"
           >
-            <span className="text-[var(--accent)]">◆</span> 01. PROFILE <span className="text-[var(--accent)]">◆</span>
+            01. PROFILE
           </button>
           <button
             type="button"
             onClick={() => scrollTo('journey')}
-            className="flex items-center gap-2 hover:text-[var(--accent)] transition-colors"
+            className="hover:text-[var(--accent)] transition-colors"
           >
-            <span className="text-[var(--accent)]">◆</span> 02. JOURNEY <span className="text-[var(--accent)]">◆</span>
+            02. JOURNEY
           </button>
           <button
             type="button"
             onClick={() => scrollTo('expertise')}
-            className="flex items-center gap-2 hover:text-[var(--accent)] transition-colors"
+            className="hover:text-[var(--accent)] transition-colors"
           >
-            <span className="text-[var(--accent)]">◆</span> 03. EXPERTISE <span className="text-[var(--accent)]">◆</span>
+            03. EXPERTISE
           </button>
           <button
             type="button"
             onClick={() => scrollTo('approach')}
-            className="flex items-center gap-2 hover:text-[var(--accent)] transition-colors"
+            className="hover:text-[var(--accent)] transition-colors"
           >
-            <span className="text-[var(--accent)]">◆</span> 04. DESIGN APPROACH <span className="text-[var(--accent)]">◆</span>
+            04. DESIGN APPROACH
           </button>
         </div>
       </nav>
 
       {/* ── SECTION 01: PROFILE ── */}
-      <section id="profile" className="relative w-full mb-24 scroll-mt-24">
-        <div className="flex items-baseline gap-4 mb-4 select-none">
-          <span className="font-concert text-[70px] sm:text-[90px] text-transparent leading-none" style={{ WebkitTextStroke: '1.5px var(--ink-32)' }}>
+      <section id="profile" className="space-y-6 scroll-mt-20">
+        <div className="flex items-baseline gap-4 select-none">
+          <span className="font-concert text-5xl sm:text-6xl text-[var(--accent)]">
             01
           </span>
-          <span className="font-almarai font-bold text-[32px] sm:text-[40px] text-gradient">
+          <span className="font-almarai font-bold text-2xl sm:text-3xl text-gradient">
             PROFILE
           </span>
         </div>
 
-        <div className="max-w-[850px] mb-12">
-          <h2 className="font-dm font-bold text-[24px] sm:text-[28px] text-[var(--ink)] mb-4">
+        <div className="space-y-3 max-w-3xl">
+          <h2 className="font-dm font-bold text-2xl text-[var(--ink)]">
             A Quiet Visionary
           </h2>
-          <p className="font-almarai text-[17px] sm:text-[18px] leading-[1.7] text-[var(--body-muted)]">
+          <p className="font-almarai text-base leading-relaxed text-[var(--body-text)]">
             Being an UX &amp; UI designer feels like a natural extension of who I am — a space where I get to merge my tech roots with creative instincts. I see UX everywhere, finding inspiration in everyday moments and the subtle ways we interact with the world. A Bangladeshi native shaped by over a decade in Bangkok, I am currently freelancing in Dhaka, while exploring other creative outlets outside work.
           </p>
         </div>
 
-        {/* Behind the Designs */}
-        <div>
-          <h3 className="font-dm font-bold text-[22px] sm:text-[26px] text-gradient mb-6">
+        {/* Behind The Designs Traits */}
+        <div className="space-y-4">
+          <h3 className="font-dm font-bold text-xl text-gradient">
             Behind The Designs
           </h3>
-          <div
-            className="p-6 sm:p-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6"
-            style={{
-              background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-              border: '1.5px solid transparent',
-            }}
-          >
+          <div className="figma-card rounded-xl p-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
               { img: '/assets/images/about-infj.png', title: 'INFJ-A +\nNEURODIVERGENT' },
               { img: '/assets/images/about-storyteller.png', title: 'VISUAL\nSTORYTELLER' },
@@ -195,17 +159,17 @@ export default function AboutPageView() {
               { img: '/assets/images/about-poetic.png', title: 'POETIC\nTHINKER' },
               { img: '/assets/images/about-curator.png', title: 'AESTHETIC\nCURATOR' },
             ].map((item) => (
-              <div key={item.title} className="flex flex-col items-center text-center group">
-                <div className="relative w-28 h-28 mb-3 flex items-center justify-center">
+              <div key={item.title} className="flex flex-col items-center text-center gap-3">
+                <div className="relative w-20 h-20">
                   <Image
                     src={item.img}
                     alt={item.title.replace('\n', ' ')}
-                    width={112}
-                    height={112}
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="font-dm font-bold text-[11px] sm:text-[12px] uppercase tracking-wider text-[var(--ink)] leading-tight whitespace-pre-line">
+                <span className="font-dm font-bold text-xs uppercase tracking-wider text-[var(--ink)] whitespace-pre-line">
                   {item.title}
                 </span>
               </div>
@@ -215,27 +179,27 @@ export default function AboutPageView() {
       </section>
 
       {/* ── SECTION 02: JOURNEY ── */}
-      <section id="journey" className="relative w-full mb-24 scroll-mt-24">
-        <div className="flex items-baseline gap-4 mb-4 select-none">
-          <span className="font-concert text-[70px] sm:text-[90px] text-transparent leading-none" style={{ WebkitTextStroke: '1.5px var(--ink-32)' }}>
+      <section id="journey" className="space-y-6 scroll-mt-20">
+        <div className="flex items-baseline gap-4 select-none">
+          <span className="font-concert text-5xl sm:text-6xl text-[var(--accent)]">
             02
           </span>
-          <span className="font-almarai font-bold text-[32px] sm:text-[40px] text-gradient">
+          <span className="font-almarai font-bold text-2xl sm:text-3xl text-gradient">
             JOURNEY
           </span>
         </div>
 
-        <div className="max-w-[850px] mb-12">
-          <h2 className="font-dm font-bold text-[24px] sm:text-[28px] text-[var(--ink)] mb-4">
+        <div className="space-y-3 max-w-3xl">
+          <h2 className="font-dm font-bold text-2xl text-[var(--ink)]">
             Education &amp; Experience
           </h2>
-          <p className="font-almarai text-[17px] sm:text-[18px] leading-[1.7] text-[var(--body-muted)]">
+          <p className="font-almarai text-base leading-relaxed text-[var(--body-text)]">
             With a background in IT, I stumbled upon UX/UI design while watching how digital products take shape. What intrigued me most was how every experience is first imagined, planned, and designed long before it’s built. That curiosity soon became my calling — and since then, it’s been a path of continuous learning and growth.
           </p>
         </div>
 
-        {/* Timeline Items */}
-        <div className="space-y-6 mb-16 max-w-[900px]">
+        {/* Timeline */}
+        <div className="space-y-4 max-w-3xl">
           {[
             {
               year: '2011 - 2015',
@@ -268,45 +232,32 @@ export default function AboutPageView() {
               desc: 'Working independently with clients across diverse creative projects, overseeing everything from design to administrative tasks.',
             },
           ].map((item) => (
-            <div
-              key={item.year}
-              className="p-6 sm:p-8 transition-transform duration-200 hover:translate-x-1"
-              style={{
-                background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-                border: '1.5px solid transparent',
-              }}
-            >
-              <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
-                <span className="font-dm font-bold text-xs uppercase tracking-widest text-[var(--accent)] px-3 py-1 bg-[var(--accent)]/10 border border-[var(--accent)]/30">
+            <div key={item.year} className="figma-card rounded-xl p-6 space-y-2">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <span className="font-dm font-bold text-xs uppercase tracking-wider text-[var(--accent)]">
                   {item.year}
                 </span>
-                <span className="font-dm font-semibold text-xs text-[var(--body-muted)]">
+                <span className="font-dm text-xs text-[var(--body-muted)]">
                   {item.org}
                 </span>
               </div>
-              <h3 className="font-dm font-bold text-lg sm:text-xl text-[var(--ink)] mb-3">
+              <h3 className="font-dm font-bold text-lg text-[var(--ink)]">
                 {item.role}
               </h3>
-              <p className="font-almarai text-[15px] sm:text-[16px] text-[var(--body-muted)] leading-relaxed">
+              <p className="font-almarai text-sm text-[var(--body-text)] leading-relaxed">
                 {item.desc}
               </p>
             </div>
           ))}
         </div>
 
-        {/* Certifications Card */}
-        <div>
-          <h3 className="font-dm font-bold text-[22px] sm:text-[26px] text-gradient mb-6">
+        {/* Certifications */}
+        <div className="space-y-4">
+          <h3 className="font-dm font-bold text-xl text-gradient">
             Certifications
           </h3>
-          <div
-            className="p-6 sm:p-10 flex items-center justify-center overflow-hidden"
-            style={{
-              background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-              border: '1.5px solid transparent',
-            }}
-          >
-            <div className="relative w-full max-w-[800px] h-[300px] sm:h-[400px]">
+          <div className="figma-card rounded-xl p-6 flex items-center justify-center">
+            <div className="relative w-full max-w-2xl h-64 sm:h-80">
               <Image
                 src="/assets/images/about-certifications.png"
                 alt="Sejuti Certifications"
@@ -319,34 +270,28 @@ export default function AboutPageView() {
       </section>
 
       {/* ── SECTION 03: EXPERTISE ── */}
-      <section id="expertise" className="relative w-full mb-24 scroll-mt-24">
-        <div className="flex items-baseline gap-4 mb-4 select-none">
-          <span className="font-concert text-[70px] sm:text-[90px] text-transparent leading-none" style={{ WebkitTextStroke: '1.5px var(--ink-32)' }}>
+      <section id="expertise" className="space-y-6 scroll-mt-20">
+        <div className="flex items-baseline gap-4 select-none">
+          <span className="font-concert text-5xl sm:text-6xl text-[var(--accent)]">
             03
           </span>
-          <span className="font-almarai font-bold text-[32px] sm:text-[40px] text-gradient">
+          <span className="font-almarai font-bold text-2xl sm:text-3xl text-gradient">
             EXPERTISE
           </span>
         </div>
 
-        <div className="max-w-[850px] mb-12">
-          <h2 className="font-dm font-bold text-[24px] sm:text-[28px] text-[var(--ink)] mb-4">
+        <div className="space-y-3 max-w-3xl">
+          <h2 className="font-dm font-bold text-2xl text-[var(--ink)]">
             Fueled by Passion, Defined by Skill
           </h2>
-          <p className="font-almarai text-[17px] sm:text-[18px] leading-[1.7] text-[var(--body-muted)]">
+          <p className="font-almarai text-base leading-relaxed text-[var(--body-text)]">
             My craft sits at the intersection of innate traits and acquired capabilities. As a neurodivergent INFJ, I bring a balance of paradoxical strengths that gives me a unique edge in UX/UI design, allowing me to connect emotion with logic and structure with creativity.
           </p>
         </div>
 
-        {/* Brain Infographic Graphic */}
-        <div
-          className="p-6 sm:p-12 mb-16 flex items-center justify-center overflow-hidden"
-          style={{
-            background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-            border: '1.5px solid transparent',
-          }}
-        >
-          <div className="relative w-full max-w-[950px] h-[350px] sm:h-[500px]">
+        {/* Brain Graphic */}
+        <div className="figma-card rounded-xl p-6 flex items-center justify-center">
+          <div className="relative w-full max-w-3xl h-72 sm:h-96">
             <Image
               src="/assets/images/about-brain.png"
               alt="Analytical and Creative Brain UX Infographic"
@@ -356,22 +301,16 @@ export default function AboutPageView() {
           </div>
         </div>
 
-        {/* Tools Section */}
-        <div>
-          <h3 className="font-dm font-bold text-[22px] sm:text-[26px] text-gradient mb-6">
+        {/* Tools */}
+        <div className="space-y-4">
+          <h3 className="font-dm font-bold text-xl text-gradient">
             Tools
           </h3>
-          <div
-            className="p-6 sm:p-8 flex items-center justify-around flex-wrap gap-6"
-            style={{
-              background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-              border: '1.5px solid transparent',
-            }}
-          >
+          <div className="figma-card rounded-xl p-6 flex items-center justify-around flex-wrap gap-4">
             {['FIGMA', 'SKETCH', 'INVISION', 'ADOBE XD', 'PHOTOSHOP', 'ILLUSTRATOR'].map((tool) => (
               <span
                 key={tool}
-                className="font-dm font-bold text-sm sm:text-base uppercase tracking-wider text-[var(--ink)] px-4 py-2 border border-[var(--ink-32)]"
+                className="font-dm font-bold text-xs sm:text-sm uppercase tracking-wider text-[var(--ink)] px-4 py-2 border border-[var(--ink-32)] rounded"
               >
                 {tool}
               </span>
@@ -381,40 +320,33 @@ export default function AboutPageView() {
       </section>
 
       {/* ── SECTION 04: DESIGN APPROACH ── */}
-      <section id="approach" className="relative w-full mb-16 scroll-mt-24">
-        <div className="flex items-baseline gap-4 mb-4 select-none">
-          <span className="font-concert text-[70px] sm:text-[90px] text-transparent leading-none" style={{ WebkitTextStroke: '1.5px var(--ink-32)' }}>
+      <section id="approach" className="space-y-6 scroll-mt-20">
+        <div className="flex items-baseline gap-4 select-none">
+          <span className="font-concert text-5xl sm:text-6xl text-[var(--accent)]">
             04
           </span>
-          <span className="font-almarai font-bold text-[32px] sm:text-[40px] text-gradient">
+          <span className="font-almarai font-bold text-2xl sm:text-3xl text-gradient">
             DESIGN APPROACH
           </span>
         </div>
 
-        <div className="max-w-[850px] mb-12">
-          <h2 className="font-dm font-bold text-[24px] sm:text-[28px] text-[var(--ink)] mb-4">
+        <div className="space-y-3 max-w-3xl">
+          <h2 className="font-dm font-bold text-2xl text-[var(--ink)]">
             The pursuit of intentional design
           </h2>
-          <p className="font-almarai text-[17px] sm:text-[18px] leading-[1.7] text-[var(--body-muted)]">
+          <p className="font-almarai text-base leading-relaxed text-[var(--body-text)]">
             I approach design as a way to solve problems elegantly. Every project is driven by purpose and the goal of leaving things better than I found them. It begins with understanding the vision, which then guides the design phase, where ideas take form through structure, interaction, and visual detail. The work is then refined through iteration and feedback, and finally brought to completion with a cohesive, well-executed design prepared for development.
           </p>
         </div>
 
-        {/* Core Principles Cards */}
-        <div>
-          <h3 className="font-dm font-bold text-[22px] sm:text-[26px] text-gradient mb-6">
+        {/* Principles */}
+        <div className="space-y-4">
+          <h3 className="font-dm font-bold text-xl text-gradient">
             Core Principles
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Meraki */}
-            <div
-              className="p-8 flex flex-col justify-between"
-              style={{
-                background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-                border: '1.5px solid transparent',
-              }}
-            >
-              <div className="relative w-28 h-28 mb-6 mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="figma-card rounded-xl p-6 text-center space-y-4">
+              <div className="relative w-24 h-24 mx-auto">
                 <Image
                   src="/assets/images/about-meraki.png"
                   alt="Meraki Principle"
@@ -422,23 +354,16 @@ export default function AboutPageView() {
                   className="object-contain"
                 />
               </div>
-              <h4 className="font-dm font-bold text-xl uppercase tracking-wider text-[var(--ink)] text-center mb-3">
+              <h4 className="font-dm font-bold text-lg uppercase tracking-wider text-[var(--ink)]">
                 MERAKI
               </h4>
-              <p className="font-almarai text-[15px] sm:text-[16px] text-[var(--body-muted)] text-center leading-relaxed">
+              <p className="font-almarai text-sm text-[var(--body-text)] leading-relaxed">
                 Designing with passion, devotion, and meticulous care, ensuring the work is a true labor of love.
               </p>
             </div>
 
-            {/* Simple yet significant */}
-            <div
-              className="p-8 flex flex-col justify-between"
-              style={{
-                background: 'linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #FEC163 0%, #DE4313 100%) border-box',
-                border: '1.5px solid transparent',
-              }}
-            >
-              <div className="relative w-28 h-28 mb-6 mx-auto">
+            <div className="figma-card rounded-xl p-6 text-center space-y-4">
+              <div className="relative w-24 h-24 mx-auto">
                 <Image
                   src="/assets/images/about-significant.png"
                   alt="Simple yet significant Principle"
@@ -446,10 +371,10 @@ export default function AboutPageView() {
                   className="object-contain"
                 />
               </div>
-              <h4 className="font-dm font-bold text-xl uppercase tracking-wider text-[var(--ink)] text-center mb-3">
+              <h4 className="font-dm font-bold text-lg uppercase tracking-wider text-[var(--ink)]">
                 SIMPLE YET SIGNIFICANT
               </h4>
-              <p className="font-almarai text-[15px] sm:text-[16px] text-[var(--body-muted)] text-center leading-relaxed">
+              <p className="font-almarai text-sm text-[var(--body-text)] leading-relaxed">
                 Striving for solutions that are radically clear and effortless, yet possess maximum impact, utility, and lasting value.
               </p>
             </div>

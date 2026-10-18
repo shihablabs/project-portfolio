@@ -9,17 +9,18 @@ import Footer from '@/components/layout/Footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)]">
-      {/* Fixed left sidebar — 160px wide on desktop */}
-      <Sidebar />
-
+    <div className="min-h-screen flex flex-col text-[var(--ink)]">
       {/*
-        Main content area:
-        - On desktop: left margin = sidebar width (160px) to avoid overlap
-        - Max width 1440px matching Figma canvas
+        Main canvas wrapper:
+        - Max width 1440px matching Figma canvas exactly
+        - Centered on 2K/4K displays (mx-auto)
+        - Sidebar on left (sticky), Main content on right
+        - Prevents sidebar and content from separating on large screens!
       */}
-      <div className="lg:pl-[var(--sidebar-w)] min-h-screen flex flex-col">
-        <main className="flex-1 w-full pt-14 lg:pt-0">
+      <div className="w-full max-w-[1440px] mx-auto flex-1 relative">
+        <Sidebar />
+
+        <main className="w-full lg:pl-[var(--sidebar-w)] pt-14 lg:pt-0">
           {/* Section 0: Hero */}
           <HeroHeader />
 
@@ -35,10 +36,10 @@ export default function Home() {
           {/* Section 04: Contact */}
           <ContactSection />
         </main>
-
-        {/* Footer bar — coral background, matching Figma Rectangle 174 at y:4490 */}
-        <Footer />
       </div>
+
+      {/* Footer bar — 100% full width edge-to-edge with centered inner container */}
+      <Footer />
     </div>
   );
 }

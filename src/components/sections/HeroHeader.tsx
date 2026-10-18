@@ -1,111 +1,67 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
+import Image from "next/image";
 
-/**
- * HeroHeader — Figma "hero section" frames 66:3836 (light) / 2666:282 (dark)
- *
- * Layout (pixel-matched to Figma):
- *   - Solid orange border (1.5px #DE4313) forming a rectangle
- *   - "S E J U T I" gradient text centered in the top border gap (with bg colour behind it)
- *   - Inside the box:
- *       • Large colourful lightbulb PNG centred (slightly lower-half)
- *       • Warm radial glow behind the bulb
- *       • "BRINGING IDEAS TO LIGHT" — huge bold, centred at top of inner box, overlaid on bulb
- *       • "by means of design" — Almarai italic gradient, directly below headline
- */
 export default function HeroHeader() {
   return (
-    <section id="home" className="relative w-full px-4 sm:px-6 md:px-8 pt-6 pb-0" suppressHydrationWarning>
-      <div className="relative mx-auto" style={{ maxWidth: '1200px' }}>
+    <section
+      id="home"
+      className="w-full max-w-6xl mx-auto pt-12 sm:pt-20 px-4 sm:px-6"
+    >
+      {/* Main Hero Container with 4-side gradient border */}
+      <div className="relative w-full figma-gradient-border p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[460px] sm:min-h-[500px]">
+        {/* Top border notch mask: cleanly cuts the 1.5px border line behind SEJUTI */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[280px] h-3 card-badge-bg z-[1]"
+        />
 
-        {/* ── Top border row: line — S E J U T I — line ── */}
-        <div className="flex items-center w-full" style={{ zIndex: 1, position: 'relative' }}>
-          <div className="flex-1 h-[1.5px]" style={{ background: '#DE4313' }} />
-
-          {/* SEJUTI — floats in the border gap, background masks the line behind it */}
-          <div
-            className="shrink-0 px-5 flex items-center justify-center"
-            style={{ background: 'var(--bg)', marginBottom: '-1px', paddingTop: '2px', paddingBottom: '2px' }}
-          >
-            <span
-              className="font-almarai font-extrabold text-gradient select-none whitespace-nowrap"
-              style={{ fontSize: 'clamp(14px, 1.8vw, 24px)', letterSpacing: '0.38em' }}
-            >
-              S E J U T I
-            </span>
-          </div>
-
-          <div className="flex-1 h-[1.5px]" style={{ background: '#DE4313' }} />
+        {/* Brand Badge on Top Border (transparent, sits on top of glow) */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 sm:px-6 z-30 flex items-center justify-center select-none">
+          <Image
+            src="/assets/header-sejuti.svg"
+            alt="SEJUTI"
+            width={234}
+            height={42}
+            className="h-7 sm:h-9 md:h-10 w-auto object-contain"
+            priority
+          />
+          {/* Accessible text for SEO / Screen Readers */}
+          <span className="sr-only">SEJUTI</span>
         </div>
 
-        {/* ── Hero Box (no top border — the line above IS the top border) ── */}
+        {/* Ellipse 58 Glow Background with smooth breathing animation */}
         <div
-          className="relative overflow-hidden"
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 w-[435px] h-[416px] max-w-full rounded-full z-[2] animate-hero-glow"
           style={{
-            border: '1.5px solid #DE4313',
-            borderTop: 'none',
-            minHeight: 'clamp(400px, 52vw, 660px)',
-            background: 'var(--bg)',
+            backgroundColor: "rgba(222, 67, 19, 0.5)",
+            filter: "blur(120px)",
+            transform: "translate(-50%, -50%) translateZ(0)",
           }}
-        >
-          {/* Warm radial glow — Figma Ellipse 58: large amber-red bloom centred on bulb */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse 60% 55% at 52% 68%, rgba(222,67,19,0.30) 0%, rgba(254,193,99,0.10) 50%, transparent 80%)',
-            }}
+        />
+
+        {/* Title */}
+        <div className="flex flex-col items-center gap-0 relative z-20">
+          <h1 className="font-dm font-medium text-4xl sm:text-6xl lg:text-7xl uppercase leading-none text-[var(--ink)]">
+            BRINGING IDEAS TO LIGHT
+          </h1>
+
+          <p className="font-almarai italic text-lg sm:text-2xl text-gradient mt-4">
+            by means of design
+          </p>
+        </div>
+
+        {/* Artwork Image with soft glow pulse */}
+        <div className="absolute z-10 bottom-5 left-1/2 -translate-x-1/2 animate-hero-bulb">
+          <Image
+            src="/assets/hero-lightbulb.png"
+            alt="Hero Lightbulb Artwork"
+            width={260}
+            height={260}
+            className="object-contain"
+            priority
           />
-
-          {/* Lightbulb PNG — centred horizontally, anchored to bottom half */}
-          <div
-            className="absolute pointer-events-none select-none"
-            style={{
-              left: '50%',
-              bottom: '-2%',
-              transform: 'translateX(-50%)',
-              width: 'clamp(240px, 36%, 440px)',
-            }}
-          >
-            <Image
-              src="/assets/hero-lightbulb.png"
-              alt="Geometric lightbulb artwork"
-              width={440}
-              height={682}
-              className="w-full h-auto object-contain"
-              priority
-            />
-          </div>
-
-          {/* Text block — overlaid, z-20, centred top area */}
-          <div
-            className="relative z-20 w-full flex flex-col items-center justify-start text-center"
-            style={{ paddingTop: 'clamp(28px, 6%, 72px)', paddingLeft: '5%', paddingRight: '5%' }}
-          >
-            {/* "BRINGING IDEAS TO LIGHT" — renders as large bold text matching Figma  */}
-            <h1
-              className="font-dm font-extrabold uppercase leading-[0.9] text-[var(--ink)]"
-              style={{ fontSize: 'clamp(36px, 7.5vw, 104px)', maxWidth: '100%', letterSpacing: '-0.01em' }}
-            >
-              BRINGING IDEAS
-              <br />
-              TO LIGHT
-            </h1>
-
-            {/* "by means of design" — Almarai Regular italic gradient */}
-            <p
-              className="font-almarai text-gradient mt-2 sm:mt-3"
-              style={{
-                fontSize: 'clamp(16px, 2.4vw, 32px)',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                letterSpacing: '0.01em',
-              }}
-            >
-              by means of design
-            </p>
-          </div>
         </div>
       </div>
     </section>

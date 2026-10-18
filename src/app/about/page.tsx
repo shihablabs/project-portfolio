@@ -12,17 +12,18 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)]">
-      {/* Fixed left sidebar */}
-      <Sidebar />
+    <div className="min-h-screen flex flex-col text-[var(--ink)]">
+      {/* ── Main Canvas Grid (max-w-[1440px] centered on 2K/4K) ── */}
+      <div className="w-full max-w-[1440px] mx-auto flex-1 relative">
+        <Sidebar />
 
-      {/* Main content wrapper */}
-      <div className="lg:pl-[var(--sidebar-w)] min-h-screen flex flex-col">
-        <main className="flex-1 w-full pt-14 lg:pt-0">
+        <main className="w-full lg:pl-[var(--sidebar-w)] pt-14 lg:pt-0">
           <AboutPageView />
         </main>
-        <Footer />
       </div>
+
+      {/* ── Full Width Footer ── */}
+      <Footer />
     </div>
   );
 }

@@ -8,55 +8,100 @@
 ═══════════════════════════════════════════════════════ */
 @layer base {
   :root {
-    --bg: #FFF7E7;
-    --ink: #0A0F24;
-    --ink-32: rgba(10,15,36,0.32);
-    --ink-85: rgba(10,15,36,0.85);
-    --body-text: #323232;
-    --body-muted: rgba(50,50,50,0.80);
-    --accent: #DE4313;
-    --accent-gold: #FEC163;
-    --grad: linear-gradient(135deg, #FEC163 0%, #DE4313 96%);
-    --card-border: #0A0F24;
-    --card-bg: #FFF7E7;
+    --bg: #fff7e7;
+    --bg-noise: url("/assets/bg-noise-tile.png");
+    --ink: #323232;
+    --title-color: #323232;
+    --body-text: rgba(50, 50, 50, 0.8);
+    --body-muted: rgba(50, 50, 50, 0.6);
+    --ink-32: rgba(50, 50, 50, 0.32);
+    --ink-85: rgba(50, 50, 50, 0.85);
+    --accent: #de4313;
+    --accent-gold: #fec163;
+    --grad: linear-gradient(135deg, #fec163 0%, #de4313 96%);
+    --card-border: #323232;
+    --card-bg: #fff7e7;
     --sidebar-w: 160px;
-    --hero-bg: #FFF7E7;
+    --hero-bg: #fff7e7;
+    --bg-primary: var(--bg);
+    --text-primary: var(--body-text);
   }
 
   [data-theme="dark"] {
-    --bg: #0A0F24;
-    --ink: #FFF7E7;
-    --ink-32: rgba(255,247,231,0.32);
-    --ink-85: rgba(255,247,231,0.85);
-    --body-text: #C4C4C4;
-    --body-muted: rgba(196,196,196,0.80);
-    --accent: #DE4313;
-    --accent-gold: #FEC163;
-    --grad: linear-gradient(135deg, #FEC163 0%, #DE4313 96%);
-    --card-border: rgba(255,247,231,0.5);
+    --bg: #0a0f24;
+    --bg-noise: none;
+    --ink: #fff7e7;
+    --title-color: #fff7e7;
+    --body-text: rgba(255, 247, 231, 0.8);
+    --body-muted: rgba(196, 196, 196, 0.6);
+    --ink-32: rgba(255, 247, 231, 0.32);
+    --ink-85: rgba(255, 247, 231, 0.85);
+    --accent: #de4313;
+    --accent-gold: #fec163;
+    --grad: linear-gradient(135deg, #fec163 0%, #de4313 96%);
+    --card-border: rgba(255, 247, 231, 0.5);
     --card-bg: #101633;
-    --hero-bg: #0A0F24;
+    --hero-bg: #0a0f24;
+    --bg-primary: var(--bg);
+    --text-primary: var(--body-text);
   }
 
-  *, *::before, *::after { box-sizing: border-box; }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
 
   body {
     background-color: var(--bg);
-    color: var(--ink);
-    font-family: var(--font-dm-sans), sans-serif;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    background-image: var(--bg-noise);
+    background-repeat: repeat;
+    color: var(--body-text);
+    font-family: var(--font-almarai), sans-serif;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  p {
+    color: var(--body-text);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-almarai), sans-serif;
+    color: var(--title-color);
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
   }
 }
 
 /* ── Typography utilities exactly matching Figma ─────── */
-.font-almarai { font-family: var(--font-almarai), sans-serif; }
-.font-concert { font-family: var(--font-concert-one), cursive; }
-.font-dm      { font-family: var(--font-dm-sans), sans-serif; }
-.font-merri   { font-family: var(--font-merriweather), serif; }
+.font-almarai {
+  font-family: var(--font-almarai), sans-serif;
+}
+.font-concert {
+  font-family: var(--font-concert-one), cursive;
+}
+.font-dm {
+  font-family: var(--font-dm-sans), sans-serif;
+}
+.font-merri {
+  font-family: var(--font-merriweather), serif;
+}
 
 /* Gold→Coral gradient text (exact Figma gradient) */
 .text-gradient {
@@ -101,12 +146,28 @@
 /* Figma border cards — 1.5px #0A0F24 */
 .figma-card {
   border: 1.5px solid var(--card-border);
-  background: var(--card-bg);
+  background: transparent;
   transition: border-color 0.2s;
 }
 
 .figma-card:hover {
   border-color: var(--accent);
+}
+
+/* ── Figma Gradient Border Card (All 4 sides) ─────────
+   Signature 1.5px gradient frame matching Figma design.
+   Gradient: #FEC163 (gold) → #DE4313 (coral).
+   Top border has a notch/gap masked by .card-badge-bg.
+──────────────────────────────────────────────────────── */
+.figma-gradient-border {
+  border: 1.5px solid transparent;
+  border-image: linear-gradient(97.42deg, #fec163 0%, #de4313 95.67%) 1;
+}
+
+/* Badge background matching canvas in light & dark mode */
+.card-badge-bg {
+  background-color: var(--bg);
+  background-image: var(--bg-noise);
 }
 
 /* Horizontal rule lines */
@@ -124,7 +185,9 @@
   padding: 4px 12px;
   background: transparent;
   color: var(--ink);
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 .tag-pill:hover {
   background: var(--accent);
@@ -145,7 +208,10 @@
   text-transform: uppercase;
   color: var(--ink);
   background: transparent;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border-color 0.18s;
   cursor: pointer;
 }
 .btn-outline:hover {
@@ -169,14 +235,57 @@
   transition: opacity 0.15s;
   cursor: pointer;
 }
-.btn-solid:hover { opacity: 0.88; }
+.btn-solid:hover {
+  opacity: 0.88;
+}
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
 
 /* Hero headline: HTML text uses var(--ink) which switches automatically */
 .hero-headline {
   /* color is inherited from text-[var(--ink)] — no filter needed */
 }
+
+/* Hero testing: soft slow breathing glow animation */
+@keyframes heroGlowPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  50% {
+    opacity: 0.58;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@keyframes heroLightbulbGlow {
+  0%, 100% {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(222, 67, 19, 0.25));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 24px rgba(254, 193, 99, 0.5));
+  }
+}
+
+.animate-hero-glow {
+  animation: heroGlowPulse 6s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.animate-hero-bulb {
+  animation: heroLightbulbGlow 6s ease-in-out infinite;
+  will-change: opacity, filter;
+}
+

@@ -32,6 +32,7 @@ const concertOne = Concert_One({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sejutimehjabin.com"),
   title: "Sejuti Mehjabin | Multidisciplinary UX & UI Designer",
   description: "Portfolio of Sejuti Mehjabin — crafting digital products from concept to launch with 9+ years experience and 60+ projects.",
   keywords: ["UX Design", "UI Design", "Product Design", "Sejuti Mehjabin", "Digital Designer", "Portfolio"],
