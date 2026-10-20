@@ -527,7 +527,7 @@ export default function WorkPageView() {
               number="01"
               title="WEBSITES"
               viewAllLabel="VIEW ALL WEBSITES"
-              viewAllHref="/work#websites"
+              viewAllHref="/work/websites"
               slides={WEBSITE_SLIDES}
             />
 
@@ -537,7 +537,7 @@ export default function WorkPageView() {
               number="02"
               title="APPS"
               viewAllLabel="VIEW ALL APPS"
-              viewAllHref="/work#apps"
+              viewAllHref="/work/apps"
               slides={APP_SLIDES}
             />
 
@@ -547,7 +547,7 @@ export default function WorkPageView() {
               number="03"
               title="SOFTWARES"
               viewAllLabel="VIEW ALL SOFTWARE"
-              viewAllHref="/work#softwares"
+              viewAllHref="/work/softwares"
               slides={SOFTWARE_SLIDES}
             />
           </div>
