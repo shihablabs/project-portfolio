@@ -4,6 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import WorkDeviceMockup from "@/components/ui/WorkDeviceMockup";
+import BrandingMonitorMockup from "@/components/ui/BrandingMonitorMockup";
+import MarketingMonitorMockup from "@/components/ui/MarketingMonitorMockup";
+import BrandingProjectsView from "@/components/sections/BrandingProjectsView";
+import MarketingProjectsView from "@/components/sections/MarketingProjectsView";
 import WorkCategorySection, {
   ProjectSlide,
 } from "@/components/sections/WorkCategorySection";
@@ -38,7 +42,7 @@ const DISCIPLINE_DATA: Record<
     subtitle: "Curated Projects",
   },
   marketing: {
-    title: "PRINT & DIGITAL MKT",
+    title: "PRINT & DIGITAL MARKETING",
     subtitle: "Curated Projects",
   },
 };
@@ -175,8 +179,28 @@ export default function WorkPageView() {
     }
   };
 
+  // Sync discipline with URL parameters or hash on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.toLowerCase();
+      if (hash.includes("branding") || hash.includes("logo")) {
+        setActiveDiscipline("branding");
+      } else if (hash.includes("marketing") || hash.includes("print")) {
+        setActiveDiscipline("marketing");
+      }
+      const params = new URLSearchParams(window.location.search);
+      const d = params.get("discipline") || params.get("category");
+      if (d === "branding" || d === "marketing" || d === "ux") {
+        setActiveDiscipline(d as Discipline);
+      }
+    }
+  }, []);
+
   const handleDisciplineChange = (d: Discipline) => {
     setActiveDiscipline(d);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `/work?discipline=${d}`);
+    }
   };
 
   const activeIdx = Math.max(
@@ -409,113 +433,132 @@ export default function WorkPageView() {
 
           {/* Right Column: Multi-device Responsive Mockup Graphic */}
           <div className="lg:col-span-7 w-full flex items-center justify-center lg:justify-end">
-            <WorkDeviceMockup className="w-full max-w-[540px] lg:max-w-[580px]" />
+            {activeDiscipline === "ux" && (
+              <WorkDeviceMockup className="w-full max-w-[540px] lg:max-w-[580px]" />
+            )}
+            {activeDiscipline === "branding" && (
+              <BrandingMonitorMockup className="w-full max-w-[540px] lg:max-w-[580px]" />
+            )}
+            {activeDiscipline === "marketing" && (
+              <MarketingMonitorMockup className="w-full max-w-[540px] lg:max-w-[580px]" />
+            )}
           </div>
         </div>
       </div>
 
-      {/* ── 02. STICKY SUB-NAVIGATION BAR (100% Identical Architecture to About Page) ── */}
-      <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-3 pb-2 select-none mb-14">
-        <div className="w-full grid grid-cols-3 gap-2 sm:gap-4 items-center text-center font-dm font-bold text-xs sm:text-sm tracking-wider uppercase">
-          {WORK_TABS.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => scrollToSection(tab.id)}
-                className={`group flex items-center justify-center gap-2 sm:gap-2.5 py-3 transition-opacity cursor-pointer ${
-                  isActive ? "opacity-100" : "opacity-75 hover:opacity-100"
-                }`}
-              >
-                {/* Sparkle icon before */}
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  className="flex-shrink-0"
-                >
-                  <path
-                    d="M5 0L6.2 3.8L10 5L6.2 6.2L5 10L3.8 6.2L0 5L3.8 3.8L5 0Z"
-                    fill="url(#workSparkleGrad)"
-                  />
-                </svg>
+      {/* ── 02. DISCIPLINE CONTENT VIEW SWITCHER ── */}
+      {activeDiscipline === "ux" && (
+        <>
+          {/* Sticky Sub-Navigation Bar for UX tabs */}
+          <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-3 pb-2 select-none mb-14">
+            <div className="w-full grid grid-cols-3 gap-2 sm:gap-4 items-center text-center font-dm font-bold text-xs sm:text-sm tracking-wider uppercase">
+              {WORK_TABS.map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => scrollToSection(tab.id)}
+                    className={`group flex items-center justify-center gap-2 sm:gap-2.5 py-3 transition-opacity cursor-pointer ${
+                      isActive ? "opacity-100" : "opacity-75 hover:opacity-100"
+                    }`}
+                  >
+                    {/* Sparkle icon before */}
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      className="flex-shrink-0"
+                    >
+                      <path
+                        d="M5 0L6.2 3.8L10 5L6.2 6.2L5 10L3.8 6.2L0 5L3.8 3.8L5 0Z"
+                        fill="url(#workSparkleGrad)"
+                      />
+                    </svg>
 
-                {/* Tab Label */}
-                <span
-                  className="text-transparent bg-clip-text"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
-                  }}
-                >
-                  {tab.label}
-                </span>
+                    {/* Tab Label */}
+                    <span
+                      className="text-transparent bg-clip-text"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+                      }}
+                    >
+                      {tab.label}
+                    </span>
 
-                {/* Sparkle icon after */}
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  className="flex-shrink-0"
-                >
-                  <path
-                    d="M5 0L6.2 3.8L10 5L6.2 6.2L5 10L3.8 6.2L0 5L3.8 3.8L5 0Z"
-                    fill="url(#workSparkleGrad)"
-                  />
-                </svg>
-              </button>
-            );
-          })}
-        </div>
+                    {/* Sparkle icon after */}
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      className="flex-shrink-0"
+                    >
+                      <path
+                        d="M5 0L6.2 3.8L10 5L6.2 6.2L5 10L3.8 6.2L0 5L3.8 3.8L5 0Z"
+                        fill="url(#workSparkleGrad)"
+                      />
+                    </svg>
+                  </button>
+                );
+              })}
+            </div>
 
-        {/* Track Line and Active Indicator Slider */}
-        <div className="relative w-full h-[1.5px] bg-[#DE4313]/30 mt-1">
-          <div
-            className="absolute top-0 h-full bg-gradient-to-r from-[#FEC163] to-[#DE4313] transition-all duration-300"
-            style={{
-              left: `${(activeIdx / WORK_TABS.length) * 100}%`,
-              width: `${100 / WORK_TABS.length}%`,
-              boxShadow: "0 0 10px rgba(222, 67, 19, 0.8)",
-            }}
-          />
-        </div>
-      </div>
+            {/* Track Line and Active Indicator Slider */}
+            <div className="relative w-full h-[1.5px] bg-[#DE4313]/30 mt-1">
+              <div
+                className="absolute top-0 h-full bg-gradient-to-r from-[#FEC163] to-[#DE4313] transition-all duration-300"
+                style={{
+                  left: `${(activeIdx / WORK_TABS.length) * 100}%`,
+                  width: `${100 / WORK_TABS.length}%`,
+                  boxShadow: "0 0 10px rgba(222, 67, 19, 0.8)",
+                }}
+              />
+            </div>
+          </div>
 
-      {/* ── 03. CATEGORY SHOWCASE SECTIONS ── */}
-      <div className="space-y-16 sm:space-y-24">
-        {/* ── SECTION 01: WEBSITES ── */}
-        <WorkCategorySection
-          id="websites"
-          number="01"
-          title="WEBSITES"
-          viewAllLabel="VIEW ALL WEBSITES"
-          viewAllHref="/work#websites"
-          slides={WEBSITE_SLIDES}
-        />
+          {/* ── 03. CATEGORY SHOWCASE SECTIONS (UX & UI DESIGN) ── */}
+          <div className="space-y-16 sm:space-y-24">
+            {/* ── SECTION 01: WEBSITES ── */}
+            <WorkCategorySection
+              id="websites"
+              number="01"
+              title="WEBSITES"
+              viewAllLabel="VIEW ALL WEBSITES"
+              viewAllHref="/work#websites"
+              slides={WEBSITE_SLIDES}
+            />
 
-        {/* ── SECTION 02: APPS ── */}
-        <WorkCategorySection
-          id="apps"
-          number="02"
-          title="APPS"
-          viewAllLabel="VIEW ALL APPS"
-          viewAllHref="/work#apps"
-          slides={APP_SLIDES}
-        />
+            {/* ── SECTION 02: APPS ── */}
+            <WorkCategorySection
+              id="apps"
+              number="02"
+              title="APPS"
+              viewAllLabel="VIEW ALL APPS"
+              viewAllHref="/work#apps"
+              slides={APP_SLIDES}
+            />
 
-        {/* ── SECTION 03: SOFTWARES ── */}
-        <WorkCategorySection
-          id="softwares"
-          number="03"
-          title="SOFTWARES"
-          viewAllLabel="VIEW ALL SOFTWARE"
-          viewAllHref="/work#softwares"
-          slides={SOFTWARE_SLIDES}
-        />
-      </div>
+            {/* ── SECTION 03: SOFTWARES ── */}
+            <WorkCategorySection
+              id="softwares"
+              number="03"
+              title="SOFTWARES"
+              viewAllLabel="VIEW ALL SOFTWARE"
+              viewAllHref="/work#softwares"
+              slides={SOFTWARE_SLIDES}
+            />
+          </div>
+        </>
+      )}
+
+      {/* ── 03. LOGO & BRANDING VIEW ── */}
+      {activeDiscipline === "branding" && <BrandingProjectsView />}
+
+      {/* ── 04. PRINT & DIGITAL MARKETING VIEW ── */}
+      {activeDiscipline === "marketing" && <MarketingProjectsView />}
     </div>
   );
 }
