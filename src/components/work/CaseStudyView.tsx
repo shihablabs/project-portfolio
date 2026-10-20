@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { WorkProject } from "@/data/workProjects";
 import SectionBadge from "@/components/ui/SectionBadge";
 import CaseStudyHeroCascade from "@/components/ui/CaseStudyHeroCascade";
@@ -14,16 +15,26 @@ interface CaseStudyViewProps {
 
 const CASE_STUDY_TABS = [
   { id: "overview", label: "01. OVERVIEW" },
-  { id: "research", label: "02. RESEARCH" },
+  { id: "process", label: "02. DESIGN PROCESS" },
   { id: "designs", label: "03. FINAL DESIGNS" },
   { id: "results", label: "04. RESULTS" },
 ];
 
 export default function CaseStudyView({ project }: CaseStudyViewProps) {
+  const router = useRouter();
   const cs = project.caseStudyData;
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Scroll listener to update active tab based on scroll position (exact same logic as Work Hub)
+  // Back button functionality requested by user ("cose button ta back button er moto kaj korbe")
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/work");
+    }
+  };
+
+  // Scroll listener to update active tab based on scroll position
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY + 260;
@@ -76,26 +87,35 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
         </defs>
       </svg>
 
-      {/* ── 01. HERO CARD (Pixel-perfect copy of Work Main Page Hero Layout) ── */}
-      <div className="relative w-full bg-transparent min-h-[480px] sm:min-h-[520px] lg:min-h-[540px] flex items-center pt-14 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 pl-6 sm:pl-10 lg:pl-14 pr-6 sm:pr-10 lg:pr-14 mb-10">
-        {/* Top horizontal border line (starts at 0,0 and stops before icons & Work notch) */}
+      {/* ── 01. HERO CARD (Pixel-perfect matching user's Figma screenshot: ME+ at top-left, Close/Back button at top-right, 5-sheet mockup centered) ── */}
+      <div className="relative w-full bg-transparent min-h-[440px] sm:min-h-[500px] lg:min-h-[560px] flex items-end justify-center pt-12 sm:pt-14 pb-0 px-4 sm:px-8 mb-10">
+        {/* Top-Left Notch: "ME+" Logo/Title directly sitting on the top border line */}
+        <div className="absolute top-0 left-0 -translate-y-1/2 flex items-center gap-2.5 sm:gap-3 select-none z-20">
+          {/* Subtle curved accent / glowing dot on the far left */}
+          <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#FEC163] to-[#DE4313] shadow-[0_0_10px_rgba(222,67,19,0.9)]" />
+          <span className="font-dm font-bold text-3xl sm:text-4xl lg:text-[42px] text-white tracking-tight leading-none">
+            ME+
+          </span>
+        </div>
+
+        {/* Top horizontal border line: starts after ME+ and stops before the circular close button */}
         <div
-          className="absolute top-0 left-0 right-[310px] sm:right-[340px] lg:right-[360px] h-[1.5px] pointer-events-none"
+          className="absolute top-0 left-[100px] sm:left-[125px] lg:left-[140px] right-[22px] sm:right-[24px] h-[1.5px] pointer-events-none"
           style={{
             background:
               "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
           }}
         />
 
-        {/* Left vertical border line */}
+        {/* Left vertical border line: starts below ME+ to bottom */}
         <div
-          className="absolute top-0 left-0 bottom-0 w-[1.5px] pointer-events-none"
+          className="absolute top-[20px] left-0 bottom-0 w-[1.5px] pointer-events-none"
           style={{
             background: "linear-gradient(180deg, #FEC163 0%, #DE4313 100%)",
           }}
         />
 
-        {/* Bottom horizontal border line */}
+        {/* Bottom horizontal border line: full width */}
         <div
           className="absolute bottom-0 left-0 right-0 h-[1.5px] pointer-events-none"
           style={{
@@ -104,130 +124,62 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
           }}
         />
 
-        {/* Right vertical border line (starts below Work header to bottom) */}
+        {/* Right vertical border line: starts below circular close button to bottom */}
         <div
-          className="absolute top-[28px] sm:top-[34px] right-0 bottom-0 w-[1.5px] pointer-events-none"
+          className="absolute top-[22px] sm:top-[24px] right-0 bottom-0 w-[1.5px] pointer-events-none"
           style={{
             background: "linear-gradient(180deg, #FEC163 0%, #DE4313 100%)",
           }}
         />
 
-        {/* ── Top-Right Notch: 3 Discipline Icons + "Work" Text (Directly copied from Work Main Page) ── */}
-        <div className="absolute top-0 right-4 sm:right-8 -translate-y-1/2 flex items-center gap-3 sm:gap-4 select-none z-20">
-          {/* 1. UX & UI Design Circle (Active by default for case studies) */}
-          <Link
-            href="/work"
-            title="UX & UI Design"
-            aria-label="UX & UI Design"
-            className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-            style={{
-              background:
-                "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
-            }}
+        {/* ── Top-Right Close / Back Button (Circular button centered on corner) ── */}
+        <button
+          type="button"
+          onClick={handleBack}
+          title="Back to Work"
+          aria-label="Back to Work"
+          className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full border-[1.5px] border-[#DE4313] bg-[#0A0F24] flex items-center justify-center text-[#DE4313] hover:text-[#FEC163] hover:border-[#FEC163] hover:scale-110 shadow-[0_0_16px_rgba(222,67,19,0.4)] hover:shadow-[0_0_24px_rgba(222,67,19,0.8)] transition-all duration-300 cursor-pointer"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current stroke-[2.2]"
           >
-            <Image
-              src="/assets/icons/ux-icon.png"
-              alt="UX & UI"
-              width={26}
-              height={26}
-              className="brightness-0 invert"
+            <path
+              d="M3.5 3.5L12.5 12.5M12.5 3.5L3.5 12.5"
+              strokeLinecap="round"
             />
-          </Link>
+          </svg>
+        </button>
 
-          {/* 2. Logo & Branding Circle */}
-          <Link
-            href="/work?discipline=branding"
-            title="Logo & Branding"
-            aria-label="Logo & Branding"
-            className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 bg-[#0A0F24] border-[1.5px] border-[#DE4313] hover:border-[#FEC163]"
-          >
-            <Image
-              src="/assets/icons/branding-icon.png"
-              alt="Branding"
-              width={26}
-              height={26}
-            />
-          </Link>
-
-          {/* 3. Print & Digital Marketing Circle */}
-          <Link
-            href="/work?discipline=marketing"
-            title="Print & Digital Marketing"
-            aria-label="Print & Digital Marketing"
-            className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 bg-[#0A0F24] border-[1.5px] border-[#DE4313] hover:border-[#FEC163]"
-          >
-            <Image
-              src="/assets/icons/marketing-icon.png"
-              alt="Marketing"
-              width={26}
-              height={26}
-            />
-          </Link>
-
-          {/* "Work" Page Heading */}
-          <Link
-            href="/work"
-            className="font-dm font-normal text-3xl sm:text-4xl lg:text-[42px] text-[var(--ink)] tracking-tight leading-none ml-2 hover:opacity-80 transition-opacity"
-          >
-            Work
-          </Link>
-        </div>
-
-        {/* ── Inner Glow Effects (Exact Same as Work Main Page) ── */}
+        {/* ── Ambient Radial Glow (Exact warmth from user screenshot) ── */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           <div
             aria-hidden="true"
             className="absolute rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(222, 67, 19, 0.55) 0%, rgba(222, 67, 19, 0.2) 50%, transparent 72%)",
-              filter: "blur(85px)",
-              width: "480px",
-              height: "420px",
-              right: "40px",
-              bottom: "10px",
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute rounded-full"
-            style={{
-              background: "rgba(222, 67, 19, 0.12)",
+                "radial-gradient(circle, rgba(222, 67, 19, 0.45) 0%, rgba(222, 67, 19, 0.12) 50%, transparent 72%)",
               filter: "blur(90px)",
-              width: "340px",
-              height: "260px",
-              left: "20px",
-              top: "60px",
+              width: "640px",
+              height: "520px",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
             }}
           />
         </div>
 
-        {/* ── Main Hero Content Grid: Left Title + Right Mockup (Copied from Work Main Page) ── */}
-        <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Heading + Subtitle */}
-          <div className="lg:col-span-5 flex flex-col justify-center space-y-3">
-            <h1 className="font-dm font-bold text-3xl sm:text-4xl lg:text-[50px] leading-[1.08] text-[var(--ink)] uppercase tracking-tight">
-              UX &amp; UI DESIGN
-            </h1>
-            <h2
-              className="font-dm font-bold text-2xl sm:text-3xl lg:text-[32px] leading-tight text-transparent bg-clip-text"
-              style={{
-                backgroundImage:
-                  "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
-              }}
-            >
-              Curated Projects
-            </h2>
-          </div>
-
-          {/* Right Column: Case Study Hero Mockup */}
-          <div className="lg:col-span-7 w-full flex items-center justify-center lg:justify-end">
-            <CaseStudyHeroCascade className="w-full max-w-[540px] lg:max-w-[580px]" />
-          </div>
+        {/* ── Centered 5-Sheet Webpage Mockup Cascade ── */}
+        <div className="relative z-10 w-full flex items-end justify-center">
+          <CaseStudyHeroCascade className="w-full" />
         </div>
       </div>
 
-      {/* ── 02. STICKY SUB-NAVIGATION BAR (Directly copied from Work Main Page) ── */}
+      {/* ── 02. STICKY SUB-NAVIGATION BAR (Directly matching user screenshot: 01. OVERVIEW, 02. DESIGN PROCESS, 03. FINAL DESIGNS, 04. RESULTS) ── */}
       <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-3 pb-2 select-none mb-14">
         <div className="w-full grid grid-cols-4 gap-2 sm:gap-4 items-center text-center font-dm font-bold text-xs sm:text-sm tracking-wider uppercase">
           {CASE_STUDY_TABS.map((tab) => {
@@ -237,14 +189,14 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                 key={tab.id}
                 type="button"
                 onClick={() => scrollToSection(tab.id)}
-                className={`group flex items-center justify-center gap-2 sm:gap-2.5 py-3 transition-opacity cursor-pointer ${
+                className={`group flex items-center justify-center gap-1.5 sm:gap-2.5 py-3 transition-opacity cursor-pointer ${
                   isActive ? "opacity-100" : "opacity-75 hover:opacity-100"
                 }`}
               >
-                {/* Sparkle icon before */}
+                {/* Diamond icon before */}
                 <svg
-                  width="10"
-                  height="10"
+                  width="9"
+                  height="9"
                   viewBox="0 0 10 10"
                   fill="none"
                   className="flex-shrink-0"
@@ -266,10 +218,10 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                   {tab.label}
                 </span>
 
-                {/* Sparkle icon after */}
+                {/* Diamond icon after */}
                 <svg
-                  width="10"
-                  height="10"
+                  width="9"
+                  height="9"
                   viewBox="0 0 10 10"
                   fill="none"
                   className="flex-shrink-0"
@@ -291,7 +243,7 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
             style={{
               left: `${(activeIdx / CASE_STUDY_TABS.length) * 100}%`,
               width: `${100 / CASE_STUDY_TABS.length}%`,
-              boxShadow: "0 0 10px rgba(222, 67, 19, 0.8)",
+              boxShadow: "0 0 12px rgba(222, 67, 19, 0.9)",
             }}
           />
         </div>
@@ -378,23 +330,23 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
               CLIENT
             </span>
             <strong className="block text-xs sm:text-sm text-white mt-1">
-              {cs?.client || project.client}
+              {cs?.client || "Me+ Healthcare"}
             </strong>
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════
-          04. SECTION 02: USER RESEARCH (id="research")
+          04. SECTION 02: DESIGN PROCESS (id="process")
           ════════════════════════════════════════════════════════════ */}
-      <section id="research" className="w-full scroll-mt-28 mb-16 sm:mb-24">
+      <section id="process" className="w-full scroll-mt-28 mb-16 sm:mb-24">
         <div className="relative w-full flex flex-col xl:flex-row items-start justify-between gap-8 sm:gap-12">
           {/* Left Column: SectionBadge 02 */}
           <div className="w-full xl:w-auto flex items-center justify-center xl:justify-start flex-shrink-0">
             <SectionBadge
               num="02"
-              label="USER&#10;RESEARCH"
-              isFilled={activeTab === "research"}
+              label="DESIGN&#10;PROCESS"
+              isFilled={activeTab === "process"}
             />
           </div>
 
@@ -415,7 +367,7 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                       "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
                   }}
                 >
-                  User Personas
+                  User Personas &amp; Journey Mapping
                 </span>
               </div>
             </div>
@@ -435,7 +387,7 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                       "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
                   }}
                 >
-                  Wireframe Flow
+                  Wireframe Flow &amp; Testing
                 </span>
               </div>
             </div>
@@ -578,7 +530,7 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                 Magfi Reza
               </strong>
               <span className="text-xs font-dm text-[#FEC163]">
-                Founder &amp; CEO — MindCare Telemedicine
+                Founder &amp; CEO — Me+ Telemedicine
               </span>
             </div>
           </div>
