@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Almarai, Merriweather, Concert_One } from "next/font/google";
+import { LoaderProvider } from "@/context/LoaderContext";
+import SiteLoader from "@/components/ui/SiteLoader";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -63,7 +65,11 @@ export default function RootLayout({
       className={`${dmSans.variable} ${almarai.variable} ${merriweather.variable} ${concertOne.variable} scroll-smooth`}
     >
       <body className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased transition-colors duration-200">
-        {children}
+        <LoaderProvider>
+          {/* Global Site Loader (Transparent BG, Static Logo, 360deg Spinning Gradient Border) */}
+          <SiteLoader />
+          {children}
+        </LoaderProvider>
       </body>
     </html>
   );
