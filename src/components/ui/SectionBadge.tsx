@@ -4,6 +4,7 @@ interface SectionBadgeProps {
   num: string;
   label: string;
   className?: string;
+  isFilled?: boolean;
 }
 
 // Reusable section badge
@@ -11,6 +12,7 @@ export default function SectionBadge({
   num,
   label,
   className = "",
+  isFilled = false,
 }: SectionBadgeProps) {
   // Break on <br>, \n or automatically break "DESIGN APPROACH"
   const rawLabel =
@@ -83,9 +85,9 @@ export default function SectionBadge({
             x={centerX}
             y={isMultiLine ? 152 + idx * 42 : 158}
             textAnchor="middle"
-            fill="none"
-            stroke={`url(#${labelGradId})`}
-            strokeWidth="1.5"
+            fill={isFilled ? `url(#${labelGradId})` : "none"}
+            stroke={isFilled ? "none" : `url(#${labelGradId})`}
+            strokeWidth={isFilled ? "0" : "1.5"}
             fontFamily="var(--font-almarai), sans-serif"
             fontWeight="700"
             fontSize={isMultiLine ? "42" : "48"}

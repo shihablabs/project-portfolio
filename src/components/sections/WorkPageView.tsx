@@ -86,12 +86,20 @@ const WEBSITE_SLIDES: ProjectSlide[] = [
 // ── 02. APPS SLIDES ──
 const APP_SLIDES: ProjectSlide[] = [
   {
+    id: "ezeedrop",
+    client: "ezeedrop",
+    title: "AIRPORT RENTAL CAR RETURN VALET APP",
+    categoryLabel: "Apps",
+    caseStudyUrl: "/work/case-study/aamar-pharma",
+    mockupType: "phones-triplet",
+  },
+  {
     id: "aamar-pharma",
     client: "Aamar Pharma",
     clientLogo: "/assets/clients/aamar-pharma-c.png",
     title: "DIGITAL PHARMACY MOBILE APP & ORDERING PLATFORM",
     categoryLabel: "Apps",
-    caseStudyUrl: "/work/aamar-pharma",
+    caseStudyUrl: "/work/case-study/aamar-pharma",
     mockupType: "device-bundle",
     coverImage: "/assets/images/work-mockup.png",
   },
@@ -101,7 +109,7 @@ const APP_SLIDES: ProjectSlide[] = [
     clientLogo: "/assets/clients/aamar-pharma-c.png",
     title: "TELEHEALTH & PATIENT VITAL MONITORING APP",
     categoryLabel: "Apps",
-    caseStudyUrl: "/work/aamar-pharma",
+    caseStudyUrl: "/work/case-study/aamar-pharma",
     mockupType: "device-bundle",
     coverImage: "/assets/projects/aamar-pharma-mockup.png",
   },
@@ -529,6 +537,7 @@ export default function WorkPageView() {
               viewAllLabel="VIEW ALL WEBSITES"
               viewAllHref="/work/websites"
               slides={WEBSITE_SLIDES}
+              isActive={activeTab === "websites"}
             />
 
             {/* ── SECTION 02: APPS ── */}
@@ -539,6 +548,7 @@ export default function WorkPageView() {
               viewAllLabel="VIEW ALL APPS"
               viewAllHref="/work/apps"
               slides={APP_SLIDES}
+              isActive={activeTab === "apps"}
             />
 
             {/* ── SECTION 03: SOFTWARES ── */}
@@ -549,6 +559,7 @@ export default function WorkPageView() {
               viewAllLabel="VIEW ALL SOFTWARE"
               viewAllHref="/work/softwares"
               slides={SOFTWARE_SLIDES}
+              isActive={activeTab === "softwares"}
             />
           </div>
         </>

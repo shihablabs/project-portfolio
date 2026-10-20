@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import SectionBadge from "@/components/ui/SectionBadge";
 import LaptopWebsitePreview from "@/components/ui/LaptopWebsitePreview";
 import HospitalDashboardMockup from "@/components/ui/HospitalDashboardMockup";
+import EzeedropAppMockup from "@/components/ui/EzeedropAppMockup";
 
 export interface ProjectSlide {
   id: string;
@@ -14,7 +15,7 @@ export interface ProjectSlide {
   title: string;
   categoryLabel: string;
   caseStudyUrl: string;
-  mockupType: "laptop" | "device-bundle" | "hospital-monitor";
+  mockupType: "laptop" | "device-bundle" | "hospital-monitor" | "phones-triplet";
   coverImage?: string;
   headline?: string;
   subheadline?: string;
@@ -27,6 +28,7 @@ interface WorkCategorySectionProps {
   viewAllLabel: string;
   viewAllHref: string;
   slides: ProjectSlide[];
+  isActive?: boolean;
 }
 
 export default function WorkCategorySection({
@@ -36,6 +38,7 @@ export default function WorkCategorySection({
   viewAllLabel,
   viewAllHref,
   slides,
+  isActive = false,
 }: WorkCategorySectionProps) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
@@ -56,7 +59,7 @@ export default function WorkCategorySection({
             1. LEFT COLUMN: Reusable SectionBadge from Home Page
             ════════════════════════════════════════════════════════════ */}
         <div className="w-full xl:w-auto flex items-center justify-center xl:justify-start flex-shrink-0 select-none">
-          <SectionBadge num={number} label={title} />
+          <SectionBadge num={number} label={title} isFilled={isActive} />
         </div>
 
         {/* ════════════════════════════════════════════════════════════
@@ -117,6 +120,26 @@ export default function WorkCategorySection({
                   priority
                 />
               </div>
+            ) : currentSlide.id === "ezeedrop" ? (
+              <div className="relative h-10 sm:h-12 px-6 rounded-full bg-[#0E1526] border border-[#DE4313] flex items-center justify-center shadow-lg">
+                <div className="flex items-center gap-0.5">
+                  <span className="font-sans font-bold text-base text-white tracking-tight">
+                    e
+                  </span>
+                  <span className="font-sans font-black text-lg text-white -rotate-6 text-[#FEC163]">
+                    Z
+                  </span>
+                  <span className="font-sans font-bold text-base text-white tracking-tight">
+                    ee
+                  </span>
+                  <span className="font-sans font-bold text-base text-[#DE4313] ml-0.5">
+                    📍
+                  </span>
+                  <span className="font-sans font-bold text-base text-white -ml-1">
+                    rop
+                  </span>
+                </div>
+              </div>
             ) : (
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0E1526] border border-[#DE4313] flex items-center justify-center shadow-lg">
                 <span className="font-dm font-black text-xs text-[#FEC163]">
@@ -143,6 +166,8 @@ export default function WorkCategorySection({
               />
             ) : currentSlide.mockupType === "hospital-monitor" ? (
               <HospitalDashboardMockup />
+            ) : currentSlide.mockupType === "phones-triplet" ? (
+              <EzeedropAppMockup />
             ) : (
               <div className="relative w-full max-w-[560px] h-[260px] sm:h-[320px] flex items-center justify-center">
                 {currentSlide.coverImage && (
