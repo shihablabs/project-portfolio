@@ -12,10 +12,10 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { id: "home", label: "HOME", href: "/#home" },
-  { id: "about", label: "ABOUT", href: "/#about" },
-  { id: "work", label: "WORK", href: "/#work" },
-  { id: "blogs", label: "BLOGS", href: "/#blogs" },
-  { id: "contact", label: "CONTACT", href: "/#contact" },
+  { id: "about", label: "ABOUT", href: "/about" },
+  { id: "work", label: "WORK", href: "/work" },
+  { id: "blogs", label: "BLOGS", href: "/blogs" },
+  { id: "contact", label: "CONTACT", href: "/contact" },
 ];
 
 const GRADIENT_ID = "sidebarIconGrad";
@@ -193,9 +193,23 @@ export default function Sidebar({ defaultActive }: { defaultActive?: string } = 
       setActive(defaultActive);
       return;
     }
-    if (typeof window !== "undefined" && window.location.pathname.startsWith("/blogs")) {
-      setActive("blogs");
-      return;
+    if (typeof window !== "undefined") {
+      if (window.location.pathname.startsWith("/work")) {
+        setActive("work");
+        return;
+      }
+      if (window.location.pathname.startsWith("/blogs")) {
+        setActive("blogs");
+        return;
+      }
+      if (window.location.pathname.startsWith("/about")) {
+        setActive("about");
+        return;
+      }
+      if (window.location.pathname.startsWith("/contact")) {
+        setActive("contact");
+        return;
+      }
     }
 
     const handleScroll = () => {

@@ -12,15 +12,45 @@ export default function SectionBadge({
   label,
   className = "",
 }: SectionBadgeProps) {
-  const labelGradId = `badge-label-grad-${num}-${label}`;
+  // Break on <br>, \n or automatically break "DESIGN APPROACH"
+  const rawLabel =
+    label === "DESIGN APPROACH" ? "DESIGN\nAPPROACH" : label;
+  const lines = rawLabel
+    .split(/\n|<br\s*\/?>/i)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  const isMultiLine = lines.length > 1;
+
+  const safeLabel = rawLabel.replace(/[\s\n<>/]+/g, "-");
+  const labelGradId = `badge-label-grad-${num}-${safeLabel}`;
+
+  // Find longest line to compute width
+  const maxLineLength = Math.max(
+    ...lines.map((l) => l.length),
+    num.length * 2
+  );
+
+  // 180 for standard length (<= 7 chars like ABOUT, WORK, BLOGS, CONTACT, PROFILE, JOURNEY, DESIGN, APPROACH)
+  const viewBoxWidth =
+    maxLineLength > 7 ? Math.max(180, Math.ceil(maxLineLength * 25)) : 180;
+
+  // ViewBox height: 180 for single-line, 215 for two lines
+  const viewBoxHeight = isMultiLine ? 215 : 180;
+
+  // Center coordinate for SVG middle alignment
+  const centerX = viewBoxWidth / 2;
 
   return (
     <div
-      className={`flex flex-col justify-center text-center items-start  select-none ${className}`}
+      className={`flex flex-col justify-center items-center text-center select-none ${className}`}
     >
       <svg
-        viewBox="0 0 180 180"
-        className="w-[140px] sm:w-[165px] lg:w-[175px] h-auto overflow-visible"
+        viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
+        className={`${
+          isMultiLine
+            ? "h-[155px] sm:h-[180px] lg:h-[195px]"
+            : "h-[130px] sm:h-[155px] lg:h-[170px]"
+        } w-auto max-w-full overflow-visible`}
       >
         <defs>
           {/* Figma lightline Linear Gradient */}
@@ -30,10 +60,11 @@ export default function SectionBadge({
           </linearGradient>
         </defs>
 
-        {/* Soft Concert One number */}
+        {/* Soft Concert One number - perfectly centered */}
         <text
-          x="0"
+          x={centerX}
           y="110"
+          textAnchor="middle"
           fill="none"
           stroke="#DE4313"
           strokeOpacity="0.4"
@@ -45,20 +76,24 @@ export default function SectionBadge({
           {num}
         </text>
 
-        {/* Crisp Almarai text: 48px, 1.5px lightline */}
-        <text
-          x="0"
-          y="158"
-          fill="none"
-          stroke={`url(#${labelGradId})`}
-          strokeWidth="1.5"
-          fontFamily="var(--font-almarai), sans-serif"
-          fontWeight="700"
-          fontSize="48"
-          letterSpacing="0"
-        >
-          {label}
-        </text>
+        {/* Crisp Almarai text: 48px/42px lightline - perfectly centered */}
+        {lines.map((line, idx) => (
+          <text
+            key={idx}
+            x={centerX}
+            y={isMultiLine ? 152 + idx * 42 : 158}
+            textAnchor="middle"
+            fill="none"
+            stroke={`url(#${labelGradId})`}
+            strokeWidth="1.5"
+            fontFamily="var(--font-almarai), sans-serif"
+            fontWeight="700"
+            fontSize={isMultiLine ? "42" : "48"}
+            letterSpacing="0"
+          >
+            {line}
+          </text>
+        ))}
       </svg>
     </div>
   );

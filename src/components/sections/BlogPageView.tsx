@@ -75,7 +75,7 @@ export default function BlogPageView() {
   return (
     <section
       id="blogs"
-      className="w-full relative px-4 sm:px-6 lg:px-8 py-8 sm:py-12 select-none"
+      className="w-full relative px-4 sm:px-6 lg:px-10 pt-16 sm:pt-20 lg:pt-24 pb-24 select-none"
     >
       {/* SVG Gradient definitions */}
       <svg
@@ -99,9 +99,9 @@ export default function BlogPageView() {
         </defs>
       </svg>
 
-      <div className="w-full max-w-[1240px] mx-auto space-y-8 sm:space-y-10">
+      <div className="w-full max-w-[1240px] mx-auto space-y-10 sm:space-y-14">
         {/* ── 01. BLOG HERO CARD (Pixel-perfect Figma Layout) ── */}
-        <div className="relative w-full bg-transparent min-h-[480px] sm:min-h-[520px] lg:min-h-[550px] flex items-center pt-14 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 pl-6 sm:pl-10 lg:pl-14 pr-6 sm:pr-10 lg:pr-14">
+        <div className="relative w-full bg-transparent min-h-[480px] sm:min-h-[520px] lg:min-h-[540px] flex items-center pt-14 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 pl-6 sm:pl-10 lg:pl-14 pr-6 sm:pr-10 lg:pr-14 mb-10">
           {/* Top horizontal border line (starts at 0,0 and stops before Blogs) */}
           <div
             className="absolute top-0 left-0 right-[150px] sm:right-[180px] h-[1.5px] pointer-events-none"

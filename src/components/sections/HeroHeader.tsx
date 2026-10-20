@@ -6,10 +6,10 @@ export default function HeroHeader() {
   return (
     <section
       id="home"
-      className="w-full max-w-6xl mx-auto pt-12 sm:pt-20 px-4 sm:px-6"
+      className="w-full max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-10 pt-16 sm:pt-20 lg:pt-24"
     >
       {/* Main Hero Container with 4-side gradient border */}
-      <div className="relative w-full figma-gradient-border p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[460px] sm:min-h-[500px]">
+      <div className="relative w-full figma-gradient-border p-8 sm:p-14 text-center flex flex-col items-center justify-center min-h-[480px] sm:min-h-[520px] lg:min-h-[540px]">
         {/* Top border notch mask: cleanly cuts the 1.5px border line behind SEJUTI */}
         <div
           aria-hidden="true"
