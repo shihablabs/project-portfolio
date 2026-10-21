@@ -348,36 +348,55 @@ export default function CategoryGridView({
         {/* ── Main Hero Content Grid ── */}
         <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Heading + Subtitle Links */}
-          <div className="lg:col-span-5 flex flex-col justify-center space-y-4">
-            <h1 className="font-dm font-bold text-3xl sm:text-4xl lg:text-[48px] leading-[1.08] text-[var(--ink)] uppercase tracking-tight">
-              {meta.title}
-            </h1>
+          <div className="lg:col-span-5 flex flex-col justify-center space-y-3">
+            {activeDiscipline === "ux" ? (
+              <>
+                <h1 className="font-dm font-bold text-3xl sm:text-4xl lg:text-[50px] leading-[1.08] text-[var(--ink)] uppercase tracking-tight">
+                  UX & UI DESIGN
+                </h1>
 
-            {/* Sub-Discipline Pills */}
-            {activeDiscipline === "ux" && (
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                {UX_SUBCATEGORIES.map((sub) => {
-                  const isActive = sub.id === categoryKey;
-                  return (
-                    <Link
-                      key={sub.id}
-                      href={sub.href}
-                      className={`text-sm sm:text-base font-dm font-bold tracking-wider uppercase transition-all px-3 py-1 rounded-[3px] ${
-                        isActive
-                          ? "text-white bg-gradient-to-r from-[#FEC163] to-[#DE4313] shadow-[0_0_12px_rgba(222,67,19,0.6)]"
-                          : "text-gray-400 hover:text-white border border-[#DE4313]/30 hover:border-[#FEC163]"
-                      }`}
-                    >
-                      {sub.label}
-                    </Link>
-                  );
-                })}
-              </div>
+                {/* Vertical Sub-Discipline Text Stack matching Figma Screenshot 2 */}
+                <div className="flex flex-col space-y-1 sm:space-y-1.5 pt-1">
+                  {UX_SUBCATEGORIES.map((sub) => {
+                    const isActive = sub.id === categoryKey;
+                    return (
+                      <Link
+                        key={sub.id}
+                        href={sub.href}
+                        className={`font-dm font-bold text-2xl sm:text-3xl lg:text-[40px] leading-tight transition-all text-left w-fit ${
+                          isActive
+                            ? "text-transparent bg-clip-text font-bold"
+                            : "hover:opacity-100 transition-opacity"
+                        }`}
+                        style={
+                          isActive
+                            ? {
+                                backgroundImage:
+                                  "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+                                color: "transparent",
+                              }
+                            : {
+                                color: "transparent",
+                                WebkitTextStroke: "1.5px #DE4313",
+                              }
+                        }
+                      >
+                        {sub.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <>
+                <h1 className="font-dm font-bold text-3xl sm:text-4xl lg:text-[48px] leading-[1.08] text-[var(--ink)] uppercase tracking-tight">
+                  {meta.title}
+                </h1>
+                <p className="font-dm text-sm sm:text-base text-gray-300 leading-relaxed max-w-md pt-1">
+                  {meta.description}
+                </p>
+              </>
             )}
-
-            <p className="font-dm text-sm sm:text-base text-gray-300 leading-relaxed max-w-md pt-1">
-              {meta.description}
-            </p>
           </div>
 
           {/* Right Column: Hero Graphic Preview */}
@@ -620,17 +639,60 @@ export default function CategoryGridView({
                   onClick={() => setSelectedProject(project)}
                   className="group cursor-pointer bg-[#070B19] border border-[#DE4313]/60 hover:border-[#FEC163] transition-all duration-300 rounded-[2px] p-[20px] sm:p-[22px] flex flex-col justify-between shadow-lg hover:shadow-[0_0_30px_rgba(222,67,19,0.35)] w-full"
                 >
-                  {/* Direct Full-Length Screenshot */}
-                  <div className="relative w-full overflow-hidden rounded-[2px] bg-[#0A0F24]">
-                    <Image
-                      src={project.thumbnail}
-                      alt={project.title}
-                      width={600}
-                      height={1200}
-                      className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-300 block"
-                      priority={false}
-                    />
-                  </div>
+                  {/* Screenshots: Multi-Screen Display (Supports 3, 2, or 1 screen per card) */}
+                  {project.cardScreenshots && project.cardScreenshots.length > 1 ? (
+                    project.cardScreenshots.length >= 3 ? (
+                      /* 3 Phone Screens Side-by-Side */
+                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2 w-full items-start">
+                        {project.cardScreenshots.slice(0, 3).map((img, i) => (
+                          <div
+                            key={i}
+                            className="relative w-full overflow-hidden rounded-[2px] bg-[#0A0F24]"
+                          >
+                            <Image
+                              src={img}
+                              alt={`${project.title} screen ${i + 1}`}
+                              width={220}
+                              height={460}
+                              className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-300 block"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      /* 2 Phone Screens Side-by-Side */
+                      <div className="grid grid-cols-2 gap-2 sm:gap-2.5 w-full items-start">
+                        {project.cardScreenshots.slice(0, 2).map((img, i) => (
+                          <div
+                            key={i}
+                            className="relative w-full overflow-hidden rounded-[2px] bg-[#0A0F24]"
+                          >
+                            <Image
+                              src={img}
+                              alt={`${project.title} screen ${i + 1}`}
+                              width={320}
+                              height={640}
+                              className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-300 block"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  ) : (
+                    /* 1 Screenshot (Single screenshot or default website/software) */
+                    <div className="relative w-full overflow-hidden rounded-[2px] bg-[#0A0F24]">
+                      <Image
+                        src={
+                          project.cardScreenshots?.[0] || project.thumbnail
+                        }
+                        alt={project.title}
+                        width={600}
+                        height={1200}
+                        className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-300 block"
+                        priority={false}
+                      />
+                    </div>
+                  )}
 
                   {/* Title Inside Card at Bottom (18px Regular Almarai Font) */}
                   <h3 className="font-almarai font-normal text-[18px] text-[var(--ink)] mt-4 text-left leading-snug group-hover:text-[#FEC163] transition-colors">

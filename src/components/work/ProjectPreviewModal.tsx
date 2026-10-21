@@ -43,7 +43,9 @@ export default function ProjectPreviewModal({
 
   // Ensure 5 thumbnails exist for the vertical strip matching Figma
   const baseGallery =
-    project.gallery && project.gallery.length > 0
+    project.cardScreenshots && project.cardScreenshots.length > 0
+      ? project.cardScreenshots
+      : project.gallery && project.gallery.length > 0
       ? project.gallery
       : [project.thumbnail];
 

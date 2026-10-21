@@ -39,6 +39,8 @@ export interface WorkProject {
   tags: string[];
   thumbnail: string;
   gallery: string[];
+  // ── Multi-Screenshot Option per Card (1, 2, or 3 images) ──
+  cardScreenshots?: string[];
   year: string;
   client: string;
   // ── Crucial Conditional Logic ──
@@ -293,9 +295,15 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["EdTech", "Mobile iOS & Android", "Student UX"],
     thumbnail: "/assets/work/app/01_student_home 2.png",
+    cardScreenshots: [
+      "/assets/work/app/01_student_home 2.png",
+      "/assets/work/app/02_00_lessons 2.png",
+      "/assets/work/app/04_02_contest_individual 2.png",
+    ],
     gallery: [
       "/assets/work/app/01_student_home 2.png",
       "/assets/work/app/02_00_lessons 2.png",
+      "/assets/work/app/04_02_contest_individual 2.png",
     ],
     year: "2024",
     client: "EduPulse Academy",
@@ -315,9 +323,14 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["EdTech", "Mobile App", "Gamified Learning"],
     thumbnail: "/assets/work/app/02_00_lessons 2.png",
+    cardScreenshots: [
+      "/assets/work/app/04_Courses 1.png",
+      "/assets/work/app/05_Course Details - Content 1.png",
+    ],
     gallery: [
       "/assets/work/app/02_00_lessons 2.png",
       "/assets/work/app/04_Courses 1.png",
+      "/assets/work/app/05_Course Details - Content 1.png",
     ],
     year: "2024",
     client: "SkillForge Learning",
@@ -337,9 +350,15 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["HealthTech", "Biometric Sync", "Mobile iOS", "Medical Device UX"],
     thumbnail: "/assets/work/app/14_Home_CGM 1.png",
+    cardScreenshots: [
+      "/assets/work/app/09_BG_Meter 1.png",
+      "/assets/work/app/14_Home_CGM 1.png",
+      "/assets/work/app/10_SyncDevice 1.png",
+    ],
     gallery: [
       "/assets/work/app/14_Home_CGM 1.png",
       "/assets/work/app/09_BG_Meter 1.png",
+      "/assets/work/app/10_SyncDevice 1.png",
     ],
     year: "2024",
     client: "GlucoTrack Care",
@@ -359,6 +378,10 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["Health & Fitness", "Nutrition", "Mobile UI", "Daily Logging"],
     thumbnail: "/assets/work/app/15_Home_Exercise+Food 1.png",
+    cardScreenshots: [
+      "/assets/work/app/15_Home_Exercise+Food 1.png",
+      "/assets/work/app/20_Profile_Dietary 1.png",
+    ],
     gallery: [
       "/assets/work/app/15_Home_Exercise+Food 1.png",
       "/assets/work/app/20_Profile_Dietary 1.png",
@@ -381,9 +404,15 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["Mobile iOS & Android", "HealthTech", "E-Commerce", "Design System"],
     thumbnail: "/assets/work/app/16_Reports_Overview 1.png",
+    cardScreenshots: [
+      "/assets/work/app/16_Reports_Overview 1.png",
+      "/assets/work/app/18_Reports_Logbook 1.png",
+      "/assets/work/app/21_Profile_Diabetes 1.png",
+    ],
     gallery: [
       "/assets/work/app/16_Reports_Overview 1.png",
       "/assets/work/app/18_Reports_Logbook 1.png",
+      "/assets/work/app/21_Profile_Diabetes 1.png",
     ],
     year: "2024",
     client: "Aamar Pharma",
@@ -427,6 +456,10 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["CRM", "Field Agent", "Enterprise Mobile", "Offline Sync"],
     thumbnail: "/assets/work/app/Customer List 1.png",
+    cardScreenshots: [
+      "/assets/work/app/Customer List 1.png",
+      "/assets/work/app/view task or project 1.png",
+    ],
     gallery: [
       "/assets/work/app/Customer List 1.png",
       "/assets/work/app/view task or project 1.png",
@@ -449,9 +482,12 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["Fintech", "Mobile Wallet", "QR Payment", "Design System"],
     thumbnail: "/assets/work/app/Home 5.png",
+    cardScreenshots: [
+      "/assets/work/app/Home 5.png",
+    ],
     gallery: [
       "/assets/work/app/Home 5.png",
-      "/assets/work/app/chat - all (homescre (1) 2.png",
+      "/assets/work/app/chat – all (homescre (1) 2.png",
     ],
     year: "2024",
     client: "FinPay Mobile",
@@ -471,6 +507,10 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["Growth Marketing", "Campaign Analytics", "Mobile UI"],
     thumbnail: "/assets/work/app/Campaign Details-1 1.png",
+    cardScreenshots: [
+      "/assets/work/app/Campaign Details-1 1.png",
+      "/assets/work/app/view event - invited 1.png",
+    ],
     gallery: [
       "/assets/work/app/Campaign Details-1 1.png",
       "/assets/work/app/view event - invited 1.png",
@@ -493,9 +533,15 @@ export const WORK_PROJECTS: WorkProject[] = [
     discipline: "ux",
     tags: ["Mental Health", "Mindfulness", "Gamification", "UX Design"],
     thumbnail: "/assets/work/app/CONTINUE.png",
+    cardScreenshots: [
+      "/assets/work/app/CONTINUE.png",
+      "/assets/work/app/SPIN THE WHEEL.png",
+      "/assets/work/app/07_Course Details - Certification 1.png",
+    ],
     gallery: [
       "/assets/work/app/CONTINUE.png",
       "/assets/work/app/SPIN THE WHEEL.png",
+      "/assets/work/app/07_Course Details - Certification 1.png",
     ],
     year: "2024",
     client: "Me+ Telemedicine",
