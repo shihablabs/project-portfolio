@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useActiveSection } from "@/context/ActiveSectionContext";
 
 interface NavItem {
@@ -173,30 +174,26 @@ function SunIcon({ isActive }: { isActive: boolean }) {
 }
 
 export default function Sidebar({ defaultActive }: { defaultActive?: string } = {}) {
+  const pathname = usePathname();
   const { activeSection } = useActiveSection();
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState(defaultActive || activeSection || "home");
 
-  useEffect(() => {
-    const saved = localStorage.getItem("sejuti-theme") as
-      | "light"
-      | "dark"
-      | null;
-    if (saved) {
-      applyTheme(saved);
-    } else {
-      applyTheme("light");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (defaultActive) {
-      setActive(defaultActive);
-    } else if (activeSection) {
-      setActive(activeSection);
-    }
-  }, [defaultActive, activeSection]);
+  // Synchronously compute active navigation item from pathname or activeSection
+  let active = activeSection || "home";
+  if (defaultActive) {
+    active = defaultActive;
+  } else if (pathname?.startsWith("/about")) {
+    active = "about";
+  } else if (pathname?.startsWith("/work")) {
+    active = "work";
+  } else if (pathname?.startsWith("/blogs")) {
+    active = "blogs";
+  } else if (pathname?.startsWith("/contact")) {
+    active = "contact";
+  } else if (pathname === "/") {
+    active = activeSection || "home";
+  }
 
   // Prevent body scrolling when mobile drawer is open
   useEffect(() => {

@@ -29,7 +29,7 @@ export default function BlogsPage() {
       {/* ── Main Canvas Grid (max-w-[1440px] centered on 2K/4K) ── */}
       <div className="w-full max-w-[1440px] mx-auto flex-1 relative">
         {/* Unmodified shared Sidebar */}
-        <Sidebar />
+        <Sidebar defaultActive="blogs" />
 
         <main className="w-full lg:pl-[var(--sidebar-w)] pt-14 lg:pt-0">
           <BlogPageView />

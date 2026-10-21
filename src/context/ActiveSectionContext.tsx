@@ -8,6 +8,8 @@ import React, {
   useCallback,
 } from "react";
 
+import { usePathname } from "next/navigation";
+
 interface ActiveSectionContextType {
   activeSection: string;
   setActiveSection: (id: string) => void;
@@ -25,74 +27,80 @@ export function ActiveSectionProvider({
   children: React.ReactNode;
   defaultActive?: string;
 }) {
-  const [activeSection, setActiveSection] = useState<string>(
-    defaultActive || "home"
-  );
+  const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState<string>(() => {
+    if (defaultActive) return defaultActive;
+    if (pathname?.startsWith("/about")) return "about";
+    if (pathname?.startsWith("/work")) return "work";
+    if (pathname?.startsWith("/blogs")) return "blogs";
+    if (pathname?.startsWith("/contact")) return "contact";
+    return "home";
+  });
 
   const determineActiveSection = useCallback(() => {
     if (typeof window === "undefined") return;
 
-    // Dedicated subpages check
-    const path = window.location.pathname;
-    if (path.startsWith("/work")) {
-      setActiveSection("work");
-      return;
-    }
-    if (path.startsWith("/blogs")) {
-      setActiveSection("blogs");
-      return;
-    }
-    if (path.startsWith("/about")) {
-      setActiveSection("about");
-      return;
-    }
-    if (path.startsWith("/contact")) {
-      setActiveSection("contact");
-      return;
-    }
-
     // Home page scroll spy
     const scrollY = window.scrollY;
 
-    // Near top of page -> Hero
+    // 1. Near top of page -> Hero
     if (scrollY < 150) {
       setActiveSection("home");
       return;
     }
 
-    // Near bottom of page -> Contact
+    // 2. Near bottom of page -> Contact
     const scrollBottom = window.innerHeight + Math.round(scrollY);
     const docHeight = document.documentElement.scrollHeight;
-    if (scrollBottom >= docHeight - 60) {
+    if (scrollBottom >= docHeight - 80) {
       setActiveSection("contact");
       return;
     }
 
-    // Trigger line at 35% down the viewport (natural user focus level)
-    const triggerY = scrollY + window.innerHeight * 0.35;
-    const sections = ["contact", "blogs", "work", "about"];
+    // 3. Middle sections: check viewport intersection at 40% height
+    const triggerLine = window.innerHeight * 0.4;
+    const sections = ["about", "work", "blogs", "contact"];
 
     for (const id of sections) {
       const el = document.getElementById(id);
       if (el) {
-        const top = el.offsetTop;
-        if (triggerY >= top) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= triggerLine && rect.bottom > triggerLine) {
           setActiveSection(id);
           return;
         }
       }
     }
 
-    setActiveSection("home");
+    // 4. Fallback if before first section
+    const aboutEl = document.getElementById("about");
+    if (aboutEl) {
+      const aboutRect = aboutEl.getBoundingClientRect();
+      if (aboutRect.top > triggerLine) {
+        setActiveSection("home");
+        return;
+      }
+    }
   }, []);
 
   useEffect(() => {
-    if (defaultActive) {
-      setActiveSection(defaultActive);
+    // If not on Home page, set activeSection strictly based on pathname
+    if (pathname && pathname !== "/") {
+      if (pathname.startsWith("/about")) {
+        setActiveSection("about");
+      } else if (pathname.startsWith("/work")) {
+        setActiveSection("work");
+      } else if (pathname.startsWith("/blogs")) {
+        setActiveSection("blogs");
+      } else if (pathname.startsWith("/contact")) {
+        setActiveSection("contact");
+      }
       return;
     }
 
+    // If on Home page, immediately evaluate and attach scroll spy
     determineActiveSection();
+
     window.addEventListener("scroll", determineActiveSection, {
       passive: true,
     });
@@ -104,7 +112,7 @@ export function ActiveSectionProvider({
       window.removeEventListener("scroll", determineActiveSection);
       window.removeEventListener("resize", determineActiveSection);
     };
-  }, [defaultActive, determineActiveSection]);
+  }, [pathname, determineActiveSection]);
 
   return (
     <ActiveSectionContext.Provider
