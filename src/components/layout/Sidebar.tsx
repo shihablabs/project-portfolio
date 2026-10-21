@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useActiveSection } from "@/context/ActiveSectionContext";
 
 interface NavItem {
   id: string;
@@ -172,9 +173,10 @@ function SunIcon({ isActive }: { isActive: boolean }) {
 }
 
 export default function Sidebar({ defaultActive }: { defaultActive?: string } = {}) {
+  const { activeSection } = useActiveSection();
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [active, setActive] = useState(defaultActive || "home");
+  const [active, setActive] = useState(defaultActive || activeSection || "home");
 
   useEffect(() => {
     const saved = localStorage.getItem("sejuti-theme") as
@@ -191,41 +193,10 @@ export default function Sidebar({ defaultActive }: { defaultActive?: string } = 
   useEffect(() => {
     if (defaultActive) {
       setActive(defaultActive);
-      return;
+    } else if (activeSection) {
+      setActive(activeSection);
     }
-    if (typeof window !== "undefined") {
-      if (window.location.pathname.startsWith("/work")) {
-        setActive("work");
-        return;
-      }
-      if (window.location.pathname.startsWith("/blogs")) {
-        setActive("blogs");
-        return;
-      }
-      if (window.location.pathname.startsWith("/about")) {
-        setActive("about");
-        return;
-      }
-      if (window.location.pathname.startsWith("/contact")) {
-        setActive("contact");
-        return;
-      }
-    }
-
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 200;
-      for (const item of [...NAV_ITEMS].reverse()) {
-        const el = document.getElementById(item.id);
-        if (el && el.offsetTop <= scrollPos) {
-          setActive(item.id);
-          break;
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [defaultActive]);
+  }, [defaultActive, activeSection]);
 
   // Prevent body scrolling when mobile drawer is open
   useEffect(() => {

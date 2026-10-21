@@ -1,5 +1,8 @@
 "use client";
 
+import React from "react";
+import { useActiveSection } from "@/context/ActiveSectionContext";
+
 interface SectionBadgeProps {
   num: string;
   label: string;
@@ -7,13 +10,35 @@ interface SectionBadgeProps {
   isFilled?: boolean;
 }
 
-// Reusable section badge
+// Reusable section badge with dynamic outline-to-fill transition on active section
 export default function SectionBadge({
   num,
   label,
   className = "",
-  isFilled = false,
+  isFilled,
 }: SectionBadgeProps) {
+  const { activeSection } = useActiveSection();
+
+  // If isFilled is explicitly provided, use it.
+  // Otherwise, automatically check if this section is the active one!
+  const normalizedLabel = label.toLowerCase();
+  const isActiveSection =
+    activeSection === "about" &&
+    (normalizedLabel.includes("about") || num === "01")
+      ? true
+      : activeSection === "work" &&
+        (normalizedLabel.includes("work") || num === "02")
+      ? true
+      : activeSection === "blogs" &&
+        (normalizedLabel.includes("blog") || num === "03")
+      ? true
+      : activeSection === "contact" &&
+        (normalizedLabel.includes("contact") || num === "04")
+      ? true
+      : false;
+
+  const filled = isFilled !== undefined ? isFilled : isActiveSection;
+
   // Break on <br>, \n or automatically break "DESIGN APPROACH"
   const rawLabel =
     label === "DESIGN APPROACH" ? "DESIGN\nAPPROACH" : label;
@@ -69,29 +94,33 @@ export default function SectionBadge({
           textAnchor="middle"
           fill="none"
           stroke="#DE4313"
-          strokeOpacity="0.4"
+          strokeOpacity={filled ? "0.65" : "0.35"}
           strokeWidth="1.5"
           fontFamily="var(--font-concert-one), cursive"
           fontSize="140"
           letterSpacing="0.02em"
+          style={{ transition: "stroke-opacity 0.4s ease" }}
         >
           {num}
         </text>
 
-        {/* Crisp Almarai text: 48px/42px lightline - perfectly centered */}
+        {/* Crisp Almarai text: 48px/42px - Smooth outline-to-fill transition */}
         {lines.map((line, idx) => (
           <text
             key={idx}
             x={centerX}
             y={isMultiLine ? 152 + idx * 42 : 158}
             textAnchor="middle"
-            fill={isFilled ? `url(#${labelGradId})` : "none"}
-            stroke={isFilled ? "none" : `url(#${labelGradId})`}
-            strokeWidth={isFilled ? "0" : "1.5"}
+            fill={filled ? `url(#${labelGradId})` : "transparent"}
+            stroke={`url(#${labelGradId})`}
+            strokeWidth={filled ? "0.5" : "1.5"}
             fontFamily="var(--font-almarai), sans-serif"
             fontWeight="700"
             fontSize={isMultiLine ? "42" : "48"}
             letterSpacing="0"
+            style={{
+              transition: "fill 0.4s ease, stroke-width 0.4s ease",
+            }}
           >
             {line}
           </text>

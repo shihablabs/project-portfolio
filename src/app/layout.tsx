@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Almarai, Merriweather, Concert_One } from "next/font/google";
 import { LoaderProvider } from "@/context/LoaderContext";
+import { ActiveSectionProvider } from "@/context/ActiveSectionContext";
 import SiteLoader from "@/components/ui/SiteLoader";
 import "./globals.css";
 
@@ -68,7 +69,7 @@ export default function RootLayout({
         <LoaderProvider>
           {/* Global Site Loader (Transparent BG, Static Logo, 360deg Spinning Gradient Border) */}
           <SiteLoader />
-          {children}
+          <ActiveSectionProvider>{children}</ActiveSectionProvider>
         </LoaderProvider>
       </body>
     </html>
