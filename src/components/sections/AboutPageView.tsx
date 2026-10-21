@@ -197,7 +197,7 @@ export default function AboutPageView() {
 
         {/* Left Hero Content Layer */}
         <div className="relative z-10 w-full max-w-[600px] lg:max-w-[650px] flex flex-col justify-center space-y-4 sm:space-y-5">
-          <h1 className="font-almarai sm:font-dm font-extrabold uppercase text-4xl sm:text-5xl lg:text-[56px] tracking-tight leading-none text-[rgba(255,247,231,1)]">
+          <h1 className="font-almarai sm:font-dm font-extrabold uppercase text-4xl sm:text-5xl lg:text-[56px] tracking-tight leading-none text-[var(--ink)]">
             SEJUTI
           </h1>
 
@@ -228,7 +228,8 @@ export default function AboutPageView() {
               onClick={playAudio}
               type="button"
               aria-label="Listen to pronunciation of Sejuti"
-              className="text-[#DE4313] hover:text-[#FEC163] transition-transform hover:scale-110 cursor-pointer ml-1"
+              className="text-[#DE4313] hover:text-[#FEC163] transition-transform hover:scale-110 cursor-pointer ml-1 focus:outline-none focus:ring-0"
+              style={{ outline: "none" }}
               title="Pronounce Sejuti"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -256,7 +257,7 @@ export default function AboutPageView() {
           </div>
 
           {/* Meaning & Essence */}
-          <div className="space-y-1 font-dm text-xs sm:text-[13.5px] text-[rgba(255,247,231,0.78)] leading-[1.65] max-w-lg">
+          <div className="space-y-1 font-dm text-xs sm:text-[13.5px] text-[var(--ink-78)] leading-[1.65] max-w-lg">
             <p>
               (Bengali) - evening light or lamp, light of the sunset, twilight.
             </p>
@@ -290,17 +291,24 @@ export default function AboutPageView() {
       </div>
 
       {/* ── 02. STICKY SUB-NAVIGATION BAR (Top sticky on scroll) ── */}
-      <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-3 pb-2 select-none mb-12">
-        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 items-center text-center font-dm font-bold text-xs sm:text-sm tracking-wider uppercase">
+      <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-2 pb-1 select-none mb-12 border-b border-[#DE4313]/20">
+        <div className="w-full flex items-center justify-between sm:justify-center gap-2 sm:gap-6 lg:gap-10 overflow-x-auto no-scrollbar font-dm text-xs sm:text-sm tracking-wider uppercase px-2">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
+                type="button"
                 onClick={() => scrollToSection(tab.id)}
-                className={`group flex items-center justify-center gap-2 sm:gap-2.5 py-3 transition-opacity cursor-pointer ${
-                  isActive ? "opacity-100" : "opacity-75 hover:opacity-100"
+                className={`group relative shrink-0 flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-4 py-3 transition-all duration-200 cursor-pointer select-none focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none ring-0 ${
+                  isActive
+                    ? "font-bold text-[#DE4313]"
+                    : "font-semibold text-[var(--ink-64)] hover:text-[var(--ink)]"
                 }`}
+                style={{
+                  outline: "none",
+                  WebkitTapHighlightColor: "transparent",
+                }}
               >
                 {/* Sparkle icon before */}
                 <svg
@@ -308,7 +316,11 @@ export default function AboutPageView() {
                   height="10"
                   viewBox="0 0 10 10"
                   fill="none"
-                  className="flex-shrink-0"
+                  className={`flex-shrink-0 transition-opacity ${
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-40 group-hover:opacity-80"
+                  }`}
                 >
                   <path
                     d="M5 0L6.2 3.8L10 5L6.2 6.2L5 10L3.8 6.2L0 5L3.8 3.8L5 0Z"
@@ -318,11 +330,17 @@ export default function AboutPageView() {
 
                 {/* Tab Label */}
                 <span
-                  className="text-transparent bg-clip-text"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
-                  }}
+                  className={
+                    isActive ? "text-transparent bg-clip-text" : "text-inherit"
+                  }
+                  style={
+                    isActive
+                      ? {
+                          backgroundImage:
+                            "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+                        }
+                      : undefined
+                  }
                 >
                   {tab.label}
                 </span>
@@ -333,28 +351,32 @@ export default function AboutPageView() {
                   height="10"
                   viewBox="0 0 10 10"
                   fill="none"
-                  className="flex-shrink-0"
+                  className={`flex-shrink-0 transition-opacity ${
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-40 group-hover:opacity-80"
+                  }`}
                 >
                   <path
                     d="M5 0L6.2 3.8L10 5L6.2 6.2L5 10L3.8 6.2L0 5L3.8 3.8L5 0Z"
                     fill="url(#aboutSparkleGrad)"
                   />
                 </svg>
+
+                {/* Active Indicator Underline directly on active tab */}
+                {isActive && (
+                  <div
+                    className="absolute bottom-0 left-2 right-2 h-[2.5px] rounded-full"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #DE4313 0%, #FEC163 100%)",
+                      boxShadow: "0px 0px 8px rgba(222, 67, 19, 0.6)",
+                    }}
+                  />
+                )}
               </button>
             );
           })}
-        </div>
-
-        {/* Track Line and Active Indicator Slider */}
-        <div className="relative w-full h-[1.5px] bg-[#DE4313]/30 mt-1">
-          <div
-            className="absolute top-0 h-[3px] -translate-y-[0.75px] transition-all duration-300"
-            style={{
-              width: "25%",
-              left: `${TABS.findIndex((t) => t.id === activeTab) * 25}%`,
-              background: "linear-gradient(90deg, #DE4313 0%, #FEC163 100%)",
-            }}
-          />
         </div>
       </div>
 
@@ -370,7 +392,7 @@ export default function AboutPageView() {
               <h2 className="font-almarai text-2xl sm:text-3xl lg:text-[32px] font-bold text-[var(--ink)] leading-snug">
                 A Quiet Visionary
               </h2>
-              <p className="font-almarai text-sm sm:text-base text-[rgba(255,247,231,0.85)] leading-relaxed">
+              <p className="font-almarai text-sm sm:text-base text-[var(--ink-78)] leading-relaxed">
                 Being an UX &amp; UI designer feels like a natural extension of
                 who I am — a space where I get to merge my tech roots with
                 creative instincts. I see UX everywhere, finding inspiration in
@@ -457,7 +479,7 @@ export default function AboutPageView() {
               <h2 className="font-almarai text-2xl sm:text-3xl lg:text-[32px] font-bold text-[var(--ink)] leading-snug">
                 Education &amp; Experience
               </h2>
-              <p className="font-almarai text-sm sm:text-base text-[rgba(255,247,231,0.85)] leading-relaxed">
+              <p className="font-almarai text-sm sm:text-base text-[var(--ink-78)] leading-relaxed">
                 With a background in IT, I stumbled upon UX/UI design while
                 watching how digital products take shape. What intrigued me most
                 was how every experience is first imagined, planned, and
@@ -483,6 +505,24 @@ export default function AboutPageView() {
                   className="w-[144px] h-[636px] object-contain block"
                 />
               </div>
+
+              {/* High-Contrast Crisp Circle Overlays for Nodes (2016, 2017, 2018, 2023) */}
+              {[
+                { year: "2016", top: 176 },
+                { year: "2017", top: 296 },
+                { year: "2018", top: 416 },
+                { year: "2023", top: 536 },
+              ].map((node) => (
+                <div
+                  key={node.year}
+                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-[68px] h-[68px] rounded-full flex items-center justify-center bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] pointer-events-none z-[1] select-none shadow-sm"
+                  style={{ top: `${node.top}px` }}
+                >
+                  <span className="font-dm font-bold text-sm sm:text-base text-[var(--ink)] tracking-wider">
+                    {node.year}
+                  </span>
+                </div>
+              ))}
 
               {/* 5 Milestones Aligned to Circle Nodes (Each step is exactly 120px) */}
               {[
@@ -536,7 +576,7 @@ export default function AboutPageView() {
                 return (
                   <div
                     key={item.year}
-                    className={`absolute space-y-1 ${
+                    className={`absolute space-y-1.5 z-10 ${
                       isLeft
                         ? "right-[calc(50%+85px)] left-0 text-right flex flex-col items-end"
                         : "left-[calc(50%+85px)] right-0 text-left"
@@ -544,9 +584,9 @@ export default function AboutPageView() {
                     style={{ top: `${item.top}px` }}
                   >
                     <span
-                      className="inline-block px-3 py-0.5 rounded-full text-[13px] font-normal border border-[#DE4313] text-[rgba(255,247,231,0.85)]"
+                      className="inline-block px-3 py-0.5 rounded-full text-[13px] font-medium border border-[#DE4313] text-[var(--ink)] bg-[var(--bg)] card-badge-bg"
                       style={{
-                        boxShadow: "0px 0px 4px 0px rgba(228, 93, 35, 1)",
+                        boxShadow: "0px 0px 4px 0px rgba(228, 93, 35, 0.4)",
                       }}
                     >
                       {item.date}
@@ -555,7 +595,7 @@ export default function AboutPageView() {
                       {item.role}
                     </h4>
                     <p
-                      className="font-dm font-normal text-xs sm:text-[13px] text-transparent bg-clip-text"
+                      className="font-dm font-semibold text-xs sm:text-[13px] text-transparent bg-clip-text"
                       style={{
                         backgroundImage:
                           "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
@@ -563,7 +603,7 @@ export default function AboutPageView() {
                     >
                       {item.org}
                     </p>
-                    <p className="font-dm font-normal text-xs sm:text-[13px] leading-[1.55] text-[rgba(255,247,231,0.78)] max-w-sm lg:max-w-[400px]">
+                    <p className="font-dm font-normal text-xs sm:text-[13.5px] leading-[1.6] text-[var(--ink-78)] max-w-sm lg:max-w-[400px]">
                       {item.desc}
                     </p>
                   </div>
@@ -612,21 +652,26 @@ export default function AboutPageView() {
               ].map((item) => (
                 <div
                   key={item.year}
-                  className="p-4 sm:p-5 border border-[#DE4313]/60 rounded-lg space-y-1.5 bg-[#0A0F24]/40"
+                  className="p-4 sm:p-5 border border-[#DE4313]/50 rounded-xl space-y-2 bg-[var(--bg)] card-badge-bg shadow-sm"
                 >
-                  <span
-                    className="inline-block px-3 py-0.5 rounded-full text-xs font-normal border border-[#DE4313] text-[rgba(255,247,231,0.85)]"
-                    style={{
-                      boxShadow: "0px 0px 4px 0px rgba(228, 93, 35, 1)",
-                    }}
-                  >
-                    {item.date}
-                  </span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className="inline-block px-3 py-0.5 rounded-full text-xs font-medium border border-[#DE4313] text-[var(--ink)] bg-[var(--bg)] card-badge-bg"
+                      style={{
+                        boxShadow: "0px 0px 4px 0px rgba(228, 93, 35, 0.35)",
+                      }}
+                    >
+                      {item.date}
+                    </span>
+                    <span className="font-dm font-bold text-xs text-[#DE4313] px-2 py-0.5 rounded bg-[#DE4313]/10">
+                      {item.year}
+                    </span>
+                  </div>
                   <h4 className="font-dm font-bold text-sm sm:text-[15px] text-[var(--ink)] uppercase">
                     {item.role}
                   </h4>
                   <p
-                    className="font-dm font-normal text-xs sm:text-[13px] text-transparent bg-clip-text"
+                    className="font-dm font-semibold text-xs sm:text-[13px] text-transparent bg-clip-text"
                     style={{
                       backgroundImage:
                         "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
@@ -634,7 +679,7 @@ export default function AboutPageView() {
                   >
                     {item.org}
                   </p>
-                  <p className="font-dm font-normal text-xs sm:text-[13px] leading-relaxed text-[rgba(255,247,231,0.78)]">
+                  <p className="font-dm font-normal text-xs sm:text-[13px] leading-relaxed text-[var(--ink-78)]">
                     {item.desc}
                   </p>
                 </div>
@@ -750,7 +795,7 @@ export default function AboutPageView() {
               <h2 className="font-almarai text-2xl sm:text-3xl lg:text-[32px] font-bold text-[var(--ink)] leading-snug">
                 Fueled by Passion, Defined by Skill
               </h2>
-              <p className="font-almarai text-sm sm:text-base text-[rgba(255,247,231,0.85)] leading-relaxed">
+              <p className="font-almarai text-sm sm:text-base text-[var(--ink-78)] leading-relaxed">
                 My craft sits at the intersection of innate traits and acquired
                 capabilities. As a neurodivergent INFJ, I bring a balance of
                 paradoxical strengths that gives me a unique edge in UX/UI
@@ -842,7 +887,7 @@ export default function AboutPageView() {
               <h2 className="font-almarai text-2xl sm:text-3xl lg:text-[32px] font-bold text-[var(--ink)] leading-snug">
                 The pursuit of intentional design
               </h2>
-              <p className="font-almarai text-sm sm:text-base text-[rgba(255,247,231,0.85)] leading-relaxed">
+              <p className="font-almarai text-sm sm:text-base text-[var(--ink-78)] leading-relaxed">
                 I approach design as a way to solve problems elegantly. Every
                 project is driven by purpose and the goal of leaving things
                 better than I found them. It begins with understanding the
@@ -893,7 +938,7 @@ export default function AboutPageView() {
                   <h4 className="font-dm font-bold text-base sm:text-lg lg:text-xl uppercase tracking-wider text-[var(--ink)]">
                     MERAKI
                   </h4>
-                  <p className="font-dm text-xs sm:text-sm text-[rgba(255,247,231,0.8)] leading-relaxed max-w-xs">
+                  <p className="font-dm text-xs sm:text-sm text-[var(--ink-78)] leading-relaxed max-w-xs">
                     Designing with passion, devotion, and meticulous care,
                     ensuring the work is a true labor of love.
                   </p>
@@ -914,7 +959,7 @@ export default function AboutPageView() {
                   <h4 className="font-dm font-bold text-base sm:text-lg lg:text-xl uppercase tracking-wider text-[var(--ink)]">
                     SIMPLE YET SIGNIFICANT
                   </h4>
-                  <p className="font-dm text-xs sm:text-sm text-[rgba(255,247,231,0.8)] leading-relaxed max-w-xs">
+                  <p className="font-dm text-xs sm:text-sm text-[var(--ink-78)] leading-relaxed max-w-xs">
                     Striving for solutions that are radically clear and
                     effortless, yet possess maximum impact, utility, and lasting
                     value.

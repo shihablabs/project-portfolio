@@ -190,14 +190,14 @@ export default function BlogPageView() {
           {/* Left Hero Content Layer */}
           <div className="relative z-10 w-full max-w-[620px] lg:max-w-[700px] xl:max-w-[780px] flex flex-col justify-center space-y-1 sm:space-y-1">
             <h1
-              className="font-dm uppercase whitespace-nowrap text-[rgba(255,247,231,1)]"
+              className="font-dm uppercase whitespace-nowrap text-[var(--ink)]"
               style={{
                 fontFamily: "var(--font-dm-sans), sans-serif",
                 fontWeight: 600,
                 fontSize: "clamp(30px, 4.2vw, 72px)",
                 lineHeight: "100%",
                 letterSpacing: "0%",
-                color: "rgba(255, 247, 231, 1)",
+                color: "var(--ink)",
                 textShadow: "0px 0px 10px rgba(244, 115, 3, 0.25)",
                 filter: "drop-shadow(0px 0px 8px rgba(244, 115, 3, 0.35))",
               }}
@@ -215,7 +215,7 @@ export default function BlogPageView() {
               A Personal Archive
             </h2>
 
-            <p className="font-dm text-xs sm:text-[14px] text-[rgba(255,247,231,0.75)] leading-[1.65] mt-4 sm:mt-5 max-w-lg">
+            <p className="font-dm text-xs sm:text-[14px] text-[var(--ink-78)] leading-[1.65] mt-4 sm:mt-5 max-w-lg">
               Get notified when new posts are published.
               <br />
               Stay updated with fresh thoughts and ideas.

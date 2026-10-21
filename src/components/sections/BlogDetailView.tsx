@@ -94,7 +94,7 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
               {post.category}
             </span>
 
-            <p className="font-dm text-xs sm:text-sm text-[rgba(255,247,231,0.7)] mt-1.5">
+            <p className="font-dm text-xs sm:text-sm text-[var(--ink-64)] mt-1.5">
               Posted on{" "}
               <span
                 className="font-medium text-transparent bg-clip-text"
@@ -241,7 +241,7 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
         </div>
 
         {/* ── Article Content Area (Exact Copy from User Screenshot) ── */}
-        <div className="mt-8 sm:mt-12 space-y-6 font-dm text-[rgba(255,247,231,0.85)] text-sm sm:text-base leading-[1.75]">
+        <div className="mt-8 sm:mt-12 space-y-6 font-dm text-[var(--ink-78)] text-sm sm:text-base leading-[1.75]">
           <p>
             This post traces the road through day one — from discovering design
             beyond code, to taking the first steps into UX, learning through
@@ -258,7 +258,7 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
             toward becoming a UX/UI designer.
           </p>
 
-          <h2 className="font-dm font-bold text-2xl sm:text-3xl text-[rgba(255,247,231,1)] pt-4">
+          <h2 className="font-dm font-bold text-2xl sm:text-3xl text-[var(--ink)] pt-4">
             A Quiet Visionary
           </h2>
 
@@ -272,7 +272,7 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
             outlets outside work.
           </p>
 
-          <h2 className="font-dm font-bold text-2xl sm:text-3xl text-[rgba(255,247,231,1)] pt-4">
+          <h2 className="font-dm font-bold text-2xl sm:text-3xl text-[var(--ink)] pt-4">
             A Quiet Visionary
           </h2>
 
@@ -286,7 +286,7 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
             outlets outside work.
           </p>
 
-          <h3 className="font-dm font-bold text-sm sm:text-base uppercase tracking-wider text-[rgba(255,247,231,1)] pt-3">
+          <h3 className="font-dm font-bold text-sm sm:text-base uppercase tracking-wider text-[var(--ink)] pt-3">
             MERAKI
           </h3>
 
@@ -299,7 +299,7 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
             care, ensuring the work is a true labor of love.
           </p>
 
-          <h3 className="font-dm font-bold text-sm sm:text-base uppercase tracking-wider text-[rgba(255,247,231,1)] pt-3">
+          <h3 className="font-dm font-bold text-sm sm:text-base uppercase tracking-wider text-[var(--ink)] pt-3">
             MERAKI
           </h3>
 
