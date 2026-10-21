@@ -107,6 +107,8 @@ function CloseQuoteIcon() {
 
 // Testimonial card component
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   const cardBorderStyle = {
     border: "1.5px solid",
     borderImageSource:
@@ -117,7 +119,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div
       style={cardBorderStyle}
-      className="relative min-h-[500px] sm:min-h-[520px] flex flex-col justify-between pt-12 sm:pt-14 px-6 sm:px-10 pb-0"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsHovered((prev) => !prev)}
+      className="group relative min-h-[500px] sm:min-h-[520px] flex flex-col justify-between pt-12 sm:pt-14 px-6 sm:px-10 pb-0 cursor-pointer select-none overflow-hidden"
     >
       {/* Top notch mask: cleanly cuts the top border line behind logos */}
       <div
@@ -153,10 +158,16 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         }}
       />
 
-      {/* Card content layout */}
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-end flex-1">
-        {/* Author portrait with centered ellipse glow */}
-        <div className="md:col-span-5 flex justify-center items-end relative self-end">
+      {/* Card content layout (Default: Centered Quote Content | Hover: Author Photo on left + Quote on right) */}
+      <div className="relative z-10 w-full flex flex-col md:flex-row items-end justify-between gap-6 md:gap-8 flex-1 min-h-[380px] sm:min-h-[420px]">
+        {/* Left: Author portrait with centered ellipse glow (Hidden by default, slides in on hover) */}
+        <div
+          className={`transition-all duration-500 ease-out flex justify-center items-end relative self-end ${
+            isHovered
+              ? "w-full md:w-[42%] lg:w-[45%] opacity-100 translate-x-0 pointer-events-auto max-h-[420px] visible"
+              : "w-0 md:w-0 opacity-0 -translate-x-8 pointer-events-none overflow-hidden max-h-0 invisible"
+          } group-hover:w-full group-hover:md:w-[42%] group-hover:lg:w-[45%] group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto group-hover:max-h-[420px] group-hover:visible`}
+        >
           {/* Ellipse glow behind author */}
           <div
             aria-hidden="true"
@@ -172,28 +183,42 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           />
 
           {/* Author photo */}
-          <div className="relative z-10 w-[300px] sm:w-[350px] lg:w-[400px] h-[300px] sm:h-[350px] lg:h-[350px] flex items-end justify-center">
+          <div className="relative z-10 w-[280px] sm:w-[340px] lg:w-[380px] h-[280px] sm:h-[340px] lg:h-[360px] flex items-end justify-center">
             <Image
               key={testimonial.id}
               src={testimonial.avatar}
               alt={testimonial.author}
               width={400}
               height={400}
-              className="w-full h-full object-contain object-bottom transition-opacity duration-300"
+              className="w-full h-full object-contain object-bottom"
               priority
             />
           </div>
         </div>
 
-        {/* Testimonial quote and credentials */}
-        <div className="md:col-span-7 flex flex-col justify-center gap-6 pb-8 sm:pb-12 lg:pb-14 pt-4">
-          <p className="font-almarai italic text-base sm:text-lg lg:text-[22px] text-[#2BB3A3] leading-relaxed transition-opacity duration-300">
+        {/* Right / Center: Testimonial quote and credentials */}
+        <div
+          className={`transition-all duration-500 ease-out flex flex-col justify-center gap-6 pb-8 sm:pb-12 lg:pb-14 pt-4 self-center ${
+            isHovered
+              ? "w-full md:w-[58%] lg:w-[55%] text-left items-start"
+              : "w-full max-w-2xl lg:max-w-3xl mx-auto text-center items-center"
+          } group-hover:w-full group-hover:md:w-[58%] group-hover:lg:w-[55%] group-hover:text-left group-hover:items-start`}
+        >
+          <p
+            className={`font-almarai italic text-base sm:text-lg lg:text-[22px] text-[#2BB3A3] leading-relaxed transition-all duration-500 ${
+              isHovered ? "text-left" : "text-center"
+            } group-hover:text-left`}
+          >
             <OpenQuoteIcon />
             {testimonial.quote}
             <CloseQuoteIcon />
           </p>
 
-          <div>
+          <div
+            className={`transition-all duration-500 ${
+              isHovered ? "text-left" : "text-center"
+            } group-hover:text-left`}
+          >
             <h4 className="font-dm font-bold text-base sm:text-lg uppercase tracking-wider text-[var(--ink)] leading-snug">
               {testimonial.author}
             </h4>

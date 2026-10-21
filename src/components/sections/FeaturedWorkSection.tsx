@@ -105,6 +105,8 @@ function CaseStudyButton({ href, label }: { href: string; label: string }) {
 
 // Project showcase card
 function ProjectCard({ project }: { project: Project }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   const cardBorderStyle = {
     border: "1.5px solid",
     borderImageSource:
@@ -115,7 +117,10 @@ function ProjectCard({ project }: { project: Project }) {
   return (
     <div
       style={cardBorderStyle}
-      className="relative p-6 sm:p-10 pt-12 sm:pt-14 min-h-[460px] flex flex-col justify-between"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsHovered((prev) => !prev)}
+      className="group relative p-6 sm:p-10 pt-12 sm:pt-14 min-h-[480px] sm:min-h-[520px] flex flex-col justify-between overflow-hidden cursor-pointer select-none"
     >
       {/* Ambient background glow */}
       <div
@@ -151,10 +156,16 @@ function ProjectCard({ project }: { project: Project }) {
         />
       </div>
 
-      {/* Card content layout */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        {/* Left project details */}
-        <div className="lg:col-span-5 flex flex-col gap-5">
+      {/* Card content layout (Default: Centered Mockup | Hover: Content on left + Mockup on right) */}
+      <div className="relative z-10 w-full min-h-[380px] sm:min-h-[440px] flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 flex-1">
+        {/* Left project details (Hidden by default, slides in on hover) */}
+        <div
+          className={`transition-all duration-500 ease-out flex flex-col gap-4 sm:gap-5 ${
+            isHovered
+              ? "w-full lg:w-[46%] opacity-100 translate-x-0 pointer-events-auto max-h-[600px] visible"
+              : "w-0 lg:w-0 opacity-0 -translate-x-8 pointer-events-none max-h-0 overflow-hidden invisible"
+          } group-hover:w-full group-hover:lg:w-[46%] group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto group-hover:max-h-[600px] group-hover:visible`}
+        >
           <h4 className="font-dm font-bold text-base sm:text-lg uppercase tracking-wide text-[var(--ink)] leading-snug">
             {project.title}
           </h4>
@@ -176,7 +187,7 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
 
           {/* Case study link */}
-          <div className="pt-3">
+          <div className="pt-3" onClick={(e) => e.stopPropagation()}>
             <CaseStudyButton
               href={project.caseStudyUrl ?? `/work/${project.slug}`}
               label={`View ${project.client} case study`}
@@ -184,9 +195,21 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
         </div>
 
-        {/* Right mockup preview */}
-        <div className="lg:col-span-7 flex justify-center items-center relative">
-          <div className="relative w-full h-[280px] sm:h-[360px] lg:h-[420px]">
+        {/* Mockup preview (Centered by default, moves to right on hover) */}
+        <div
+          className={`transition-all duration-500 ease-out flex items-center justify-center ${
+            isHovered
+              ? "w-full lg:w-[54%] lg:justify-end"
+              : "w-full flex-1 justify-center mx-auto"
+          } group-hover:w-full group-hover:lg:w-[54%] group-hover:lg:justify-end`}
+        >
+          <div
+            className={`relative transition-all duration-500 ease-out ${
+              isHovered
+                ? "w-full h-[280px] sm:h-[360px] lg:h-[420px]"
+                : "w-full max-w-[580px] sm:max-w-[660px] lg:max-w-[720px] h-[300px] sm:h-[380px] lg:h-[440px] mx-auto"
+            } group-hover:w-full group-hover:h-[280px] group-hover:sm:h-[360px] group-hover:lg:h-[420px]`}
+          >
             <Image
               src={
                 project.coverImage ?? "/assets/projects/aamar-pharma-mockup.png"
