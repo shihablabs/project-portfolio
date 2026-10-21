@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /* ═══════════════════════════════════════════════════════
    FIGMA DESIGN TOKENS — design portfolio 2025
@@ -21,6 +22,7 @@
     --grad: linear-gradient(135deg, #fec163 0%, #de4313 96%);
     --card-border: #323232;
     --card-bg: #fff7e7;
+    --input-bg: #fff0d4;
     --sidebar-w: 160px;
     --hero-bg: #fff7e7;
     --bg-primary: var(--bg);
@@ -41,6 +43,7 @@
     --grad: linear-gradient(135deg, #fec163 0%, #de4313 96%);
     --card-border: rgba(255, 247, 231, 0.5);
     --card-bg: #101633;
+    --input-bg: #0a0f24;
     --hero-bg: #0a0f24;
     --bg-primary: var(--bg);
     --text-primary: var(--body-text);
@@ -291,16 +294,24 @@
 
 /* Contact Form Input Styles */
 .contact-input {
-  box-shadow: 0px 0px 4px 0px rgba(228, 93, 35, 1);
+  background-color: var(--input-bg);
+  color: var(--ink);
   border: 1.5px solid #DE4313;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  box-shadow: 0px 0px 4px 0px rgba(228, 93, 35, 0.35);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.contact-input:hover,
+.contact-input:hover {
+  border-color: #FEC163;
+  box-shadow: 0px 0px 6px 1px rgba(254, 193, 99, 0.55), 0px 0px 3px 0px rgba(222, 67, 19, 0.45);
+  outline: none;
+}
+
 .contact-input:focus {
-  border: 1.5px solid transparent;
-  border-image-source: linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%);
-  border-image-slice: 1;
+  border-color: #FEC163;
+  box-shadow: 0px 0px 8px 1px rgba(254, 193, 99, 0.65), 0px 0px 4px 0px rgba(222, 67, 19, 0.5);
   outline: none;
 }
 

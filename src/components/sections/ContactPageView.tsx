@@ -18,27 +18,33 @@ function ActionSparkleSubmitButton({
       disabled={loading}
       className="group inline-flex items-center cursor-pointer select-none border-0 bg-transparent p-0 disabled:opacity-60 transition-transform active:scale-95"
     >
-      <div className="relative w-18 h-18 sm:w-20 sm:h-20 flex items-center transition-transform duration-300 group-hover:scale-105">
-        <svg width="68" height="68" viewBox="0 0 52 58" fill="none">
-          {/* Notched outer ring with gap on the right */}
+      <div className="relative w-20 h-20 sm:w-22 sm:h-22 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+        <svg
+          width="78"
+          height="78"
+          viewBox="0 0 82 84"
+          fill="none"
+          className="overflow-visible"
+        >
+          {/* Notched outer ring with gap on the right (Radius = 37, Gap to icon = 37 - 20 = 17px) */}
           <path
-            d="M 46 44.5 A 25 25 0 1 1 46 13.5"
+            d="M 70 64 A 37 37 0 1 1 70 20"
             stroke="url(#contactSparkleGrad)"
             strokeWidth="1.8"
             strokeLinecap="round"
           />
-          {/* Inner filled circle */}
-          <circle cx="26" cy="29" r="17" fill="url(#contactSparkleGrad)" />
-          {/* Sparkle 4-point star */}
+          {/* Inner filled circle (Radius = 20, enlarged icon) */}
+          <circle cx="40" cy="42" r="20" fill="url(#contactSparkleGrad)" />
+          {/* Sparkle 4-point star (Enlarged proportionally) */}
           <path
-            d="M26 20L27.6 27.4L35 29L27.6 30.6L26 38L24.4 30.6L17 29L24.4 27.4L26 20Z"
+            d="M 40 30 L 42.2 39.8 L 52 42 L 42.2 44.2 L 40 54 L 37.8 44.2 L 28 42 L 37.8 39.8 Z"
             fill="#FFF7E7"
           />
         </svg>
       </div>
 
       <span
-        className="font-dm font-bold text-base sm:text-lg text-transparent bg-clip-text transition-all uppercase whitespace-nowrap -translate-x-5"
+        className="font-dm font-bold text-base sm:text-lg text-transparent bg-clip-text transition-all uppercase whitespace-nowrap -translate-x-3 sm:-translate-x-4"
         style={{
           backgroundImage:
             "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
@@ -207,7 +213,7 @@ export default function ContactPageView() {
                   Collaborate
                 </h1>
 
-                <p className="font-dm text-base lg:text-[18px] pt-3 text-[rgba(255,247,231,0.78)] leading-[1.65] max-w-sm lg:max-w-[420px]">
+                <p className="font-dm text-base lg:text-[18px] pt-3 text-[var(--body-text)] leading-[1.65] max-w-sm lg:max-w-[420px]">
                   Always open to creating something meaningful together. Please
                   feel free to reach out regarding project collaborations,
                   freelance assignments, or potential career opportunities.
@@ -215,7 +221,7 @@ export default function ContactPageView() {
               </div>
 
               {/* Contact Links */}
-              <div className="font-dm text-base lg:text-[18px] text-[rgba(255,247,231,0.78)] pt-1">
+              <div className="font-dm text-base lg:text-[18px] text-[var(--body-text)] pt-1">
                 <p className="p-0">
                   Call or Whatsapp at{" "}
                   <a
@@ -278,10 +284,10 @@ export default function ContactPageView() {
             <div className="lg:col-span-6 w-full flex justify-start lg:justify-end">
               <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-[440px] lg:max-w-[460px] space-y-4"
+                className="w-full max-w-[440px] lg:max-w-[460px] space-y-3.5"
               >
                 {/* 1. NAME */}
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label
                     htmlFor="name"
                     className="block font-dm font-bold text-xs lg:text-[13px] tracking-[0.1em] uppercase text-[#FEC163]"
@@ -295,14 +301,14 @@ export default function ContactPageView() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="contact-input w-full h-11 lg:h-12 px-4 rounded-[6px] bg-[#0A0F24] text-[var(--ink)] text-base lg:text-xl focus:outline-none transition-all"
+                    className="contact-input w-full h-10 px-3 sm:px-3.5 rounded-[6px] text-[var(--ink)] text-sm sm:text-base focus:outline-none transition-all"
                   />
                 </div>
 
                 {/* 2. EMAIL & PHONE (2 Columns Side by Side, No Placeholders) */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {/* Email */}
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     <label
                       htmlFor="email"
                       className="block font-dm font-bold text-xs lg:text-[13px] tracking-[0.1em] uppercase text-[#FEC163]"
@@ -316,12 +322,12 @@ export default function ContactPageView() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="contact-input w-full h-11 lg:h-12 px-4 rounded-[6px] bg-[#0A0F24] text-[var(--ink)] text-base lg:text-xl focus:outline-none transition-all"
+                      className="contact-input w-full h-10 px-3 sm:px-3.5 rounded-[6px] text-[var(--ink)] text-sm sm:text-base focus:outline-none transition-all"
                     />
                   </div>
 
                   {/* Phone */}
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     <label
                       htmlFor="phone"
                       className="block font-dm font-bold text-xs lg:text-[13px] tracking-[0.1em] uppercase text-[#FEC163]"
@@ -334,13 +340,13 @@ export default function ContactPageView() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="contact-input w-full h-11 lg:h-12 px-4 rounded-[6px] bg-[#0A0F24] text-[var(--ink)] text-base lg:text-xl focus:outline-none transition-all"
+                      className="contact-input w-full h-10 px-3 sm:px-3.5 rounded-[6px] text-[var(--ink)] text-sm sm:text-base focus:outline-none transition-all"
                     />
                   </div>
                 </div>
 
                 {/* 3. MESSAGE */}
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <label
                     htmlFor="message"
                     className="block font-dm font-bold text-xs lg:text-[13px] uppercase text-[#FEC163]"
@@ -354,7 +360,7 @@ export default function ContactPageView() {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="contact-input w-full h-24 lg:h-30 p-4 rounded-[6px] bg-[#0A0F24] text-[var(--ink)] text-base lg:text-xl focus:outline-none transition-all resize-none"
+                    className="contact-input w-full h-22 sm:h-24 p-2.5 sm:p-3 rounded-[6px] text-[var(--ink)] text-sm sm:text-base focus:outline-none transition-all resize-none"
                   />
                 </div>
 
