@@ -122,7 +122,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered((prev) => !prev)}
-      className="group relative min-h-[500px] sm:min-h-[520px] flex flex-col justify-between pt-12 sm:pt-14 px-6 sm:px-10 pb-0 cursor-pointer select-none overflow-hidden"
+      className="group relative min-h-[500px] sm:min-h-[520px] flex flex-col justify-between pt-12 sm:pt-14 px-6 sm:px-10 pb-0 cursor-pointer select-none"
     >
       {/* Top notch mask: cleanly cuts the top border line behind logos */}
       <div
@@ -159,7 +159,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       />
 
       {/* Card content layout (Default: Centered Quote Content | Hover: Author Photo on left + Quote on right) */}
-      <div className="relative z-10 w-full flex flex-col md:flex-row items-end justify-between gap-6 md:gap-8 flex-1 min-h-[380px] sm:min-h-[420px]">
+      <div className="relative z-10 w-full flex flex-col md:flex-row items-end justify-between gap-6 md:gap-8 flex-1 min-h-[380px] sm:min-h-[420px] overflow-hidden">
         {/* Left: Author portrait with centered ellipse glow (Hidden by default, slides in on hover) */}
         <div
           className={`transition-all duration-500 ease-out flex justify-center items-end relative self-end ${

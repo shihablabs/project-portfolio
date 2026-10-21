@@ -120,23 +120,25 @@ function ProjectCard({ project }: { project: Project }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsHovered((prev) => !prev)}
-      className="group relative p-6 sm:p-10 pt-12 sm:pt-14 min-h-[480px] sm:min-h-[520px] flex flex-col justify-between overflow-hidden cursor-pointer select-none"
+      className="group relative p-6 sm:p-10 pt-12 sm:pt-14 min-h-[480px] sm:min-h-[520px] flex flex-col justify-between cursor-pointer select-none"
     >
-      {/* Ambient background glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute rounded-full z-0"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(222, 67, 19, 0.22) 0%, rgba(222, 67, 19, 0) 70%)",
-          width: "420px",
-          height: "420px",
-          top: "20%",
-          right: "10%",
-          filter: "blur(80px)",
-          transform: "translateZ(0)",
-        }}
-      />
+      {/* Ambient background glow container clipped to card */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div
+          aria-hidden="true"
+          className="absolute rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(222, 67, 19, 0.22) 0%, rgba(222, 67, 19, 0) 70%)",
+            width: "420px",
+            height: "420px",
+            top: "20%",
+            right: "10%",
+            filter: "blur(80px)",
+            transform: "translateZ(0)",
+          }}
+        />
+      </div>
 
       {/* Top notch mask */}
       <div
@@ -157,7 +159,7 @@ function ProjectCard({ project }: { project: Project }) {
       </div>
 
       {/* Card content layout (Default: Centered Mockup | Hover: Content on left + Mockup on right) */}
-      <div className="relative z-10 w-full min-h-[380px] sm:min-h-[440px] flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 flex-1">
+      <div className="relative z-10 w-full min-h-[380px] sm:min-h-[440px] flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 flex-1 overflow-hidden">
         {/* Left project details (Hidden by default, slides in on hover) */}
         <div
           className={`transition-all duration-500 ease-out flex flex-col gap-4 sm:gap-5 ${
