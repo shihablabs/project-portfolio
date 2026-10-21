@@ -787,16 +787,124 @@ export default function AboutPageView() {
             </div>
           </div>
 
-          {/* Full Analytical & Creative Brain Infographic Matching Screenshot 4 */}
-          <div className="relative w-full max-w-5xl mx-auto py-4 flex items-center justify-center">
-            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[580px] overflow-hidden">
+          {/* ── Analytical & Creative Brain Infographic (Theme-aware inherited text) ── */}
+          <div className="relative w-full max-w-5xl mx-auto aspect-[2166/1230] flex items-center justify-center select-none overflow-hidden my-6">
+            {/* Center Vertical Dividing Line */}
+            <div
+              className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[1.5px] pointer-events-none"
+              style={{
+                background: "linear-gradient(180deg, #FEC163 0%, #DE4313 100%)",
+              }}
+            />
+
+            {/* Left Horizontal Dividing Line */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 left-0 w-[36%] h-[1.5px] pointer-events-none"
+              style={{
+                background: "linear-gradient(90deg, #FEC163 0%, #DE4313 100%)",
+              }}
+            />
+
+            {/* Right Horizontal Dividing Line */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 right-0 w-[36%] h-[1.5px] pointer-events-none"
+              style={{
+                background: "linear-gradient(90deg, #DE4313 0%, #FEC163 100%)",
+              }}
+            />
+
+            {/* Center Brain Graphic (Clean, transparent illustration) */}
+            <div className="relative z-10 w-[42%] h-[93%] flex items-center justify-center pointer-events-none">
               <Image
-                src="/assets/images/about-brain.png"
-                alt="Analytical vs Creative Brain UX Diagram"
+                src="/assets/about/expertise.png"
+                alt="Analytical and Creative Brain Graphic"
                 fill
-                className="object-contain"
+                className="object-contain block drop-shadow-md"
                 priority
               />
+            </div>
+
+            {/* ── 24 Expertise Skill & Mindset Labels (Inherits theme ink naturally) ── */}
+            <div className="absolute inset-0 pointer-events-none font-dm font-medium text-[9px] sm:text-xs md:text-sm lg:text-[14px] leading-none">
+              {/* Top-Left: UX & Product Skills */}
+              <span className="absolute top-[4.9%] left-[11.1%] whitespace-nowrap">
+                Interaction Design
+              </span>
+              <span className="absolute top-[15.4%] left-[21.2%] whitespace-nowrap">
+                Information Architecture
+              </span>
+              <span className="absolute top-[18.7%] left-[2.3%] whitespace-nowrap">
+                Wireframing
+              </span>
+              <span className="absolute top-[27.6%] left-[14.3%] whitespace-nowrap">
+                Prototyping
+              </span>
+              <span className="absolute top-[39.0%] left-[21.7%] whitespace-nowrap">
+                Usability Testing
+              </span>
+              <span className="absolute top-[42.3%] left-[4.2%] whitespace-nowrap">
+                User Research
+              </span>
+
+              {/* Bottom-Left: Analytical Mindset */}
+              <span className="absolute top-[56.9%] left-[12.9%] whitespace-nowrap">
+                Analytical
+              </span>
+              <span className="absolute top-[72.4%] left-[4.2%] whitespace-nowrap">
+                Orderly
+              </span>
+              <span className="absolute top-[74.8%] left-[18.0%] whitespace-nowrap">
+                Logical
+              </span>
+              <span className="absolute top-[83.7%] left-[28.2%] whitespace-nowrap">
+                Detail Oriented
+              </span>
+              <span className="absolute top-[90.2%] left-[5.5%] whitespace-nowrap">
+                Linear
+              </span>
+              <span className="absolute top-[95.1%] left-[18.5%] whitespace-nowrap">
+                Scientific
+              </span>
+
+              {/* Top-Right: Visual & Creative Skills */}
+              <span className="absolute top-[4.9%] left-[60.0%] whitespace-nowrap">
+                Visual Design
+              </span>
+              <span className="absolute top-[6.5%] left-[88.2%] whitespace-nowrap">
+                Typography
+              </span>
+              <span className="absolute top-[16.3%] left-[74.3%] whitespace-nowrap">
+                Color Theory
+              </span>
+              <span className="absolute top-[30.1%] left-[69.3%] whitespace-nowrap">
+                Design Systems
+              </span>
+              <span className="absolute top-[30.9%] left-[88.6%] whitespace-nowrap">
+                Layouts
+              </span>
+              <span className="absolute top-[42.3%] left-[78.5%] whitespace-nowrap">
+                Graphic Design
+              </span>
+
+              {/* Bottom-Right: Creative & Emotional Mindset */}
+              <span className="absolute top-[56.9%] left-[82.2%] whitespace-nowrap">
+                Imaginative
+              </span>
+              <span className="absolute top-[69.1%] left-[73.4%] whitespace-nowrap">
+                Emotional
+              </span>
+              <span className="absolute top-[79.7%] left-[81.3%] whitespace-nowrap">
+                Big Picture Thinker
+              </span>
+              <span className="absolute top-[80.5%] left-[65.6%] whitespace-nowrap">
+                Intuitive
+              </span>
+              <span className="absolute top-[90.2%] left-[74.8%] whitespace-nowrap">
+                Creative
+              </span>
+              <span className="absolute top-[95.1%] left-[58.6%] whitespace-nowrap">
+                Empathetic
+              </span>
             </div>
           </div>
 
