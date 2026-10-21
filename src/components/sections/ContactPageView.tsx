@@ -116,7 +116,7 @@ export default function ContactPageView() {
 
       <div className="w-full max-w-[1240px] mx-auto">
         {/* ── 01. CONTACT HERO CARD (Pixel-perfect Figma Layout) ── */}
-        <div className="relative w-full bg-transparent min-h-[500px] lg:min-h-[540px] flex items-center pt-12 sm:pt-14 lg:pt-16 pb-12 sm:pb-14 lg:pb-16 pl-6 sm:pl-10 lg:pl-16 pr-6 sm:pr-10 lg:pr-14">
+        <div className="relative w-full max-w-[1240px] mx-auto bg-transparent min-h-[500px] lg:min-h-[540px] flex items-center pt-[50px] lg:pt-[100px] pb-[40px] lg:pb-[60px] px-[40px] lg:px-[100px]">
           {/* Top horizontal border line (starts at 0,0 and stops before Contact) */}
           <div
             className="absolute top-0 left-0 right-[155px] sm:right-[180px] h-[1.5px] pointer-events-none"
@@ -207,7 +207,7 @@ export default function ContactPageView() {
                   Collaborate
                 </h1>
 
-                <p className="font-dm text-base lg:text-[18px] text-[rgba(255,247,231,0.78)] leading-[1.65] max-w-sm lg:max-w-[420px]">
+                <p className="font-dm text-base lg:text-[18px] pt-3 text-[rgba(255,247,231,0.78)] leading-[1.65] max-w-sm lg:max-w-[420px]">
                   Always open to creating something meaningful together. Please
                   feel free to reach out regarding project collaborations,
                   freelance assignments, or potential career opportunities.
@@ -215,8 +215,8 @@ export default function ContactPageView() {
               </div>
 
               {/* Contact Links */}
-              <div className="font-dm text-base lg:text-[18px] text-[rgba(255,247,231,0.78)] leading-[1.8] pt-1 space-y-1">
-                <p>
+              <div className="font-dm text-base lg:text-[18px] text-[rgba(255,247,231,0.78)] pt-1">
+                <p className="p-0">
                   Call or Whatsapp at{" "}
                   <a
                     href="tel:+8801822500959"
@@ -354,7 +354,7 @@ export default function ContactPageView() {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="contact-input w-full h-28 lg:h-36 p-4 rounded-[6px] bg-[#0A0F24] text-[var(--ink)] text-base lg:text-xl focus:outline-none transition-all resize-none"
+                    className="contact-input w-full h-24 lg:h-30 p-4 rounded-[6px] bg-[#0A0F24] text-[var(--ink)] text-base lg:text-xl focus:outline-none transition-all resize-none"
                   />
                 </div>
 
