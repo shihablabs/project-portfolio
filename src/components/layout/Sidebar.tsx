@@ -227,6 +227,39 @@ export default function Sidebar({ defaultActive }: { defaultActive?: string } = 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [defaultActive]);
 
+  // Prevent body scrolling when mobile drawer is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  // Close mobile drawer on ESC or on desktop resize
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && mobileOpen) {
+        setMobileOpen(false);
+      }
+    };
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && mobileOpen) {
+        setMobileOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mobileOpen]);
+
   const applyTheme = (t: "light" | "dark") => {
     setTheme(t);
     localStorage.setItem("sejuti-theme", t);
@@ -255,32 +288,46 @@ export default function Sidebar({ defaultActive }: { defaultActive?: string } = 
       </svg>
 
       {/* ─── Mobile Top Bar (<1024px) ─── */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-2.5 bg-[var(--bg)]/95 backdrop-blur-md">
-        <Link href="/#home" className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-[var(--accent)] shadow-sm">
-            <Image
-              src="/assets/icons/logo.svg"
-              alt="Sejuti"
-              width={40}
-              height={40}
-              className="w-full h-full object-cover"
-              priority
-            />
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 sm:h-16 flex items-center justify-between px-4 sm:px-6 bg-[var(--bg)]/95 backdrop-blur-md border-b border-[#DE4313]/20 shadow-sm transition-colors duration-200">
+        {/* Brand Logo & Name */}
+        <Link
+          href="/#home"
+          onClick={() => setMobileOpen(false)}
+          className="flex items-center gap-3 select-none"
+        >
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full p-[1.5px] bg-gradient-to-tr from-[#DE4313] to-[#FEC163] shadow-[0_0_10px_rgba(222,67,19,0.35)]">
+            <div className="w-full h-full rounded-full overflow-hidden bg-[var(--bg)] flex items-center justify-center">
+              <Image
+                src="/assets/icons/logo.svg"
+                alt="Sejuti"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover"
+                priority
+              />
+            </div>
           </div>
-          <span className="font-almarai font-extrabold tracking-[0.25em] text-sm text-[var(--ink)]">
-            SEJUTI
-          </span>
+          <div className="flex flex-col">
+            <span className="font-almarai font-extrabold tracking-[0.22em] text-xs sm:text-sm leading-tight text-[var(--ink)]">
+              SEJUTI
+            </span>
+            <span className="font-dm font-bold text-[8.5px] tracking-[0.18em] text-[#DE4313] uppercase">
+              Portfolio
+            </span>
+          </div>
         </Link>
 
-        <div className="flex items-center gap-3">
+        {/* Right Controls: Theme Switcher + Animated Hamburger Button */}
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Mobile Theme Switcher */}
           <button
+            type="button"
             onClick={toggle}
             style={{
               backgroundColor: theme === "light" ? "#FFF7E7" : "#0A0F24",
-              boxShadow: "0 0 4px 0 #E45D23",
+              boxShadow: "0 0 5px 0 rgba(228, 93, 35, 0.4)",
             }}
-            className="relative flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[#E45D23]/60 text-xs font-dm font-bold text-[var(--ink)] cursor-pointer overflow-hidden"
+            className="relative flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#E45D23]/70 text-xs font-dm font-bold text-[var(--ink)] cursor-pointer overflow-hidden transition-transform duration-200 active:scale-95"
             aria-label="Toggle dark/light mode"
           >
             {theme === "light" && (
@@ -309,67 +356,236 @@ export default function Sidebar({ defaultActive }: { defaultActive?: string } = 
             </div>
           </button>
 
-          {/* Hamburger toggle */}
+          {/* Animated Signature Hamburger Toggle */}
           <button
+            type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-9 h-9 flex items-center justify-center text-[var(--ink)] cursor-pointer"
-            aria-label="Toggle Navigation Menu"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-[1.5px] border-[#DE4313]/60 hover:border-[#FEC163] bg-[var(--bg)] flex items-center justify-center transition-all duration-300 cursor-pointer shadow-[0_0_12px_rgba(222,67,19,0.25)] active:scale-95"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
-            {mobileOpen ? (
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            ) : (
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            )}
+            <div className="w-4 sm:w-5 h-3.5 sm:h-4 flex flex-col justify-between items-center relative">
+              <span
+                className={`w-full h-[2px] rounded-full transition-all duration-300 transform origin-center ${
+                  mobileOpen
+                    ? "rotate-45 translate-y-[6px] sm:translate-y-[7px] bg-gradient-to-r from-[#FEC163] to-[#DE4313]"
+                    : "bg-[var(--ink)]"
+                }`}
+              />
+              <span
+                className={`w-3/4 h-[2px] rounded-full self-start transition-all duration-200 ${
+                  mobileOpen
+                    ? "opacity-0 -translate-x-2"
+                    : "bg-gradient-to-r from-[#FEC163] to-[#DE4313]"
+                }`}
+              />
+              <span
+                className={`w-full h-[2px] rounded-full transition-all duration-300 transform origin-center ${
+                  mobileOpen
+                    ? "-rotate-45 -translate-y-[6px] sm:-translate-y-[7px] bg-gradient-to-r from-[#FEC163] to-[#DE4313]"
+                    : "bg-[var(--ink)]"
+                }`}
+              />
+            </div>
           </button>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-[var(--bg)] pt-20 px-6 flex flex-col gap-4">
-          {NAV_ITEMS.map((item) => {
-            const isActive = active === item.id;
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center gap-4 py-3 border-b border-[var(--ink-32)] font-dm text-base tracking-wider ${
-                  isActive
-                    ? "font-black text-[var(--accent)]"
-                    : "font-normal text-[var(--ink)]"
-                }`}
-              >
-                <div className="w-6 h-6 flex items-center justify-center">
-                  <NavIcon id={item.id} isActive={isActive} />
+      {/* ─── Mobile Fullscreen Drawer Overlay (Theme-Harmonized) ─── */}
+      <div
+        className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 flex flex-col justify-between overflow-y-auto ${
+          mobileOpen
+            ? "opacity-100 pointer-events-auto visible"
+            : "opacity-0 pointer-events-none invisible"
+        }`}
+        style={{
+          backgroundColor: theme === "light" ? "#FFF7E7" : "#0A0F24",
+        }}
+      >
+        {/* Ambient Background Accents */}
+        {theme === "light" ? (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-repeat pointer-events-none opacity-25 z-0"
+            style={{ backgroundImage: 'url("/assets/bg-noise-tile.png")' }}
+          />
+        ) : (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div
+              className="absolute rounded-full"
+              style={{
+                background: "rgba(222, 67, 19, 0.35)",
+                filter: "blur(110px)",
+                width: "360px",
+                height: "360px",
+                top: "-40px",
+                right: "-60px",
+              }}
+            />
+            <div
+              className="absolute rounded-full"
+              style={{
+                background: "rgba(254, 193, 99, 0.2)",
+                filter: "blur(90px)",
+                width: "280px",
+                height: "280px",
+                bottom: "40px",
+                left: "-50px",
+              }}
+            />
+          </div>
+        )}
+
+        {/* Top Spacer & Navigation Links */}
+        <div className="relative z-10 pt-20 px-6 sm:px-8">
+          {/* Subtle Top Gradient Divider Line */}
+          <div
+            className="w-full h-[1.5px] mb-6"
+            style={{
+              background:
+                "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+            }}
+          />
+
+          {/* Navigation Links List */}
+          <nav className="flex flex-col space-y-1.5">
+            {NAV_ITEMS.map((item) => {
+              const isActive = active === item.id;
+              const isWork = item.id === "work";
+              return (
+                <div key={item.id} className="flex flex-col">
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`group flex items-center justify-between py-3 px-3 rounded-lg transition-all duration-200 ${
+                      isActive
+                        ? "bg-gradient-to-r from-[#DE4313]/15 to-transparent border-l-4 border-[#DE4313]"
+                        : "hover:bg-white/5 border-l-4 border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      {/* Signature Icon Container */}
+                      <div
+                        className={`w-11 h-11 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${
+                          isActive
+                            ? "bg-gradient-to-br from-[#DE4313]/25 to-transparent border border-[#DE4313] shadow-[0_0_12px_rgba(222,67,19,0.4)]"
+                            : "border border-[#DE4313]/30 bg-[#0A0F24]/20"
+                        }`}
+                      >
+                        <div className="scale-75">
+                          <NavIcon id={item.id} isActive={isActive} />
+                        </div>
+                      </div>
+
+                      {/* Text Label */}
+                      <span
+                        className={`font-dm text-xl sm:text-2xl tracking-[0.12em] uppercase transition-colors ${
+                          isActive
+                            ? "font-black text-transparent bg-clip-text"
+                            : "font-bold text-[var(--ink)] opacity-85 group-hover:opacity-100 group-hover:text-[#DE4313]"
+                        }`}
+                        style={
+                          isActive
+                            ? {
+                                backgroundImage:
+                                  "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
+                              }
+                            : undefined
+                        }
+                      >
+                        {item.label}
+                      </span>
+                    </div>
+
+                    {/* Active Indicator Arrow or Dot */}
+                    {isActive ? (
+                      <span className="text-[#DE4313] text-lg font-bold">
+                        ●
+                      </span>
+                    ) : (
+                      <span className="text-[var(--ink)] opacity-30 group-hover:opacity-100 group-hover:text-[#DE4313] transition-all group-hover:translate-x-1">
+                        →
+                      </span>
+                    )}
+                  </Link>
+
+                  {/* Work Sub-Categories Links for Mobile */}
+                  {isWork && (
+                    <div className="pl-16 pr-2 py-1.5 flex flex-wrap gap-2">
+                      <Link
+                        href="/work/websites"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-[11px] font-dm font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-[#DE4313]/40 text-[var(--ink)] hover:text-[#FEC163] hover:border-[#FEC163] transition-colors"
+                      >
+                        Websites
+                      </Link>
+                      <Link
+                        href="/work/apps"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-[11px] font-dm font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-[#DE4313]/40 text-[var(--ink)] hover:text-[#FEC163] hover:border-[#FEC163] transition-colors"
+                      >
+                        Apps
+                      </Link>
+                      <Link
+                        href="/work/softwares"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-[11px] font-dm font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-[#DE4313]/40 text-[var(--ink)] hover:text-[#FEC163] hover:border-[#FEC163] transition-colors"
+                      >
+                        Softwares
+                      </Link>
+                    </div>
+                  )}
                 </div>
-                {item.label}
-              </Link>
-            );
-          })}
+              );
+            })}
+          </nav>
         </div>
-      )}
+
+        {/* Drawer Bottom Section: Action CTA + Social + Brand */}
+        <div className="relative z-10 px-6 sm:px-8 pb-8 pt-4 flex flex-col space-y-4">
+          {/* Quick Action Contact Button */}
+          <Link
+            href="/contact"
+            onClick={() => setMobileOpen(false)}
+            className="w-full py-3.5 rounded-[2px] font-dm font-bold text-xs uppercase tracking-[0.2em] text-white bg-gradient-to-r from-[#FEC163] to-[#DE4313] shadow-[0_0_20px_rgba(222,67,19,0.45)] text-center flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer"
+          >
+            <span>GET IN TOUCH / LET&apos;S TALK</span>
+            <span className="text-sm">→</span>
+          </Link>
+
+          {/* Social Profiles & Copyright */}
+          <div className="flex items-center justify-between text-[11px] font-dm text-[var(--ink)] opacity-70 border-t border-[var(--ink)]/15 pt-3">
+            <span>Sejuti Mehjabin</span>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#DE4313] transition-colors"
+              >
+                LinkedIn
+              </a>
+              <span>•</span>
+              <a
+                href="https://behance.net"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#DE4313] transition-colors"
+              >
+                Behance
+              </a>
+              <span>•</span>
+              <a
+                href="https://dribbble.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#DE4313] transition-colors"
+              >
+                Dribbble
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* ─── Desktop Fixed Sidebar (locked to 1440px canvas on 2K/4K) ─── */}
       <aside
