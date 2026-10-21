@@ -183,15 +183,6 @@ export default function CategoryGridView({
     <div className="w-full px-4 sm:px-6 lg:px-10 pt-16 sm:pt-20 lg:pt-24 pb-24">
       {/* ── 01. HERO CARD (Matching Main Work Hero Frame 100%) ── */}
       <div className="relative w-full bg-transparent min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex items-center pt-14 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 pl-6 sm:pl-10 lg:pl-14 pr-6 sm:pr-10 lg:pr-14 mb-8">
-        {/* Top horizontal border line (runs through discipline icons and stops before Work label) */}
-        <div
-          className="absolute top-0 left-0 right-[45px] sm:right-[70px] h-[1.5px] pointer-events-none z-[1]"
-          style={{
-            background:
-              "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
-          }}
-        />
-
         {/* Left vertical border line */}
         <div
           className="absolute top-0 left-0 bottom-0 w-[1.5px] pointer-events-none"
@@ -211,106 +202,142 @@ export default function CategoryGridView({
 
         {/* Right vertical border line */}
         <div
-          className="absolute top-[28px] sm:top-[34px] right-0 bottom-0 w-[1.5px] pointer-events-none"
+          className="absolute top-[24px] sm:top-[30px] lg:top-[36px] right-0 bottom-0 w-[1.5px] pointer-events-none"
           style={{
             background: "linear-gradient(180deg, #FEC163 0%, #DE4313 100%)",
           }}
         />
 
-        {/* ── Top-Right Notch: 3 Discipline Icons + "Work" Text ── */}
-        <div className="absolute top-0 right-4 sm:right-8 -translate-y-1/2 flex items-center gap-3 sm:gap-4 select-none z-20">
+        {/* ── Top Border & Header Notch: 3 Discipline Icons + "Work" (Line terminates at 3rd icon) ── */}
+        <div className="absolute top-0 left-0 right-3 sm:right-8 -translate-y-1/2 flex items-center pointer-events-none z-20">
+          {/* Top border line from card's left edge up to Icon 1 */}
+          <div
+            className="flex-1 min-w-[16px] h-[1.5px] pointer-events-none -mr-[2px]"
+            style={{
+              background:
+                "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+            }}
+          />
+
           {/* 1. UX & UI Design Circle */}
           <Link
             href="/work"
             title="UX & UI Design"
             aria-label="UX & UI Design"
-            className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+            className={`relative shrink-0 w-10 h-10 sm:w-13 sm:h-13 lg:w-15 lg:h-15 xl:w-16 xl:h-16 rounded-full flex items-center justify-center transition-all duration-300 pointer-events-auto select-none focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none ring-0 ${
               activeDiscipline === "ux"
-                ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163]"
+                ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105 z-10"
+                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105 z-[2]"
             }`}
-            style={
-              activeDiscipline === "ux"
+            style={{
+              outline: "none",
+              WebkitTapHighlightColor: "transparent",
+              ...(activeDiscipline === "ux"
                 ? {
                     background:
                       "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
                   }
-                : undefined
-            }
+                : {}),
+            }}
           >
             <Image
               src="/assets/icons/ux-icon.png"
               alt="UX & UI"
-              width={26}
-              height={26}
-              className={activeDiscipline === "ux" ? "brightness-0 invert" : ""}
+              width={36}
+              height={36}
+              className={`w-5 h-5 sm:w-6.5 sm:h-6.5 lg:w-8 lg:h-8 object-contain transition-all ${
+                activeDiscipline === "ux" ? "brightness-0 invert" : ""
+              }`}
             />
           </Link>
+
+          {/* Connecting line between Icon 1 and Icon 2 */}
+          <div
+            className="w-2.5 sm:w-4 lg:w-5 xl:w-6 h-[1.5px] shrink-0 pointer-events-none -mx-[2px] z-[1]"
+            style={{
+              background:
+                "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+            }}
+          />
 
           {/* 2. Logo & Branding Circle */}
           <Link
             href="/work?discipline=branding"
             title="Logo & Branding"
             aria-label="Logo & Branding"
-            className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+            className={`relative shrink-0 w-10 h-10 sm:w-13 sm:h-13 lg:w-15 lg:h-15 xl:w-16 xl:h-16 rounded-full flex items-center justify-center transition-all duration-300 pointer-events-auto select-none focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none ring-0 ${
               activeDiscipline === "branding"
-                ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163]"
+                ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105 z-10"
+                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105 z-[2]"
             }`}
-            style={
-              activeDiscipline === "branding"
+            style={{
+              outline: "none",
+              WebkitTapHighlightColor: "transparent",
+              ...(activeDiscipline === "branding"
                 ? {
                     background:
                       "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
                   }
-                : undefined
-            }
+                : {}),
+            }}
           >
             <Image
               src="/assets/icons/branding-icon.png"
               alt="Branding"
-              width={26}
-              height={26}
-              className={
+              width={36}
+              height={36}
+              className={`w-5 h-5 sm:w-6.5 sm:h-6.5 lg:w-8 lg:h-8 object-contain transition-all ${
                 activeDiscipline === "branding" ? "brightness-0 invert" : ""
-              }
+              }`}
             />
           </Link>
 
-          {/* 3. Print & Digital Marketing Circle */}
+          {/* Connecting line between Icon 2 and Icon 3 */}
+          <div
+            className="w-2.5 sm:w-4 lg:w-5 xl:w-6 h-[1.5px] shrink-0 pointer-events-none -mx-[2px] z-[1]"
+            style={{
+              background:
+                "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
+            }}
+          />
+
+          {/* 3. Print & Digital Marketing Circle (LAST ICON) */}
           <Link
             href="/work?discipline=marketing"
             title="Print & Digital Marketing"
             aria-label="Print & Digital Marketing"
-            className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+            className={`relative shrink-0 w-10 h-10 sm:w-13 sm:h-13 lg:w-15 lg:h-15 xl:w-16 xl:h-16 rounded-full flex items-center justify-center transition-all duration-300 pointer-events-auto select-none focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none ring-0 ${
               activeDiscipline === "marketing"
-                ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163]"
+                ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105 z-10"
+                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105 z-[2]"
             }`}
-            style={
-              activeDiscipline === "marketing"
+            style={{
+              outline: "none",
+              WebkitTapHighlightColor: "transparent",
+              ...(activeDiscipline === "marketing"
                 ? {
                     background:
                       "linear-gradient(129.89deg, #FEC163 -29.32%, #DE4313 100%)",
                   }
-                : undefined
-            }
+                : {}),
+            }}
           >
             <Image
               src="/assets/icons/marketing-icon.png"
               alt="Marketing"
-              width={26}
-              height={26}
-              className={
+              width={36}
+              height={36}
+              className={`w-5 h-5 sm:w-6.5 sm:h-6.5 lg:w-8 lg:h-8 object-contain transition-all ${
                 activeDiscipline === "marketing" ? "brightness-0 invert" : ""
-              }
+              }`}
             />
           </Link>
 
-          {/* "Work" Page Heading */}
+          {/* "Work" Page Heading — Notice: NO line connects to Work! The border ends cleanly at Icon 3. */}
           <Link
             href="/work"
-            className="font-dm font-normal text-3xl sm:text-4xl lg:text-[42px] text-[var(--ink)] tracking-tight leading-none ml-2 pl-2 sm:pl-3 bg-[var(--bg)] card-badge-bg relative z-10 hover:opacity-80 transition-opacity"
+            className="shrink-0 font-dm font-normal text-2xl sm:text-4xl lg:text-[42px] text-[var(--ink)] tracking-tight leading-none ml-2.5 sm:ml-5 lg:ml-6 select-none pointer-events-auto hover:opacity-80 transition-opacity focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none ring-0"
+            style={{ outline: "none", WebkitTapHighlightColor: "transparent" }}
           >
             Work
           </Link>

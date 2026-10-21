@@ -87,8 +87,19 @@
   }
 
   button,
-  [role="button"] {
+  [role="button"],
+  a {
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:focus,
+  button:focus-visible,
+  [role="button"]:focus,
+  [role="button"]:focus-visible,
+  a:focus,
+  a:focus-visible {
+    outline: none !important;
   }
 }
 
