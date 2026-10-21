@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { X } from "lucide-react";
 import { BlogPost, blogPosts } from "@/data/blogs";
 
 interface BlogDetailViewProps {
@@ -52,31 +53,16 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
         <Link
           href="/blogs"
           aria-label="Back to Blogs"
-          className="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#DE4313] p-[2.5px] flex items-center justify-center transition-transform hover:scale-110 z-30 cursor-pointer shadow-lg"
-          style={{ backgroundColor: "var(--bg)" }}
+          className="group absolute -top-4 -right-4 sm:-top-5 sm:-right-5 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#DE4313] hover:border-[#FEC163] bg-transparent flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 cursor-pointer"
         >
-          <div className="w-full h-full rounded-full flex items-center justify-center text-[#DE4313]">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="1" y1="1" x2="13" y2="13" />
-              <line x1="13" y1="1" x2="13" />
-            </svg>
-          </div>
+          <X
+            className="w-4 h-4 sm:w-5 sm:h-5 text-[#DE4313] group-hover:text-[#FEC163] transition-colors"
+            strokeWidth={2}
+          />
         </Link>
 
         {/* ── Article Title ── */}
-        <h1
-          className="font-dm font-extrabold uppercase text-2xl sm:text-4xl lg:text-[44px] leading-[1.15] tracking-wide max-w-4xl"
-          style={{ color: "rgba(255, 247, 231, 1)" }}
-        >
+        <h1 className="font-dm font-extrabold uppercase text-2xl sm:text-4xl lg:text-[44px] leading-[1.15] tracking-wide max-w-4xl text-[var(--ink)]">
           {post.title}
         </h1>
 
