@@ -147,6 +147,38 @@ export default function CategoryGridView({
     setSelectedIndustryFilter("All");
   };
 
+  // ── 03. DYNAMIC RESPONSIVE COLUMN COUNT FOR MASONRY ──
+  // 3 columns on desktop (>=1024px), 2 on tablet (>=768px), 1 on mobile (<768px)
+  const [columnCount, setColumnCount] = useState(3);
+
+  useEffect(() => {
+    const updateColumns = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setColumnCount(1);
+      } else if (width < 1024) {
+        setColumnCount(2);
+      } else {
+        setColumnCount(3);
+      }
+    };
+
+    updateColumns();
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
+  }, []);
+
+  // Split filtered projects across columns to form a true Masonry layout:
+  // Item 0, 1, 2 sit across the top row; each subsequent item tucks directly
+  // below the item above it with auto-adjusted height and zero excessive gaps.
+  const masonryColumns = useMemo(() => {
+    const cols: WorkProject[][] = Array.from({ length: columnCount }, () => []);
+    filteredProjects.forEach((project, idx) => {
+      cols[idx % columnCount].push(project);
+    });
+    return cols;
+  }, [filteredProjects, columnCount]);
+
   return (
     <div className="w-full px-4 sm:px-6 lg:px-10 pt-16 sm:pt-20 lg:pt-24 pb-24">
       {/* ── 01. HERO CARD (Matching Main Work Hero Frame 100%) ── */}
@@ -571,32 +603,41 @@ export default function CategoryGridView({
         )}
       </div>
 
-      {/* ── 03. DIRECT SCREENSHOT CARD GRID (Matching User's Screenshot Exactly) ── */}
+      {/* ── 03. DIRECT SCREENSHOT CARD GRID (Masonry Layout: Auto Height, Zero Extra Gap) ── */}
       {/* Rules: 3 Columns, 26px Gap, All-Side Border, 20px-22px Padding, 18px Regular Almarai Title Inside */}
       {filteredProjects.length > 0 ? (
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[26px] items-start">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              className="group cursor-pointer bg-[#070B19] border border-[#DE4313]/60 hover:border-[#FEC163] transition-all duration-300 rounded-[2px] p-[20px] sm:p-[22px] flex flex-col justify-between shadow-lg hover:shadow-[0_0_30px_rgba(222,67,19,0.35)]"
-            >
-              {/* Direct Full-Length Screenshot */}
-              <div className="relative w-full overflow-hidden rounded-[2px] bg-[#0A0F24]">
-                <Image
-                  src={project.thumbnail}
-                  alt={project.title}
-                  width={600}
-                  height={1200}
-                  className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-300 block"
-                  priority={false}
-                />
-              </div>
+        <div
+          className="w-full grid gap-[26px] items-start"
+          style={{
+            gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+          }}
+        >
+          {masonryColumns.map((col, colIdx) => (
+            <div key={colIdx} className="flex flex-col gap-[26px] w-full">
+              {col.map((project) => (
+                <div
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  className="group cursor-pointer bg-[#070B19] border border-[#DE4313]/60 hover:border-[#FEC163] transition-all duration-300 rounded-[2px] p-[20px] sm:p-[22px] flex flex-col justify-between shadow-lg hover:shadow-[0_0_30px_rgba(222,67,19,0.35)] w-full"
+                >
+                  {/* Direct Full-Length Screenshot */}
+                  <div className="relative w-full overflow-hidden rounded-[2px] bg-[#0A0F24]">
+                    <Image
+                      src={project.thumbnail}
+                      alt={project.title}
+                      width={600}
+                      height={1200}
+                      className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-300 block"
+                      priority={false}
+                    />
+                  </div>
 
-              {/* Title Inside Card at Bottom (18px Regular Almarai Font) */}
-              <h3 className="font-almarai font-normal text-[18px] text-[var(--ink)] mt-4 text-left leading-snug group-hover:text-[#FEC163] transition-colors">
-                {project.title}
-              </h3>
+                  {/* Title Inside Card at Bottom (18px Regular Almarai Font) */}
+                  <h3 className="font-almarai font-normal text-[18px] text-[var(--ink)] mt-4 text-left leading-snug group-hover:text-[#FEC163] transition-colors">
+                    {project.title}
+                  </h3>
+                </div>
+              ))}
             </div>
           ))}
         </div>
