@@ -14,13 +14,13 @@ export default function HospitalDashboardMockup({
 }) {
   return (
     <div
-      className={`relative w-full max-w-[620px] mx-auto select-none flex flex-col items-center justify-center ${className}`}
+      className={`relative w-full max-w-[620px] mx-auto select-none flex flex-col items-center justify-end ${className}`}
     >
       <svg
-        viewBox="0 0 640 430"
+        viewBox="0 0 640 406"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-auto drop-shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
+        className="w-full h-auto drop-shadow-[0_20px_45px_rgba(0,0,0,0.75)] block"
       >
         <defs>
           <filter

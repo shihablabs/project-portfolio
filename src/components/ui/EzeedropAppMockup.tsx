@@ -14,7 +14,7 @@ export default function EzeedropAppMockup({
 }) {
   return (
     <div
-      className={`relative w-full max-w-[580px] mx-auto select-none flex items-center justify-center gap-2 sm:gap-4 px-2 py-3 ${className}`}
+      className={`relative w-full max-w-[580px] mx-auto select-none flex items-end justify-center gap-2 sm:gap-4 px-2 pt-2 pb-0 ${className}`}
     >
       {/* ── PHONE 1 (LEFT): Booking & Intro Screen ── */}
       <div className="relative w-1/3 max-w-[170px] aspect-[9/18] bg-[#F8FAFC] rounded-[18px] sm:rounded-[24px] border-[3px] sm:border-[4px] border-[#CBD5E1] shadow-[0_12px_30px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col justify-between p-2 sm:p-2.5">

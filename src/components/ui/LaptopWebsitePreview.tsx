@@ -166,14 +166,6 @@ export default function LaptopWebsitePreview({
         {/* Thumb Opening Notch */}
         <div className="w-16 sm:w-20 h-1 sm:h-1.5 bg-[#334155] rounded-b-[4px]" />
       </div>
-
-      {/* Bottom Reflection / Ground Glow */}
-      <div
-        className="w-[90%] mx-auto h-4 rounded-full filter blur-md opacity-50"
-        style={{
-          background: "radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 70%)",
-        }}
-      />
     </div>
   );
 }
