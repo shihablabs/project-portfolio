@@ -53,7 +53,8 @@ export default function BlogDetailView({ post }: BlogDetailViewProps) {
         <Link
           href="/blogs"
           aria-label="Back to Blogs"
-          className="group absolute -top-4 -right-4 sm:-top-5 sm:-right-5 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#DE4313] hover:border-[#FEC163] bg-transparent flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 cursor-pointer"
+          className="group absolute -top-4 -right-4 sm:-top-5 sm:-right-5 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#DE4313] hover:border-[#FEC163] bg-[var(--bg)] flex items-center justify-center transition-all duration-300 hover:scale-110 z-30 cursor-pointer shadow-sm"
+          style={{ backgroundColor: "var(--bg)" }}
         >
           <X
             className="w-4 h-4 sm:w-5 sm:h-5 text-[#DE4313] group-hover:text-[#FEC163] transition-colors"

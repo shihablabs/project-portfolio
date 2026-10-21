@@ -138,7 +138,8 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
           onClick={handleBack}
           title="Back to Work"
           aria-label="Back to Work"
-          className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full border-[1.5px] border-[#DE4313] bg-[#0A0F24] flex items-center justify-center text-[#DE4313] hover:text-[#FEC163] hover:border-[#FEC163] hover:scale-110 shadow-[0_0_16px_rgba(222,67,19,0.4)] hover:shadow-[0_0_24px_rgba(222,67,19,0.8)] transition-all duration-300 cursor-pointer"
+          className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full border-[1.5px] border-[#DE4313] bg-[var(--bg)] flex items-center justify-center text-[#DE4313] hover:text-[#FEC163] hover:border-[#FEC163] hover:scale-110 shadow-[0_0_16px_rgba(222,67,19,0.4)] hover:shadow-[0_0_24px_rgba(222,67,19,0.8)] transition-all duration-300 cursor-pointer"
+          style={{ backgroundColor: "var(--bg)" }}
         >
           <svg
             width="15"
