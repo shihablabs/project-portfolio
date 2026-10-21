@@ -291,7 +291,7 @@ export default function AboutPageView() {
       </div>
 
       {/* ── 02. STICKY SUB-NAVIGATION BAR (Top sticky on scroll) ── */}
-      <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-2 pb-1 select-none mb-12 border-b border-[#DE4313]/20">
+      <div className="sticky top-0 z-40 backdrop-blur-md pt-2 pb-1 select-none mb-12 border-b border-[#DE4313]/20">
         <div className="w-full flex items-center justify-between sm:justify-center gap-2 sm:gap-6 lg:gap-10 overflow-x-auto no-scrollbar font-dm text-xs sm:text-sm tracking-wider uppercase px-2">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -505,24 +505,6 @@ export default function AboutPageView() {
                   className="w-[144px] h-[636px] object-contain block"
                 />
               </div>
-
-              {/* High-Contrast Crisp Circle Overlays for Nodes (2016, 2017, 2018, 2023) */}
-              {[
-                { year: "2016", top: 176 },
-                { year: "2017", top: 296 },
-                { year: "2018", top: 416 },
-                { year: "2023", top: 536 },
-              ].map((node) => (
-                <div
-                  key={node.year}
-                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-[68px] h-[68px] rounded-full flex items-center justify-center bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] pointer-events-none z-[1] select-none shadow-sm"
-                  style={{ top: `${node.top}px` }}
-                >
-                  <span className="font-dm font-bold text-sm sm:text-base text-[var(--ink)] tracking-wider">
-                    {node.year}
-                  </span>
-                </div>
-              ))}
 
               {/* 5 Milestones Aligned to Circle Nodes (Each step is exactly 120px) */}
               {[
