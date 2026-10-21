@@ -254,9 +254,9 @@ export default function WorkPageView() {
 
       {/* ── 01. WORK HERO CARD (Pixel-perfect matching About & Blogs Hero Layout) ── */}
       <div className="relative w-full bg-transparent min-h-[480px] sm:min-h-[520px] lg:min-h-[540px] flex items-center pt-14 sm:pt-16 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 pl-6 sm:pl-10 lg:pl-14 pr-6 sm:pr-10 lg:pr-14 mb-10">
-        {/* Top horizontal border line (starts at 0,0 and stops before icons & Work notch) */}
+        {/* Top horizontal border line (runs through discipline icons and stops before Work label) */}
         <div
-          className="absolute top-0 left-0 right-[310px] sm:right-[340px] lg:right-[360px] h-[1.5px] pointer-events-none"
+          className="absolute top-0 left-0 right-[45px] sm:right-[70px] h-[1.5px] pointer-events-none z-[1]"
           style={{
             background:
               "linear-gradient(97.51deg, #FEC163 -37.59%, #DE4313 94.05%)",
@@ -299,7 +299,7 @@ export default function WorkPageView() {
             className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
               activeDiscipline === "ux"
                 ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-                : "bg-[#0A0F24] border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105"
+                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105"
             }`}
             style={
               activeDiscipline === "ux"
@@ -330,7 +330,7 @@ export default function WorkPageView() {
             className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
               activeDiscipline === "branding"
                 ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-                : "bg-[#0A0F24] border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105"
+                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105"
             }`}
             style={
               activeDiscipline === "branding"
@@ -361,7 +361,7 @@ export default function WorkPageView() {
             className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
               activeDiscipline === "marketing"
                 ? "shadow-[0_0_16px_rgba(222,67,19,0.7)] scale-105"
-                : "bg-[#0A0F24] border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105"
+                : "bg-[var(--bg)] card-badge-bg border-[1.5px] border-[#DE4313] hover:border-[#FEC163] hover:scale-105"
             }`}
             style={
               activeDiscipline === "marketing"
@@ -384,7 +384,7 @@ export default function WorkPageView() {
           </button>
 
           {/* "Work" Page Heading */}
-          <span className="font-dm font-normal text-3xl sm:text-4xl lg:text-[42px] text-[var(--ink)] tracking-tight leading-none ml-2">
+          <span className="font-dm font-normal text-3xl sm:text-4xl lg:text-[42px] text-[var(--ink)] tracking-tight leading-none ml-2 pl-2 sm:pl-3 bg-[var(--bg)] card-badge-bg relative z-10">
             Work
           </span>
         </div>
