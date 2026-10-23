@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import CaseStudyFullPageMockup from "@/components/ui/CaseStudyFullPageMockup";
+import CaseStudyHeroCascade from "@/components/ui/CaseStudyHeroCascade";
+import SectionBadge from "@/components/ui/SectionBadge";
+import { WorkProject } from "@/data/workProjects";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { WorkProject } from "@/data/workProjects";
-import SectionBadge from "@/components/ui/SectionBadge";
-import CaseStudyHeroCascade from "@/components/ui/CaseStudyHeroCascade";
-import CaseStudyFullPageMockup from "@/components/ui/CaseStudyFullPageMockup";
+import { useEffect, useState } from "react";
 
 interface CaseStudyViewProps {
   project: WorkProject;
@@ -60,7 +60,7 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
 
   const activeIdx = Math.max(
     0,
-    CASE_STUDY_TABS.findIndex((t) => t.id === activeTab)
+    CASE_STUDY_TABS.findIndex((t) => t.id === activeTab),
   );
 
   return (
@@ -181,7 +181,7 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
       </div>
 
       {/* ── 02. STICKY SUB-NAVIGATION BAR (Directly matching user screenshot: 01. OVERVIEW, 02. DESIGN PROCESS, 03. FINAL DESIGNS, 04. RESULTS) ── */}
-      <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-3 pb-2 select-none mb-14">
+      <div className="sticky top-0 z-40 backdrop-blur-md pt-3 pb-2 select-none mb-14">
         <div className="w-full grid grid-cols-4 gap-2 sm:gap-4 items-center text-center font-dm font-bold text-xs sm:text-sm tracking-wider uppercase">
           {CASE_STUDY_TABS.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -358,7 +358,10 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                 Understanding the User &amp; Pain Points
               </h3>
               <p className="font-dm text-sm sm:text-base text-gray-300 leading-relaxed">
-                We conducted in-depth qualitative interviews with 24 individuals seeking therapy and 8 licensed psychologists. Users expressed vulnerability about data privacy, hesitation regarding session pricing transparency, and frustration with clinical jargon.
+                We conducted in-depth qualitative interviews with 24 individuals
+                seeking therapy and 8 licensed psychologists. Users expressed
+                vulnerability about data privacy, hesitation regarding session
+                pricing transparency, and frustration with clinical jargon.
               </p>
               <div className="mt-3">
                 <span
@@ -378,7 +381,9 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
                 User Journey &amp; Wireframes
               </h3>
               <p className="font-dm text-sm sm:text-base text-gray-300 leading-relaxed">
-                Low-fidelity sketches were transformed into rapid Figma interactive prototypes, mapping every touchpoint from initial mental state check-in to post-session homework assignments.
+                Low-fidelity sketches were transformed into rapid Figma
+                interactive prototypes, mapping every touchpoint from initial
+                mental state check-in to post-session homework assignments.
               </p>
               <div className="mt-3">
                 <span
@@ -455,7 +460,10 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
               Visual Design
             </span>
             <p className="font-dm text-sm sm:text-base text-gray-300 leading-relaxed">
-              The high-fidelity design integrates calming organic curves, micro-animations, accessible high-contrast typography, and intuitive step-by-step intake forms to deliver a supportive, welcoming digital sanctuary.
+              The high-fidelity design integrates calming organic curves,
+              micro-animations, accessible high-contrast typography, and
+              intuitive step-by-step intake forms to deliver a supportive,
+              welcoming digital sanctuary.
             </p>
             <span
               className="font-dm font-bold text-xs uppercase tracking-wider text-transparent bg-clip-text block"
@@ -495,7 +503,9 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
               Impact
             </span>
             <p className="font-dm text-sm sm:text-base text-gray-300 leading-relaxed">
-              Post-launch data revealed an 84% reduction in patient onboarding friction, a 3.4x surge in first-week session reservations, and a 96% positive satisfaction rating across Android and iOS platforms.
+              Post-launch data revealed an 84% reduction in patient onboarding
+              friction, a 3.4x surge in first-week session reservations, and a
+              96% positive satisfaction rating across Android and iOS platforms.
             </p>
             <span
               className="font-dm font-bold text-xs uppercase tracking-wider text-transparent bg-clip-text block"
@@ -524,7 +534,10 @@ export default function CaseStudyView({ project }: CaseStudyViewProps) {
           {/* Quote & Credentials */}
           <div className="space-y-2">
             <p className="font-dm text-xs sm:text-sm text-gray-200 leading-relaxed italic">
-              &ldquo;Sejuti&apos;s thoughtful UX research and pristine interface design transformed our platform&apos;s patient engagement and conversion beyond expectations. She approaches design with immense empathy and technical rigor.&rdquo;
+              &ldquo;Sejuti&apos;s thoughtful UX research and pristine interface
+              design transformed our platform&apos;s patient engagement and
+              conversion beyond expectations. She approaches design with immense
+              empathy and technical rigor.&rdquo;
             </p>
             <div>
               <strong className="block text-sm font-dm font-bold text-white">

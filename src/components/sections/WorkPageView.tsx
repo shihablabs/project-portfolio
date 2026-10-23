@@ -1,16 +1,15 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import WorkDeviceMockup from "@/components/ui/WorkDeviceMockup";
-import BrandingMonitorMockup from "@/components/ui/BrandingMonitorMockup";
-import MarketingMonitorMockup from "@/components/ui/MarketingMonitorMockup";
 import BrandingProjectsView from "@/components/sections/BrandingProjectsView";
 import MarketingProjectsView from "@/components/sections/MarketingProjectsView";
 import WorkCategorySection, {
   ProjectSlide,
 } from "@/components/sections/WorkCategorySection";
+import BrandingMonitorMockup from "@/components/ui/BrandingMonitorMockup";
+import MarketingMonitorMockup from "@/components/ui/MarketingMonitorMockup";
+import WorkDeviceMockup from "@/components/ui/WorkDeviceMockup";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 type Discipline = "ux" | "branding" | "marketing";
 type TabId = "websites" | "apps" | "softwares";
@@ -213,7 +212,7 @@ export default function WorkPageView() {
 
   const activeIdx = Math.max(
     0,
-    WORK_TABS.findIndex((t) => t.id === activeTab)
+    WORK_TABS.findIndex((t) => t.id === activeTab),
   );
 
   return (
@@ -482,7 +481,7 @@ export default function WorkPageView() {
       {activeDiscipline === "ux" && (
         <>
           {/* Sticky Sub-Navigation Bar for UX tabs */}
-          <div className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur-md pt-3 pb-2 select-none mb-14">
+          <div className="sticky top-0 z-40 backdrop-blur-md pt-3 pb-2 select-none mb-14">
             <div className="w-full grid grid-cols-3 gap-2 sm:gap-4 items-center text-center font-dm font-bold text-xs sm:text-sm tracking-wider uppercase">
               {WORK_TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
